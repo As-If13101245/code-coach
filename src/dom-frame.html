@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<style>
+body{margin:10px;font:15px/1.45 -apple-system,system-ui,"Segoe UI",Roboto,sans-serif;color:#14202b;background:#fff}
+button,input,select,textarea{font:inherit} button{padding:4px 10px;margin:2px}
+.done{text-decoration:line-through;color:#5b6876} .late,.danger{color:#c23a2b} .ok,.success{color:#1d8456}
+table{border-collapse:collapse} td,th{border:1px solid #dbe0e6;padding:3px 8px;text-align:left}
+</style>
+<script>
+/* OWL renders on animation frames. Hidden or sandboxed frames can pause those, so use timers instead. */
+window.requestAnimationFrame = cb => setTimeout(() => cb(performance.now()), 0);
+window.cancelAnimationFrame = id => clearTimeout(id);
+</script>
+__OWL_SCRIPT__
+</head><body>
+<script>
+document.currentScript.remove();   // keep the page clean: learners' code sees only its own elements
+(function(){
+  const fmt = v => typeof v === "string" ? v : v === undefined ? "undefined" : (typeof v === "function" ? v.toString() : (v instanceof Element ? "<" + v.tagName.toLowerCase() + ">" : (() => { try { return JSON.stringify(v); } catch(e) { return String(v); } })()));
+  const AF = Object.getPrototypeOf(async function(){}).constructor;
+  const send = m => parent.postMessage(Object.assign({ __cc: 1 }, m), "*");
+  const logs = [];
+  const con = { log:(...a)=>logs.push(a.map(fmt).join(" ")), info:(...a)=>logs.push(a.map(fmt).join(" ")), warn:(...a)=>logs.push("⚠ "+a.map(fmt).join(" ")), error:(...a)=>logs.push("✖ "+a.map(fmt).join(" ")) };
+  const check = (c, m) => { if (!c) throw new Error(m || "A check failed."); };
+  /* wait for OWL to finish rendering after a click or a signal change */
+  const tick = async (n = 3) => { for (let i = 0; i < n; i++) await new Promise(r => setTimeout(r, 5)); };
+  let late = null;
+  window.addEventListener("error", e => { late = late || ((e.error && e.error.name ? e.error.name + ": " : "") + (e.message || e.error)); });
+  window.addEventListener("unhandledrejection", e => { const r = e.reason; late = late || ((r && r.name ? r.name + ": " : "") + (r && r.message || r)); });
+  let sent = false;
+  window.addEventListener("message", async e => {
+    const d = e.data; if (!d || d.__cc !== "run" || sent) return; sent = true;
+    const { code, test } = d; let userDone = false;
+    if (typeof owl === "undefined") { send({ out: "", err: "OWL couldn't load. It needs an internet connection the first time. Check your connection and run again." }); return; }
+    let fn;
+    try { fn = new AF("console","check","__logs","__code","__mark","__tick","owl", code + "\n;await __tick();__mark();\n" + (test || "")); }
+    catch (err) { send({ out: "", err: "SyntaxError: " + err.message }); return; }
+    try {
+      await fn(con, check, logs, code, () => { userDone = true; }, tick, owl);
+      await tick();
+      if (late) throw new Error(late);
+      send({ out: logs.join("\n"), pass: test ? true : null, h: document.documentElement.scrollHeight });
+    } catch (err) {
+      await tick(1);
+      if (userDone && test) send({ out: logs.join("\n"), pass: false, fail: err.message, h: document.documentElement.scrollHeight });
+      else send({ out: logs.join("\n"), err: (err && err.name ? err.name + ": " : "") + (err && err.message || err), h: document.documentElement.scrollHeight });
+    }
+    if (window.ResizeObserver) new ResizeObserver(() => send({ resize: document.documentElement.scrollHeight })).observe(document.body);
+  });
+  send({ ready: true });
+})();
+</script>
+</body></html>

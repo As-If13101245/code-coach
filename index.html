@@ -83,6 +83,8 @@ section.step{display:flex;flex-direction:column;gap:10px}
 .btn.small{font-size:13px;min-height:32px;padding:4px 10px}
 .btn[disabled]{opacity:.55;cursor:default}
 .out{display:flex;flex-direction:column;gap:6px}
+.preview{width:100%;height:120px;border:1px solid var(--line);border-radius:12px;background:#fff}
+.preview.hidden{position:absolute;left:-9999px;top:0;width:420px;height:320px}
 .out pre.err{color:#ff9d8f;white-space:pre-wrap}
 .result{border-radius:12px;padding:10px 14px;font-weight:700;font-size:15px}
 .result.ok{background:var(--good-bg);color:var(--good)}
@@ -232,6 +234,37 @@ function runJS(code, test){
   });
 }
 
+/* DOM / OWL lessons run in a sandboxed iframe with OWL 3 loaded. Run shows a live preview; Check runs hidden. */
+const DOM_FRAME = "<!DOCTYPE html>\n<html lang=\"en\"><head><meta charset=\"utf-8\">\n<style>\nbody{margin:10px;font:15px/1.45 -apple-system,system-ui,\"Segoe UI\",Roboto,sans-serif;color:#14202b;background:#fff}\nbutton,input,select,textarea{font:inherit} button{padding:4px 10px;margin:2px}\n.done{text-decoration:line-through;color:#5b6876} .late,.danger{color:#c23a2b} .ok,.success{color:#1d8456}\ntable{border-collapse:collapse} td,th{border:1px solid #dbe0e6;padding:3px 8px;text-align:left}\n<\/style>\n<script>\n/* OWL renders on animation frames. Hidden or sandboxed frames can pause those, so use timers instead. */\nwindow.requestAnimationFrame = cb => setTimeout(() => cb(performance.now()), 0);\nwindow.cancelAnimationFrame = id => clearTimeout(id);\n<\/script>\n<script src=\"https://cdn.jsdelivr.net/npm/@odoo/owl@3.0.0-alpha.50/dist/owl.iife.min.js\"><\/script>\n<\/head><body>\n<script>\ndocument.currentScript.remove();   // keep the page clean: learners' code sees only its own elements\n(function(){\n  const fmt = v => typeof v === \"string\" ? v : v === undefined ? \"undefined\" : (typeof v === \"function\" ? v.toString() : (v instanceof Element ? \"<\" + v.tagName.toLowerCase() + \">\" : (() => { try { return JSON.stringify(v); } catch(e) { return String(v); } })()));\n  const AF = Object.getPrototypeOf(async function(){}).constructor;\n  const send = m => parent.postMessage(Object.assign({ __cc: 1 }, m), \"*\");\n  const logs = [];\n  const con = { log:(...a)=>logs.push(a.map(fmt).join(\" \")), info:(...a)=>logs.push(a.map(fmt).join(\" \")), warn:(...a)=>logs.push(\"\u26a0 \"+a.map(fmt).join(\" \")), error:(...a)=>logs.push(\"\u2716 \"+a.map(fmt).join(\" \")) };\n  const check = (c, m) => { if (!c) throw new Error(m || \"A check failed.\"); };\n  /* wait for OWL to finish rendering after a click or a signal change */\n  const tick = async (n = 3) => { for (let i = 0; i < n; i++) await new Promise(r => setTimeout(r, 5)); };\n  let late = null;\n  window.addEventListener(\"error\", e => { late = late || ((e.error && e.error.name ? e.error.name + \": \" : \"\") + (e.message || e.error)); });\n  window.addEventListener(\"unhandledrejection\", e => { const r = e.reason; late = late || ((r && r.name ? r.name + \": \" : \"\") + (r && r.message || r)); });\n  let sent = false;\n  window.addEventListener(\"message\", async e => {\n    const d = e.data; if (!d || d.__cc !== \"run\" || sent) return; sent = true;\n    const { code, test } = d; let userDone = false;\n    if (typeof owl === \"undefined\") { send({ out: \"\", err: \"OWL couldn't load. It needs an internet connection the first time. Check your connection and run again.\" }); return; }\n    let fn;\n    try { fn = new AF(\"console\",\"check\",\"__logs\",\"__code\",\"__mark\",\"__tick\",\"owl\", code + \"\\n;await __tick();__mark();\\n\" + (test || \"\")); }\n    catch (err) { send({ out: \"\", err: \"SyntaxError: \" + err.message }); return; }\n    try {\n      await fn(con, check, logs, code, () => { userDone = true; }, tick, owl);\n      await tick();\n      if (late) throw new Error(late);\n      send({ out: logs.join(\"\\n\"), pass: test ? true : null, h: document.documentElement.scrollHeight });\n    } catch (err) {\n      await tick(1);\n      if (userDone && test) send({ out: logs.join(\"\\n\"), pass: false, fail: err.message, h: document.documentElement.scrollHeight });\n      else send({ out: logs.join(\"\\n\"), err: (err && err.name ? err.name + \": \" : \"\") + (err && err.message || err), h: document.documentElement.scrollHeight });\n    }\n    if (window.ResizeObserver) new ResizeObserver(() => send({ resize: document.documentElement.scrollHeight })).observe(document.body);\n  });\n  send({ ready: true });\n})();\n<\/script>\n<\/body><\/html>\n";
+const isDom = L => L.runner === "dom";
+function runDOM(code, test, host){
+  return new Promise(resolve => {
+    const f = document.createElement("iframe");
+    f.setAttribute("sandbox", "allow-scripts allow-forms");
+    f.className = host ? "preview" : "preview hidden";
+    f.title = "Preview of your code";
+    f.srcdoc = DOM_FRAME;
+    let done = false;
+    const size = h => { if (host && h) f.style.height = Math.min(460, Math.max(56, h + 4)) + "px"; };
+    const finish = r => { if (done) return; done = true; clearTimeout(timer); if (!host){ window.removeEventListener("message", on); f.remove(); } resolve(r); };
+    const timer = setTimeout(() => { window.removeEventListener("message", on); f.remove(); finish({ err: "Stopped after 10 seconds. Is there an endless loop, or is the connection slow?" }); }, 10000);
+    function on(e){
+      if (!f.isConnected){ window.removeEventListener("message", on); return; }
+      if (e.source !== f.contentWindow || !e.data || !e.data.__cc) return;
+      const m = e.data;
+      if (m.ready){ f.contentWindow.postMessage({ __cc: "run", code, test }, "*"); return; }
+      if (m.resize){ size(m.resize); return; }
+      size(m.h); finish(m);
+    }
+    window.addEventListener("message", on);
+    (host || document.body).appendChild(f);
+  });
+}
+function runFor(L, code, test, stdin, host){
+  if (META[L.id].track === "py") return runPython(code, test, stdin);
+  return isDom(L) ? runDOM(code, test, host) : runJS(code, test);
+}
+
 /* ---------- lesson view ---------- */
 let viewDay = todayNum();
 let viewId = null; // set when opened from the list
@@ -313,6 +346,7 @@ function exerciseHTML(L, part, num, title, st){
     ${st.hint[part] && ex.hint ? `<div class="why no" style="background:var(--warn-bg)">${rich(ex.hint)}</div>`:""}
     ${st.showSol[part] ? `<div class="card"><div class="hint">Solution</div>${codeBlock(ex.solution)}<div><button class="btn small" type="button" data-load="${part}">Put it in the editor</button></div></div>`:""}
     <div class="out" id="out-${part}">${outHTML(st.out[part])}</div>
+    ${isDom(L)?`<div class="pv" id="pv-${part}"></div>`:""}
   </section>`;
 }
 async function execute(L, part, withTest){
@@ -321,7 +355,9 @@ async function execute(L, part, withTest){
   S.drafts[key] = code; save();
   const stdin = $("#in-"+part) ? normalize($("#in-"+part).value) : "";
   st.out[part] = { running:true }; $("#out-"+part).innerHTML = outHTML(st.out[part]);
-  const r = META[L.id].track === "py" ? await runPython(code, withTest ? ex.test : "", stdin) : await runJS(code, withTest ? ex.test : "");
+  let host = null;
+  if (isDom(L) && !withTest){ host = $("#pv-"+part); if (host){ host.innerHTML = `<div class="hint">Preview (you can click it)</div>`; } }
+  const r = await runFor(L, code, withTest ? ex.test : "", stdin, host);
   st.out[part] = r;
   if (withTest && r.pass === true && !S.passed[key]){ S.passed[key] = true; save(); renderToday(); requestAnimationFrame(() => { const o = $("#out-"+part); if (o) o.scrollIntoView({block:"nearest"}); }); return; }
   const o = $("#out-"+part); if (o) o.innerHTML = outHTML(r);
@@ -331,7 +367,7 @@ function bindLesson(L, st){
   v.querySelectorAll("[data-pred]").forEach(b => b.onclick = () => { st.predict = +b.dataset.pred; renderToday(); });
   const pr = $("#pred-run"); if (pr) pr.onclick = async () => {
     st.out.pred = { running:true }; $("#out-pred").innerHTML = outHTML(st.out.pred);
-    st.out.pred = META[L.id].track === "py" ? await runPython(L.predict.code, "", "") : await runJS(L.predict.code, "");
+    st.out.pred = await runFor(L, L.predict.code, "", "", null);
     $("#out-pred").innerHTML = outHTML(st.out.pred);
   };
   v.querySelectorAll("[data-quiz]").forEach(b => b.onclick = () => { const [i,k] = b.dataset.quiz.split(":").map(Number); st.quiz[i] = k;

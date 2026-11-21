@@ -1,4 +1,5 @@
 // Runs Python with Pyodide in a worker so an endless loop can be stopped.
+// Note: while user code awaits (asyncio.sleep), stdout stays redirected; only one run happens at a time.
 importScripts("https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js");
 let pyodide = null;
 const ready = loadPyodide({ indexURL: "https://cdn.jsdelivr.net/pyodide/v0.26.4/full/" })
@@ -6,7 +7,7 @@ const ready = loadPyodide({ indexURL: "https://cdn.jsdelivr.net/pyodide/v0.26.4/
   .catch(e => self.postMessage({ type: "loaderror", message: String(e) }));
 
 const HARNESS = `
-import sys, io, json, traceback
+import sys, io, json, traceback, ast, inspect
 _lines = __stdin.split("\\n") if __stdin else []
 def _input(prompt=""):
     print(prompt, end="")
@@ -19,7 +20,10 @@ _old = sys.stdout
 sys.stdout = _buf
 _err = None
 try:
-    exec(compile(__user_code, "main.py", "exec"), _ns)
+    # top-level await is allowed: the browser already runs an event loop, so asyncio.run() can't be used here
+    _r = eval(compile(__user_code, "main.py", "exec", flags=ast.PyCF_ALLOW_TOP_LEVEL_AWAIT), _ns)
+    if inspect.iscoroutine(_r):
+        await _r
 except SyntaxError as e:
     _err = f"SyntaxError on line {e.lineno}: {e.msg}"
 except BaseException as e:
@@ -55,7 +59,9 @@ self.onmessage = async (e) => {
     pyodide.globals.set("__user_code", code);
     pyodide.globals.set("__test", test || "");
     pyodide.globals.set("__stdin", stdin || "");
-    const res = JSON.parse(pyodide.runPython(HARNESS));
+    // stdlib modules such as sqlite3 are separate packages in Pyodide; load them from the same pinned CDN
+    try { await pyodide.loadPackagesFromImports(code); } catch (e) {}
+    const res = JSON.parse(await pyodide.runPythonAsync(HARNESS));
     self.postMessage({ type: "result", id, ...res });
   } catch (err) {
     self.postMessage({ type: "result", id, err: String(err) });

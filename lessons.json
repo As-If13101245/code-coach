@@ -91,6 +91,97 @@
   ]
  },
  {
+  "id": "js01",
+  "track": "js",
+  "n": 1,
+  "unit": "Modern JavaScript",
+  "title": "JavaScript in the browser and console.log",
+  "goal": "Run JavaScript and use console.log to see what your code does.",
+  "cards": [
+   {
+    "h": "Where JavaScript runs",
+    "p": "JavaScript runs in every web browser, and on servers with Node.js. Odoo's whole web interface, including OWL, is JavaScript running in your browser.",
+    "code": "console.log(\"Hello from JavaScript\");"
+   },
+   {
+    "h": "console.log()",
+    "p": "`console.log()` prints to the console. Several values are printed with spaces between them. In this app, each call becomes one output line.",
+    "code": "console.log(\"Order\", 1001, \"ready\");   // Order 1001 ready"
+   },
+   {
+    "h": "Statements and semicolons",
+    "p": "Each instruction is a statement, usually ending with `;`. JavaScript can insert them for you, but writing them avoids rare bugs. Comments use `//` or `/* … */`.",
+    "code": "// a comment\nlet qty = 5000;   /* another comment */\nconsole.log(qty);"
+   },
+   {
+    "h": "typeof",
+    "p": "`typeof` tells you a value's type as a string.",
+    "code": "console.log(typeof 5000);    // number\nconsole.log(typeof \"H&M\");   // string\nconsole.log(typeof true);    // boolean"
+   }
+  ],
+  "odoo": "In Odoo, open the browser's developer tools (F12 → Console) to see logs from OWL components and errors from the web client.",
+  "predict": {
+   "code": "console.log(\"2\" + 2, 2 + 2);",
+   "q": "What does this print?",
+   "opts": [
+    "4 4",
+    "22 4",
+    "\"22\" 4",
+    "Error"
+   ],
+   "ans": 1,
+   "why": "If either side of + is a string, JavaScript joins them as text: \"22\". 2 + 2 is the number 4."
+  },
+  "bug": {
+   "task": "This should print two lines: `Welcome, Asif` and `Day 1 of JavaScript`. Fix the two mistakes.",
+   "code": "Console.log(\"Welcome, Asif\");\nconsole.log(\"Day 1 of JavaScript);",
+   "test": "check(__logs[0] === \"Welcome, Asif\" && __logs[1] === \"Day 1 of JavaScript\", \"Print the two lines exactly\");",
+   "hint": "JavaScript is case-sensitive, and every quote must be closed.",
+   "solution": "console.log(\"Welcome, Asif\");\nconsole.log(\"Day 1 of JavaScript\");"
+  },
+  "write": {
+   "task": "Print these three lines, one console.log each:\n`Order OA-1001`\n`Customer: H&M`\n`Qty: 5000`",
+   "starter": "",
+   "test": "check(__logs.join(\"|\") === \"Order OA-1001|Customer: H&M|Qty: 5000\", \"Print the three lines in order\");",
+   "solution": "console.log(\"Order OA-1001\");\nconsole.log(\"Customer: H&M\");\nconsole.log(\"Qty: 5000\");"
+  },
+  "quiz": [
+   {
+    "q": "What does typeof 3.5 return?",
+    "opts": [
+     "\"float\"",
+     "\"number\"",
+     "\"decimal\"",
+     "\"int\""
+    ],
+    "ans": 1,
+    "why": "JavaScript has one number type for whole numbers and decimals."
+   },
+   {
+    "q": "Which is a JavaScript comment?",
+    "opts": [
+     "# note",
+     "// note",
+     "-- note",
+     "<!-- note -->"
+    ],
+    "ans": 1,
+    "why": "// starts a one-line comment in JavaScript."
+   },
+   {
+    "q": "Where does OWL code run?",
+    "opts": [
+     "On the Odoo server, in Python",
+     "In the browser",
+     "In PostgreSQL",
+     "Only in Node.js"
+    ],
+    "ans": 1,
+    "why": "OWL is a front-end framework; it runs in the user's browser."
+   }
+  ]
+ },
+ {
   "id": "py02",
   "track": "py",
   "n": 2,
@@ -182,6 +273,93 @@
   ]
  },
  {
+  "id": "js02",
+  "track": "js",
+  "n": 2,
+  "unit": "Modern JavaScript",
+  "title": "let, const and types",
+  "goal": "Declare variables with let and const, and know JavaScript's types.",
+  "cards": [
+   {
+    "h": "let and const",
+    "p": "`const` for values you won't reassign (the default choice). `let` for values that change. Avoid the old `var`.",
+    "code": "const customer = \"Kontoor\";\nlet qty = 1200;\nqty = qty + 300;   // fine\n// customer = \"GAP\";  -> TypeError"
+   },
+   {
+    "h": "The types",
+    "p": "Primitives: `number`, `string`, `boolean`, `undefined` (declared but no value), `null` (deliberately empty), plus `bigint` and `symbol`. Everything else is an object.",
+    "code": "let note;\nconsole.log(note);          // undefined\nconsole.log(typeof null);   // object  (a famous old bug)"
+   },
+   {
+    "h": "const doesn't freeze objects",
+    "p": "`const` stops you reassigning the name, but you can still change the contents of an object or array.",
+    "code": "const items = [\"zipper\"];\nitems.push(\"slider\");\nconsole.log(items.length);   // 2"
+   }
+  ],
+  "odoo": "Odoo's JavaScript style uses const by default and let only when a value changes. You'll see this in every OWL component.",
+  "owl2": "",
+  "predict": {
+   "code": "const a = [1];\na.push(2);\nconsole.log(a.length, typeof null);",
+   "q": "What does this print?",
+   "opts": [
+    "1 null",
+    "2 object",
+    "Error",
+    "2 null"
+   ],
+   "ans": 1,
+   "why": "const allows changing an array's contents, so the length is 2. typeof null is \"object\", a long-standing quirk."
+  },
+  "bug": {
+   "task": "This crashes. Make it run so `qty` ends up as 200.",
+   "code": "const qty = 100;\nqty = 200;\nconsole.log(qty);",
+   "test": "check(qty === 200, \"qty should be 200\");",
+   "hint": "A value that changes needs a different keyword.",
+   "solution": "let qty = 100;\nqty = 200;\nconsole.log(qty);"
+  },
+  "write": {
+   "task": "Declare `customer` = \"Kontoor\" with const and `qty` = 1200 with let. Increase qty by 300, then log `typeof qty` and `qty` in one console.log (it should print `number 1500`).",
+   "starter": "",
+   "test": "check(customer === \"Kontoor\", \"customer should be Kontoor\");\ncheck(qty === 1500, \"qty should be 1500\");\ncheck(__logs.includes(\"number 1500\"), \"Log: number 1500\");\ncheck(/const\\s+customer/.test(__code) && /let\\s+qty/.test(__code), \"Use const for customer and let for qty\");",
+   "solution": "const customer = \"Kontoor\";\nlet qty = 1200;\nqty += 300;\nconsole.log(typeof qty, qty);"
+  },
+  "quiz": [
+   {
+    "q": "Which should you use by default?",
+    "opts": [
+     "var",
+     "let",
+     "const",
+     "Nothing"
+    ],
+    "ans": 2,
+    "why": "Use const unless you need to reassign."
+   },
+   {
+    "q": "What is a declared variable with no value?",
+    "opts": [
+     "null",
+     "undefined",
+     "0",
+     "\"\""
+    ],
+    "ans": 1,
+    "why": "JavaScript gives it undefined."
+   },
+   {
+    "q": "Can you push into a const array?",
+    "opts": [
+     "No, it's constant",
+     "Yes",
+     "Only once",
+     "Only with var"
+    ],
+    "ans": 1,
+    "why": "const locks the name, not the contents."
+   }
+  ]
+ },
+ {
   "id": "py03",
   "track": "py",
   "n": 3,
@@ -269,6 +447,92 @@
     ],
     "ans": 1,
     "why": "Power first: 2 ** 3 = 8, then 2 + 8 = 10."
+   }
+  ]
+ },
+ {
+  "id": "js03",
+  "track": "js",
+  "n": 3,
+  "unit": "Modern JavaScript",
+  "title": "Strings and template literals",
+  "goal": "Work with strings and build text with template literals.",
+  "cards": [
+   {
+    "h": "Template literals",
+    "p": "Backticks allow `${…}` expressions inside the text and multi-line strings. They're the JavaScript version of Python's f-strings.",
+    "code": "const qty = 1200, price = 0.35;\nconsole.log(`Total: ${qty * price}`);   // Total: 420"
+   },
+   {
+    "h": "Length, index and slice",
+    "p": "Positions start at 0. `slice(start, end)` excludes end. `at(-1)` gives the last character.",
+    "code": "const s = \"ZIPPER\";\nconsole.log(s.length, s[0], s.at(-1));   // 6 Z R\nconsole.log(s.slice(1, 4));              // IPP"
+   },
+   {
+    "h": "Useful methods",
+    "p": "Like Python, these return new strings.",
+    "code": "console.log(\"  gap \".trim().toUpperCase());     // GAP\nconsole.log(\"WH/OUT/17\".includes(\"OUT\"));     // true\nconsole.log(\"PO-HM-88412\".split(\"-\"));         // [\"PO\",\"HM\",\"88412\"]\nconsole.log(\"7\".padStart(5, \"0\"));            // 00007"
+   }
+  ],
+  "odoo": "OWL templates handle most text, but you'll use template literals for notification messages and building values in JavaScript code.",
+  "predict": {
+   "code": "const s = \"ZIPPER\";\nconsole.log(s.slice(1, 4), s.at(-1));",
+   "q": "What does this print?",
+   "opts": [
+    "ZIP R",
+    "IPP R",
+    "IPPE R",
+    "IPP E"
+   ],
+   "ans": 1,
+   "why": "slice(1, 4) gives positions 1–3: IPP. at(-1) is the last character, R."
+  },
+  "bug": {
+   "task": "`msg` should be \"Total: 420\". Fix it.",
+   "code": "const total = 420;\nconst msg = \"Total: ${total}\";\nconsole.log(msg);",
+   "test": "check(msg === \"Total: 420\", \"msg should be Total: 420\");",
+   "hint": "${} only works inside one kind of quote.",
+   "solution": "const total = 420;\nconst msg = `Total: ${total}`;\nconsole.log(msg);"
+  },
+  "write": {
+   "task": "From `po = \"PO-HM-88412\"`, use split(\"-\") to get the brand and number, then build `label` = \"HM #88412\" with a template literal and log it.",
+   "starter": "const po = \"PO-HM-88412\";\n",
+   "test": "check(label === \"HM #88412\", \"label should be HM #88412\");\ncheck(__code.includes(\"split\") && __code.includes(\"`\"), \"Use split() and a template literal\");",
+   "solution": "const po = \"PO-HM-88412\";\nconst parts = po.split(\"-\");\nconst label = `${parts[1]} #${parts[2]}`;\nconsole.log(label);"
+  },
+  "quiz": [
+   {
+    "q": "Which creates a template literal?",
+    "opts": [
+     "'text'",
+     "\"text\"",
+     "`text`",
+     "<text>"
+    ],
+    "ans": 2,
+    "why": "Template literals use backticks."
+   },
+   {
+    "q": "\"abc\".at(-1) is…",
+    "opts": [
+     "a",
+     "c",
+     "undefined",
+     "Error"
+    ],
+    "ans": 1,
+    "why": "at(-1) gives the last character."
+   },
+   {
+    "q": "\"7\".padStart(3, \"0\") is…",
+    "opts": [
+     "700",
+     "007",
+     "0007",
+     "7"
+    ],
+    "ans": 1,
+    "why": "It pads on the left until the length is 3."
    }
   ]
  },
@@ -369,540 +633,6 @@
   ]
  },
  {
-  "id": "py05",
-  "track": "py",
-  "n": 5,
-  "unit": "Basics",
-  "title": "String methods and f-strings",
-  "goal": "Clean and format text with string methods and f-strings.",
-  "cards": [
-   {
-    "h": "Case and spaces",
-    "p": "Methods return a new string. `strip()` removes spaces at both ends.",
-    "code": "s = \"  kontoor  \"\nprint(s.strip())          # kontoor\nprint(s.strip().upper())  # KONTOOR\nprint(\"gap inc\".title())  # Gap Inc"
-   },
-   {
-    "h": "Find and replace",
-    "p": "`replace(old, new)`, `find()` gives a position or -1, `startswith()` / `endswith()` give True or False.",
-    "code": "code = \"WH/OUT/00017\"\nprint(code.replace(\"/\", \"-\"))   # WH-OUT-00017\nprint(code.startswith(\"WH\"))    # True\nprint(code.find(\"OUT\"))         # 3"
-   },
-   {
-    "h": "split() and join()",
-    "p": "`split(sep)` cuts a string into a list. `sep.join(list)` glues a list back into one string.",
-    "code": "parts = \"PO-HM-88412\".split(\"-\")\nprint(parts)            # ['PO', 'HM', '88412']\nprint(\" / \".join(parts)) # PO / HM / 88412"
-   },
-   {
-    "h": "f-strings",
-    "p": "Put `f` before the quotes, then any expression inside `{}`. Add a format after `:` such as `.2f` (2 decimals) or `,` (thousands).",
-    "code": "qty, price = 12500, 0.3456\nprint(f\"Qty: {qty:,}\")                # Qty: 12,500\nprint(f\"Total: {qty * price:.2f}\")    # Total: 4320.00"
-   }
-  ],
-  "odoo": "Odoo uses f-strings and _() for messages. In SQL, never build queries with f-strings; you'll learn why in the PostgreSQL lesson.",
-  "predict": {
-   "code": "name = \"  kohl's \"\nprint(name.strip().title())",
-   "q": "What does this print?",
-   "opts": [
-    "Kohl's",
-    "Kohl'S",
-    "KOHL'S",
-    "kohl's"
-   ],
-   "ans": 1,
-   "why": "title() capitalises the letter after any non-letter, including an apostrophe. A real-world gotcha with brand names."
-  },
-  "bug": {
-   "task": "This should print `Total: 1234.50`. Fix it.",
-   "code": "total = 1234.5\nprint(\"Total: {total:.2f}\")",
-   "test": "assert _output == \"Total: 1234.50\\n\", \"Should print Total: 1234.50\"",
-   "hint": "Something is missing before the opening quote.",
-   "solution": "total = 1234.5\nprint(f\"Total: {total:.2f}\")"
-  },
-  "write": {
-   "task": "Given `raw = \"h&m, gap, carter's, kohl's\"`, build `result` = \"H&M | GAP | CARTER'S | KOHL'S\" using split(), upper() and join(), then print it.",
-   "starter": "raw = \"h&m, gap, carter's, kohl's\"\n",
-   "test": "assert result == \"H&M | GAP | CARTER'S | KOHL'S\", \"Check the result string\"\nassert \"join\" in _code and \"split\" in _code, \"Use split() and join()\"",
-   "solution": "raw = \"h&m, gap, carter's, kohl's\"\nresult = \" | \".join(raw.upper().split(\", \"))\nprint(result)"
-  },
-  "quiz": [
-   {
-    "q": "What does \"a,b,c\".split(\",\") return?",
-    "opts": [
-     "\"abc\"",
-     "['a', 'b', 'c']",
-     "('a','b','c')",
-     "['a,b,c']"
-    ],
-    "ans": 1,
-    "why": "split() returns a list of the pieces."
-   },
-   {
-    "q": "f\"{3.14159:.2f}\" gives…",
-    "opts": [
-     "3.14",
-     "3.1",
-     "3.15",
-     "3.14159"
-    ],
-    "ans": 0,
-    "why": ".2f rounds to 2 decimal places."
-   },
-   {
-    "q": "What does \"OA\".find(\"X\") return?",
-    "opts": [
-     "0",
-     "None",
-     "-1",
-     "Error"
-    ],
-    "ans": 2,
-    "why": "find() returns -1 when the text isn't there. (index() would raise an error.)"
-   }
-  ]
- },
- {
-  "id": "py06",
-  "track": "py",
-  "n": 6,
-  "unit": "Basics",
-  "title": "Input and type conversion",
-  "goal": "Read input and convert between types safely.",
-  "cards": [
-   {
-    "h": "input() always gives a string",
-    "p": "`input()` waits for the user and returns what they typed, as a str, even if they typed a number. In this app, type input lines in the Input box before you run.",
-    "code": "qty = input(\"Qty? \")\nprint(type(qty))   # <class 'str'>"
-   },
-   {
-    "h": "Converting",
-    "p": "`int()`, `float()` and `str()` convert values. Converting text that isn't a number raises ValueError.",
-    "code": "print(int(\"42\") + 1)     # 43\nprint(float(\"0.35\"))     # 0.35\nprint(str(5000) + \" pcs\") # 5000 pcs\n# int(\"12.5\")  -> ValueError\nprint(int(float(\"12.5\"))) # 12"
-   },
-   {
-    "h": "The bool() trap",
-    "p": "Any non-empty string is True, even \"False\" and \"0\". Only the empty string is False.",
-    "code": "print(bool(\"False\"))   # True\nprint(bool(\"\"))        # False"
-   }
-  ],
-  "odoo": "Values from web forms, CSV imports and XML-RPC often arrive as strings. Converting them correctly is daily work in integrations.",
-  "predict": {
-   "code": "print(\"5\" + \"3\", int(\"5\") + int(\"3\"))",
-   "q": "What does this print?",
-   "opts": [
-    "8 8",
-    "53 8",
-    "53 53",
-    "8 53"
-   ],
-   "ans": 1,
-   "why": "Adding two strings joins them (\"53\"). Adding two ints adds them (8)."
-  },
-  "bug": {
-   "task": "With the input 10, this should print 20, but it prints 1010. Fix it.",
-   "code": "qty = input()\nprint(qty * 2)",
-   "stdin": "10",
-   "test": "assert _output.strip() == \"20\", \"Should print 20\"",
-   "hint": "Convert the text to a number first.",
-   "solution": "qty = int(input())\nprint(qty * 2)"
-  },
-  "write": {
-   "task": "Read two inputs: a price (a decimal) and a quantity (a whole number). Print the total with 2 decimals, like `Total: 420.00`.",
-   "starter": "",
-   "stdin": "0.35\n1200",
-   "test": "assert _output.strip().endswith(\"Total: 420.00\"), \"With 0.35 and 1200 it should print Total: 420.00\"\nassert \"float(\" in _code and \"int(\" in _code, \"Convert with float() and int()\"",
-   "solution": "price = float(input())\nqty = int(input())\ntotal = price * qty\nprint(f\"Total: {total:.2f}\")"
-  },
-  "quiz": [
-   {
-    "q": "What type does input() return?",
-    "opts": [
-     "int",
-     "str",
-     "It depends on what was typed",
-     "float"
-    ],
-    "ans": 1,
-    "why": "Always str."
-   },
-   {
-    "q": "What is bool(\"0\")?",
-    "opts": [
-     "False",
-     "True",
-     "0",
-     "Error"
-    ],
-    "ans": 1,
-    "why": "\"0\" is a non-empty string, so it's True."
-   },
-   {
-    "q": "What does int(\"3.7\") do?",
-    "opts": [
-     "3",
-     "4",
-     "3.7",
-     "ValueError"
-    ],
-    "ans": 3,
-    "why": "int() can't read a decimal string. Use int(float(\"3.7\"))."
-   }
-  ]
- },
- {
-  "id": "py07",
-  "track": "py",
-  "n": 7,
-  "unit": "Basics",
-  "title": "Booleans and comparisons",
-  "goal": "Write true/false logic with comparisons, and, or, not.",
-  "cards": [
-   {
-    "h": "Comparisons give True or False",
-    "p": "`== != < > <= >=`. `==` compares values; `=` assigns.",
-    "code": "qty = 500\nprint(qty == 500)   # True\nprint(qty != 500)   # False\nprint(qty >= 1000)  # False"
-   },
-   {
-    "h": "and, or, not",
-    "p": "`and`: both must be True. `or`: at least one True. `not` flips it. Python stops early once it knows the answer (short-circuit).",
-    "code": "shipped, late = True, False\nprint(shipped and not late)   # True\nprint(late or shipped)        # True"
-   },
-   {
-    "h": "Chained comparisons",
-    "p": "Python lets you write ranges naturally.",
-    "code": "qty = 300\nprint(100 <= qty <= 500)   # True"
-   },
-   {
-    "h": "Truthy and falsy",
-    "p": "In conditions, these count as False: `0`, `0.0`, `\"\"`, `[]`, `{}`, `None`. Everything else is True. To test for None, use `is None`.",
-    "code": "note = \"\"\nprint(bool(note))      # False\nvalue = None\nprint(value is None)   # True"
-   }
-  ],
-  "odoo": "Odoo empty fields are falsy (often False), so Odoo code checks `if record.partner_id:` instead of comparing to None. Domains like ('qty', '>=', 100) are comparisons too.",
-  "predict": {
-   "code": "print(bool(\"\"), bool(\"0\"), 0 == False)",
-   "q": "What does this print?",
-   "opts": [
-    "False False False",
-    "False True True",
-    "True True False",
-    "False True False"
-   ],
-   "ans": 1,
-   "why": "An empty string is falsy; \"0\" is a non-empty string, so it's truthy; and 0 equals False in Python."
-  },
-  "bug": {
-   "task": "`ok` should be True when qty is between 100 and 500 (inclusive). Fix the line.",
-   "code": "qty = 500\nok = qty > 100 and < 500\nprint(ok)",
-   "test": "assert ok is True, \"ok should be True for 500\"",
-   "hint": "Each side of and must be a full comparison, or use a chained comparison with <=.",
-   "solution": "qty = 500\nok = 100 <= qty <= 500\nprint(ok)"
-  },
-  "write": {
-   "task": "An order is late if it was shipped AND delivered after the promised day. Given the variables, create `late` with one boolean expression and print it. (Here it should be True.)",
-   "starter": "promised_day = 10\ndelivered_day = 12\nshipped = True\n",
-   "test": "assert late is True, \"late should be True\"\nassert \"and\" in _code, \"Use and\"",
-   "solution": "promised_day = 10\ndelivered_day = 12\nshipped = True\nlate = shipped and delivered_day > promised_day\nprint(late)"
-  },
-  "quiz": [
-   {
-    "q": "What is not (3 > 2)?",
-    "opts": [
-     "True",
-     "False",
-     "None",
-     "Error"
-    ],
-    "ans": 1,
-    "why": "3 > 2 is True, and not flips it."
-   },
-   {
-    "q": "Which value is truthy?",
-    "opts": [
-     "[]",
-     "0",
-     "\" \" (a space)",
-     "None"
-    ],
-    "ans": 2,
-    "why": "A string containing a space isn't empty, so it's truthy."
-   },
-   {
-    "q": "Best way to check if x is None?",
-    "opts": [
-     "x == None",
-     "x is None",
-     "not x",
-     "x = None"
-    ],
-    "ans": 1,
-    "why": "is None is the correct, reliable check. not x is also True for 0 and \"\"."
-   }
-  ]
- },
- {
-  "id": "js01",
-  "track": "js",
-  "n": 1,
-  "unit": "Modern JavaScript",
-  "title": "JavaScript in the browser and console.log",
-  "goal": "Run JavaScript and use console.log to see what your code does.",
-  "cards": [
-   {
-    "h": "Where JavaScript runs",
-    "p": "JavaScript runs in every web browser, and on servers with Node.js. Odoo's whole web interface, including OWL, is JavaScript running in your browser.",
-    "code": "console.log(\"Hello from JavaScript\");"
-   },
-   {
-    "h": "console.log()",
-    "p": "`console.log()` prints to the console. Several values are printed with spaces between them. In this app, each call becomes one output line.",
-    "code": "console.log(\"Order\", 1001, \"ready\");   // Order 1001 ready"
-   },
-   {
-    "h": "Statements and semicolons",
-    "p": "Each instruction is a statement, usually ending with `;`. JavaScript can insert them for you, but writing them avoids rare bugs. Comments use `//` or `/* … */`.",
-    "code": "// a comment\nlet qty = 5000;   /* another comment */\nconsole.log(qty);"
-   },
-   {
-    "h": "typeof",
-    "p": "`typeof` tells you a value's type as a string.",
-    "code": "console.log(typeof 5000);    // number\nconsole.log(typeof \"H&M\");   // string\nconsole.log(typeof true);    // boolean"
-   }
-  ],
-  "odoo": "In Odoo, open the browser's developer tools (F12 → Console) to see logs from OWL components and errors from the web client.",
-  "predict": {
-   "code": "console.log(\"2\" + 2, 2 + 2);",
-   "q": "What does this print?",
-   "opts": [
-    "4 4",
-    "22 4",
-    "\"22\" 4",
-    "Error"
-   ],
-   "ans": 1,
-   "why": "If either side of + is a string, JavaScript joins them as text: \"22\". 2 + 2 is the number 4."
-  },
-  "bug": {
-   "task": "This should print two lines: `Welcome, Asif` and `Day 1 of JavaScript`. Fix the two mistakes.",
-   "code": "Console.log(\"Welcome, Asif\");\nconsole.log(\"Day 1 of JavaScript);",
-   "test": "check(__logs[0] === \"Welcome, Asif\" && __logs[1] === \"Day 1 of JavaScript\", \"Print the two lines exactly\");",
-   "hint": "JavaScript is case-sensitive, and every quote must be closed.",
-   "solution": "console.log(\"Welcome, Asif\");\nconsole.log(\"Day 1 of JavaScript\");"
-  },
-  "write": {
-   "task": "Print these three lines, one console.log each:\n`Order OA-1001`\n`Customer: H&M`\n`Qty: 5000`",
-   "starter": "",
-   "test": "check(__logs.join(\"|\") === \"Order OA-1001|Customer: H&M|Qty: 5000\", \"Print the three lines in order\");",
-   "solution": "console.log(\"Order OA-1001\");\nconsole.log(\"Customer: H&M\");\nconsole.log(\"Qty: 5000\");"
-  },
-  "quiz": [
-   {
-    "q": "What does typeof 3.5 return?",
-    "opts": [
-     "\"float\"",
-     "\"number\"",
-     "\"decimal\"",
-     "\"int\""
-    ],
-    "ans": 1,
-    "why": "JavaScript has one number type for whole numbers and decimals."
-   },
-   {
-    "q": "Which is a JavaScript comment?",
-    "opts": [
-     "# note",
-     "// note",
-     "-- note",
-     "<!-- note -->"
-    ],
-    "ans": 1,
-    "why": "// starts a one-line comment in JavaScript."
-   },
-   {
-    "q": "Where does OWL code run?",
-    "opts": [
-     "On the Odoo server, in Python",
-     "In the browser",
-     "In PostgreSQL",
-     "Only in Node.js"
-    ],
-    "ans": 1,
-    "why": "OWL is a front-end framework; it runs in the user's browser."
-   }
-  ]
- },
- {
-  "id": "js02",
-  "track": "js",
-  "n": 2,
-  "unit": "Modern JavaScript",
-  "title": "let, const and types",
-  "goal": "Declare variables with let and const, and know JavaScript's types.",
-  "cards": [
-   {
-    "h": "let and const",
-    "p": "`const` for values you won't reassign (the default choice). `let` for values that change. Avoid the old `var`.",
-    "code": "const customer = \"Kontoor\";\nlet qty = 1200;\nqty = qty + 300;   // fine\n// customer = \"GAP\";  -> TypeError"
-   },
-   {
-    "h": "The types",
-    "p": "Primitives: `number`, `string`, `boolean`, `undefined` (declared but no value), `null` (deliberately empty), plus `bigint` and `symbol`. Everything else is an object.",
-    "code": "let note;\nconsole.log(note);          // undefined\nconsole.log(typeof null);   // object  (a famous old bug)"
-   },
-   {
-    "h": "const doesn't freeze objects",
-    "p": "`const` stops you reassigning the name, but you can still change the contents of an object or array.",
-    "code": "const items = [\"zipper\"];\nitems.push(\"slider\");\nconsole.log(items.length);   // 2"
-   }
-  ],
-  "odoo": "Odoo's JavaScript style uses const by default and let only when a value changes. You'll see this in every OWL component.",
-  "owl2": "",
-  "predict": {
-   "code": "const a = [1];\na.push(2);\nconsole.log(a.length, typeof null);",
-   "q": "What does this print?",
-   "opts": [
-    "1 null",
-    "2 object",
-    "Error",
-    "2 null"
-   ],
-   "ans": 1,
-   "why": "const allows changing an array's contents, so the length is 2. typeof null is \"object\", a long-standing quirk."
-  },
-  "bug": {
-   "task": "This crashes. Make it run so `qty` ends up as 200.",
-   "code": "const qty = 100;\nqty = 200;\nconsole.log(qty);",
-   "test": "check(qty === 200, \"qty should be 200\");",
-   "hint": "A value that changes needs a different keyword.",
-   "solution": "let qty = 100;\nqty = 200;\nconsole.log(qty);"
-  },
-  "write": {
-   "task": "Declare `customer` = \"Kontoor\" with const and `qty` = 1200 with let. Increase qty by 300, then log `typeof qty` and `qty` in one console.log (it should print `number 1500`).",
-   "starter": "",
-   "test": "check(customer === \"Kontoor\", \"customer should be Kontoor\");\ncheck(qty === 1500, \"qty should be 1500\");\ncheck(__logs.includes(\"number 1500\"), \"Log: number 1500\");\ncheck(/const\\s+customer/.test(__code) && /let\\s+qty/.test(__code), \"Use const for customer and let for qty\");",
-   "solution": "const customer = \"Kontoor\";\nlet qty = 1200;\nqty += 300;\nconsole.log(typeof qty, qty);"
-  },
-  "quiz": [
-   {
-    "q": "Which should you use by default?",
-    "opts": [
-     "var",
-     "let",
-     "const",
-     "Nothing"
-    ],
-    "ans": 2,
-    "why": "Use const unless you need to reassign."
-   },
-   {
-    "q": "What is a declared variable with no value?",
-    "opts": [
-     "null",
-     "undefined",
-     "0",
-     "\"\""
-    ],
-    "ans": 1,
-    "why": "JavaScript gives it undefined."
-   },
-   {
-    "q": "Can you push into a const array?",
-    "opts": [
-     "No, it's constant",
-     "Yes",
-     "Only once",
-     "Only with var"
-    ],
-    "ans": 1,
-    "why": "const locks the name, not the contents."
-   }
-  ]
- },
- {
-  "id": "js03",
-  "track": "js",
-  "n": 3,
-  "unit": "Modern JavaScript",
-  "title": "Strings and template literals",
-  "goal": "Work with strings and build text with template literals.",
-  "cards": [
-   {
-    "h": "Template literals",
-    "p": "Backticks allow `${…}` expressions inside the text and multi-line strings. They're the JavaScript version of Python's f-strings.",
-    "code": "const qty = 1200, price = 0.35;\nconsole.log(`Total: ${qty * price}`);   // Total: 420"
-   },
-   {
-    "h": "Length, index and slice",
-    "p": "Positions start at 0. `slice(start, end)` excludes end. `at(-1)` gives the last character.",
-    "code": "const s = \"ZIPPER\";\nconsole.log(s.length, s[0], s.at(-1));   // 6 Z R\nconsole.log(s.slice(1, 4));              // IPP"
-   },
-   {
-    "h": "Useful methods",
-    "p": "Like Python, these return new strings.",
-    "code": "console.log(\"  gap \".trim().toUpperCase());     // GAP\nconsole.log(\"WH/OUT/17\".includes(\"OUT\"));     // true\nconsole.log(\"PO-HM-88412\".split(\"-\"));         // [\"PO\",\"HM\",\"88412\"]\nconsole.log(\"7\".padStart(5, \"0\"));            // 00007"
-   }
-  ],
-  "odoo": "OWL templates handle most text, but you'll use template literals for notification messages and building values in JavaScript code.",
-  "predict": {
-   "code": "const s = \"ZIPPER\";\nconsole.log(s.slice(1, 4), s.at(-1));",
-   "q": "What does this print?",
-   "opts": [
-    "ZIP R",
-    "IPP R",
-    "IPPE R",
-    "IPP E"
-   ],
-   "ans": 1,
-   "why": "slice(1, 4) gives positions 1–3: IPP. at(-1) is the last character, R."
-  },
-  "bug": {
-   "task": "`msg` should be \"Total: 420\". Fix it.",
-   "code": "const total = 420;\nconst msg = \"Total: ${total}\";\nconsole.log(msg);",
-   "test": "check(msg === \"Total: 420\", \"msg should be Total: 420\");",
-   "hint": "${} only works inside one kind of quote.",
-   "solution": "const total = 420;\nconst msg = `Total: ${total}`;\nconsole.log(msg);"
-  },
-  "write": {
-   "task": "From `po = \"PO-HM-88412\"`, use split(\"-\") to get the brand and number, then build `label` = \"HM #88412\" with a template literal and log it.",
-   "starter": "const po = \"PO-HM-88412\";\n",
-   "test": "check(label === \"HM #88412\", \"label should be HM #88412\");\ncheck(__code.includes(\"split\") && __code.includes(\"`\"), \"Use split() and a template literal\");",
-   "solution": "const po = \"PO-HM-88412\";\nconst parts = po.split(\"-\");\nconst label = `${parts[1]} #${parts[2]}`;\nconsole.log(label);"
-  },
-  "quiz": [
-   {
-    "q": "Which creates a template literal?",
-    "opts": [
-     "'text'",
-     "\"text\"",
-     "`text`",
-     "<text>"
-    ],
-    "ans": 2,
-    "why": "Template literals use backticks."
-   },
-   {
-    "q": "\"abc\".at(-1) is…",
-    "opts": [
-     "a",
-     "c",
-     "undefined",
-     "Error"
-    ],
-    "ans": 1,
-    "why": "at(-1) gives the last character."
-   },
-   {
-    "q": "\"7\".padStart(3, \"0\") is…",
-    "opts": [
-     "700",
-     "007",
-     "0007",
-     "7"
-    ],
-    "ans": 1,
-    "why": "It pads on the left until the length is 3."
-   }
-  ]
- },
- {
   "id": "js04",
   "track": "js",
   "n": 4,
@@ -990,6 +720,97 @@
     ],
     "ans": 1,
     "why": "=== compares value and type without conversion."
+   }
+  ]
+ },
+ {
+  "id": "py05",
+  "track": "py",
+  "n": 5,
+  "unit": "Basics",
+  "title": "String methods and f-strings",
+  "goal": "Clean and format text with string methods and f-strings.",
+  "cards": [
+   {
+    "h": "Case and spaces",
+    "p": "Methods return a new string. `strip()` removes spaces at both ends.",
+    "code": "s = \"  kontoor  \"\nprint(s.strip())          # kontoor\nprint(s.strip().upper())  # KONTOOR\nprint(\"gap inc\".title())  # Gap Inc"
+   },
+   {
+    "h": "Find and replace",
+    "p": "`replace(old, new)`, `find()` gives a position or -1, `startswith()` / `endswith()` give True or False.",
+    "code": "code = \"WH/OUT/00017\"\nprint(code.replace(\"/\", \"-\"))   # WH-OUT-00017\nprint(code.startswith(\"WH\"))    # True\nprint(code.find(\"OUT\"))         # 3"
+   },
+   {
+    "h": "split() and join()",
+    "p": "`split(sep)` cuts a string into a list. `sep.join(list)` glues a list back into one string.",
+    "code": "parts = \"PO-HM-88412\".split(\"-\")\nprint(parts)            # ['PO', 'HM', '88412']\nprint(\" / \".join(parts)) # PO / HM / 88412"
+   },
+   {
+    "h": "f-strings",
+    "p": "Put `f` before the quotes, then any expression inside `{}`. Add a format after `:` such as `.2f` (2 decimals) or `,` (thousands).",
+    "code": "qty, price = 12500, 0.3456\nprint(f\"Qty: {qty:,}\")                # Qty: 12,500\nprint(f\"Total: {qty * price:.2f}\")    # Total: 4320.00"
+   }
+  ],
+  "odoo": "Odoo uses f-strings and _() for messages. In SQL, never build queries with f-strings; you'll learn why in the PostgreSQL lesson.",
+  "predict": {
+   "code": "name = \"  kohl's \"\nprint(name.strip().title())",
+   "q": "What does this print?",
+   "opts": [
+    "Kohl's",
+    "Kohl'S",
+    "KOHL'S",
+    "kohl's"
+   ],
+   "ans": 1,
+   "why": "title() capitalises the letter after any non-letter, including an apostrophe. A real-world gotcha with brand names."
+  },
+  "bug": {
+   "task": "This should print `Total: 1234.50`. Fix it.",
+   "code": "total = 1234.5\nprint(\"Total: {total:.2f}\")",
+   "test": "assert _output == \"Total: 1234.50\\n\", \"Should print Total: 1234.50\"",
+   "hint": "Something is missing before the opening quote.",
+   "solution": "total = 1234.5\nprint(f\"Total: {total:.2f}\")"
+  },
+  "write": {
+   "task": "Given `raw = \"h&m, gap, carter's, kohl's\"`, build `result` = \"H&M | GAP | CARTER'S | KOHL'S\" using split(), upper() and join(), then print it.",
+   "starter": "raw = \"h&m, gap, carter's, kohl's\"\n",
+   "test": "assert result == \"H&M | GAP | CARTER'S | KOHL'S\", \"Check the result string\"\nassert \"join\" in _code and \"split\" in _code, \"Use split() and join()\"",
+   "solution": "raw = \"h&m, gap, carter's, kohl's\"\nresult = \" | \".join(raw.upper().split(\", \"))\nprint(result)"
+  },
+  "quiz": [
+   {
+    "q": "What does \"a,b,c\".split(\",\") return?",
+    "opts": [
+     "\"abc\"",
+     "['a', 'b', 'c']",
+     "('a','b','c')",
+     "['a,b,c']"
+    ],
+    "ans": 1,
+    "why": "split() returns a list of the pieces."
+   },
+   {
+    "q": "f\"{3.14159:.2f}\" gives…",
+    "opts": [
+     "3.14",
+     "3.1",
+     "3.15",
+     "3.14159"
+    ],
+    "ans": 0,
+    "why": ".2f rounds to 2 decimal places."
+   },
+   {
+    "q": "What does \"OA\".find(\"X\") return?",
+    "opts": [
+     "0",
+     "None",
+     "-1",
+     "Error"
+    ],
+    "ans": 2,
+    "why": "find() returns -1 when the text isn't there. (index() would raise an error.)"
    }
   ]
  },
@@ -1085,6 +906,94 @@
   ]
  },
  {
+  "id": "py06",
+  "track": "py",
+  "n": 6,
+  "unit": "Basics",
+  "title": "Input and type conversion",
+  "goal": "Read input and convert between types safely.",
+  "cards": [
+   {
+    "h": "input() always gives a string",
+    "p": "`input()` waits for the user and returns what they typed, as a str, even if they typed a number. In this app, type input lines in the Input box before you run.",
+    "code": "qty = input(\"Qty? \")\nprint(type(qty))   # <class 'str'>"
+   },
+   {
+    "h": "Converting",
+    "p": "`int()`, `float()` and `str()` convert values. Converting text that isn't a number raises ValueError.",
+    "code": "print(int(\"42\") + 1)     # 43\nprint(float(\"0.35\"))     # 0.35\nprint(str(5000) + \" pcs\") # 5000 pcs\n# int(\"12.5\")  -> ValueError\nprint(int(float(\"12.5\"))) # 12"
+   },
+   {
+    "h": "The bool() trap",
+    "p": "Any non-empty string is True, even \"False\" and \"0\". Only the empty string is False.",
+    "code": "print(bool(\"False\"))   # True\nprint(bool(\"\"))        # False"
+   }
+  ],
+  "odoo": "Values from web forms, CSV imports and XML-RPC often arrive as strings. Converting them correctly is daily work in integrations.",
+  "predict": {
+   "code": "print(\"5\" + \"3\", int(\"5\") + int(\"3\"))",
+   "q": "What does this print?",
+   "opts": [
+    "8 8",
+    "53 8",
+    "53 53",
+    "8 53"
+   ],
+   "ans": 1,
+   "why": "Adding two strings joins them (\"53\"). Adding two ints adds them (8)."
+  },
+  "bug": {
+   "task": "With the input 10, this should print 20, but it prints 1010. Fix it.",
+   "code": "qty = input()\nprint(qty * 2)",
+   "stdin": "10",
+   "test": "assert _output.strip() == \"20\", \"Should print 20\"",
+   "hint": "Convert the text to a number first.",
+   "solution": "qty = int(input())\nprint(qty * 2)"
+  },
+  "write": {
+   "task": "Read two inputs: a price (a decimal) and a quantity (a whole number). Print the total with 2 decimals, like `Total: 420.00`.",
+   "starter": "",
+   "stdin": "0.35\n1200",
+   "test": "assert _output.strip().endswith(\"Total: 420.00\"), \"With 0.35 and 1200 it should print Total: 420.00\"\nassert \"float(\" in _code and \"int(\" in _code, \"Convert with float() and int()\"",
+   "solution": "price = float(input())\nqty = int(input())\ntotal = price * qty\nprint(f\"Total: {total:.2f}\")"
+  },
+  "quiz": [
+   {
+    "q": "What type does input() return?",
+    "opts": [
+     "int",
+     "str",
+     "It depends on what was typed",
+     "float"
+    ],
+    "ans": 1,
+    "why": "Always str."
+   },
+   {
+    "q": "What is bool(\"0\")?",
+    "opts": [
+     "False",
+     "True",
+     "0",
+     "Error"
+    ],
+    "ans": 1,
+    "why": "\"0\" is a non-empty string, so it's True."
+   },
+   {
+    "q": "What does int(\"3.7\") do?",
+    "opts": [
+     "3",
+     "4",
+     "3.7",
+     "ValueError"
+    ],
+    "ans": 3,
+    "why": "int() can't read a decimal string. Use int(float(\"3.7\"))."
+   }
+  ]
+ },
+ {
   "id": "js06",
   "track": "js",
   "n": 6,
@@ -1176,6 +1085,97 @@
   ]
  },
  {
+  "id": "py07",
+  "track": "py",
+  "n": 7,
+  "unit": "Basics",
+  "title": "Booleans and comparisons",
+  "goal": "Write true/false logic with comparisons, and, or, not.",
+  "cards": [
+   {
+    "h": "Comparisons give True or False",
+    "p": "`== != < > <= >=`. `==` compares values; `=` assigns.",
+    "code": "qty = 500\nprint(qty == 500)   # True\nprint(qty != 500)   # False\nprint(qty >= 1000)  # False"
+   },
+   {
+    "h": "and, or, not",
+    "p": "`and`: both must be True. `or`: at least one True. `not` flips it. Python stops early once it knows the answer (short-circuit).",
+    "code": "shipped, late = True, False\nprint(shipped and not late)   # True\nprint(late or shipped)        # True"
+   },
+   {
+    "h": "Chained comparisons",
+    "p": "Python lets you write ranges naturally.",
+    "code": "qty = 300\nprint(100 <= qty <= 500)   # True"
+   },
+   {
+    "h": "Truthy and falsy",
+    "p": "In conditions, these count as False: `0`, `0.0`, `\"\"`, `[]`, `{}`, `None`. Everything else is True. To test for None, use `is None`.",
+    "code": "note = \"\"\nprint(bool(note))      # False\nvalue = None\nprint(value is None)   # True"
+   }
+  ],
+  "odoo": "Odoo empty fields are falsy (often False), so Odoo code checks `if record.partner_id:` instead of comparing to None. Domains like ('qty', '>=', 100) are comparisons too.",
+  "predict": {
+   "code": "print(bool(\"\"), bool(\"0\"), 0 == False)",
+   "q": "What does this print?",
+   "opts": [
+    "False False False",
+    "False True True",
+    "True True False",
+    "False True False"
+   ],
+   "ans": 1,
+   "why": "An empty string is falsy; \"0\" is a non-empty string, so it's truthy; and 0 equals False in Python."
+  },
+  "bug": {
+   "task": "`ok` should be True when qty is between 100 and 500 (inclusive). Fix the line.",
+   "code": "qty = 500\nok = qty > 100 and < 500\nprint(ok)",
+   "test": "assert ok is True, \"ok should be True for 500\"",
+   "hint": "Each side of and must be a full comparison, or use a chained comparison with <=.",
+   "solution": "qty = 500\nok = 100 <= qty <= 500\nprint(ok)"
+  },
+  "write": {
+   "task": "An order is late if it was shipped AND delivered after the promised day. Given the variables, create `late` with one boolean expression and print it. (Here it should be True.)",
+   "starter": "promised_day = 10\ndelivered_day = 12\nshipped = True\n",
+   "test": "assert late is True, \"late should be True\"\nassert \"and\" in _code, \"Use and\"",
+   "solution": "promised_day = 10\ndelivered_day = 12\nshipped = True\nlate = shipped and delivered_day > promised_day\nprint(late)"
+  },
+  "quiz": [
+   {
+    "q": "What is not (3 > 2)?",
+    "opts": [
+     "True",
+     "False",
+     "None",
+     "Error"
+    ],
+    "ans": 1,
+    "why": "3 > 2 is True, and not flips it."
+   },
+   {
+    "q": "Which value is truthy?",
+    "opts": [
+     "[]",
+     "0",
+     "\" \" (a space)",
+     "None"
+    ],
+    "ans": 2,
+    "why": "A string containing a space isn't empty, so it's truthy."
+   },
+   {
+    "q": "Best way to check if x is None?",
+    "opts": [
+     "x == None",
+     "x is None",
+     "not x",
+     "x = None"
+    ],
+    "ans": 1,
+    "why": "is None is the correct, reliable check. not x is also True for 0 and \"\"."
+   }
+  ]
+ },
+ {
   "id": "js07",
   "track": "js",
   "n": 7,
@@ -1263,6 +1263,2558 @@
     ],
     "ans": 1,
     "why": "keys returns the property names."
+   }
+  ]
+ },
+ {
+  "id": "py08",
+  "track": "py",
+  "n": 8,
+  "unit": "Basics",
+  "title": "if / elif / else",
+  "goal": "Make decisions with `if`, `elif` and `else`, and get the indentation right.",
+  "cards": [
+   {
+    "h": "if runs a block when the condition is True",
+    "p": "End the `if` line with a colon. The lines inside are indented by 4 spaces. Python uses indentation, not braces, to know what is inside.",
+    "code": "qty = 12000\nif qty > 10000:\n    print(\"Large order\")\n    print(\"Check capacity\")\nprint(\"Done\")   # always runs"
+   },
+   {
+    "h": "else and elif",
+    "p": "`else` runs when the condition is False. `elif` (else if) tests another condition. Python checks from the top and runs only the first branch that is True.",
+    "code": "qty = 2500\nif qty >= 10000:\n    size = \"large\"\nelif qty >= 1000:\n    size = \"medium\"\nelse:\n    size = \"small\"\nprint(size)   # medium"
+   },
+   {
+    "h": "Order matters",
+    "p": "Put the most specific test first. If the first test is too wide, the later branches never run.",
+    "code": "qty = 20000\nif qty >= 1000:\n    print(\"medium\")   # runs, and stops here\nelif qty >= 10000:\n    print(\"large\")    # never reached"
+   },
+   {
+    "h": "Conditional expression",
+    "p": "For a simple choice between two values, write it on one line: `a if condition else b`.",
+    "code": "late_days = 3\nstatus = \"Late\" if late_days > 0 else \"On time\"\nprint(status)   # Late"
+   }
+  ],
+  "odoo": "Odoo methods are full of these checks, for example `if order.state == 'draft':` before confirming. A compute method often uses if/elif to choose a value for each record.",
+  "predict": {
+   "code": "qty = 1000\nif qty > 1000:\n    print(\"A\")\nelif qty == 1000:\n    print(\"B\")\nelse:\n    print(\"C\")\nprint(\"D\")",
+   "q": "What does this print?",
+   "opts": [
+    "A\nD",
+    "B\nD",
+    "B",
+    "C\nD"
+   ],
+   "ans": 1,
+   "why": "1000 is not greater than 1000, so the first test fails. The elif is True, so B prints. D is not indented, so it always prints."
+  },
+  "bug": {
+   "task": "For qty = 15000 this should print `large`, but it prints `medium`. Fix the order of the tests.",
+   "code": "qty = 15000\nif qty >= 1000:\n    size = \"medium\"\nelif qty >= 10000:\n    size = \"large\"\nelse:\n    size = \"small\"\nprint(size)",
+   "test": "assert size == \"large\", \"For 15000, size should be large\"\nassert _output.strip() == \"large\"",
+   "hint": "Python stops at the first True test. Which test should come first?",
+   "solution": "qty = 15000\nif qty >= 10000:\n    size = \"large\"\nelif qty >= 1000:\n    size = \"medium\"\nelse:\n    size = \"small\"\nprint(size)"
+  },
+  "write": {
+   "task": "A shipment's `days_late` decides its status:\n- 0 or less: `On time`\n- 1 to 3: `Slightly late`\n- more than 3: `Very late`\nSet `status` with if/elif/else and print it. (For 5 it should be `Very late`.)",
+   "starter": "days_late = 5\n",
+   "test": "assert status == \"Very late\", \"For 5 days, status should be Very late\"\nassert \"elif\" in _code, \"Use if / elif / else\"\nfor d, want in [(0, \"On time\"), (-2, \"On time\"), (1, \"Slightly late\"), (3, \"Slightly late\"), (4, \"Very late\")]:\n    ns = {}\n    exec(_code.replace(\"days_late = 5\", f\"days_late = {d}\"), {\"print\": lambda *a, **k: None}, ns)\n    assert ns.get(\"status\") == want, f\"For days_late = {d}, status should be {want}\"",
+   "solution": "days_late = 5\nif days_late <= 0:\n    status = \"On time\"\nelif days_late <= 3:\n    status = \"Slightly late\"\nelse:\n    status = \"Very late\"\nprint(status)"
+  },
+  "quiz": [
+   {
+    "q": "What ends an if line in Python?",
+    "opts": [
+     "A semicolon ;",
+     "A colon :",
+     "A brace {",
+     "Nothing"
+    ],
+    "ans": 1,
+    "why": "if, elif and else lines end with a colon, and the block below is indented."
+   },
+   {
+    "q": "How many branches of an if/elif/else chain can run?",
+    "opts": [
+     "All the True ones",
+     "Exactly one at most",
+     "Two",
+     "None"
+    ],
+    "ans": 1,
+    "why": "Python runs the first True branch and skips the rest. If none is True and there's no else, none runs."
+   },
+   {
+    "q": "x = \"yes\" if 0 else \"no\". What is x?",
+    "opts": [
+     "yes",
+     "no",
+     "0",
+     "Error"
+    ],
+    "ans": 1,
+    "why": "0 is falsy, so the else value \"no\" is used."
+   }
+  ]
+ },
+ {
+  "id": "js08",
+  "track": "js",
+  "n": 8,
+  "unit": "Modern JavaScript",
+  "title": "Functions and arrow functions",
+  "goal": "Write reusable functions, including short arrow functions.",
+  "cards": [
+   {
+    "h": "Function declarations",
+    "p": "A function has a name, parameters in brackets, and a body in braces. `return` sends a value back. Without return, the result is `undefined`.",
+    "code": "function lineTotal(qty, price) {\n  return qty * price;\n}\nconsole.log(lineTotal(1200, 0.35));   // 420"
+   },
+   {
+    "h": "Arrow functions",
+    "p": "A shorter way to write a function, often stored in a const. With one expression and no braces, the value is returned automatically.",
+    "code": "const lineTotal = (qty, price) => qty * price;\nconst double = n => n * 2;\nconsole.log(lineTotal(10, 3), double(4));   // 30 8"
+   },
+   {
+    "h": "Default parameters",
+    "p": "Give a parameter a default value. It's used when the argument is missing (undefined).",
+    "code": "const label = (po, brand = \"H&M\") => `${brand} ${po}`;\nconsole.log(label(\"PO-1\"));         // H&M PO-1\nconsole.log(label(\"PO-2\", \"GAP\"));  // GAP PO-2"
+   },
+   {
+    "h": "Functions are values",
+    "p": "You can pass a function to another function. That's exactly what map and filter do with the arrow functions you give them.",
+    "code": "const isBig = q => q >= 1000;\nconsole.log([500, 1200, 3000].filter(isBig));   // [1200,3000]"
+   }
+  ],
+  "odoo": "Arrow functions are everywhere in OWL code: event handlers like `() => this.save()`, and callbacks given to map, filter and the orm service.",
+  "predict": {
+   "code": "const f = (a, b = 10) => a + b;\nfunction g(x) { x * 2; }\nconsole.log(f(5), g(5));",
+   "q": "What does this print?",
+   "opts": [
+    "15 10",
+    "15 undefined",
+    "NaN undefined",
+    "15 null"
+   ],
+   "ans": 1,
+   "why": "f(5) uses the default b = 10. g has a body in braces but no return, so it returns undefined."
+  },
+  "bug": {
+   "task": "`total` should be 420, but it's undefined. Fix the function.",
+   "code": "function lineTotal(qty, price) {\n  qty * price;\n}\nconst total = lineTotal(1200, 0.35);\nconsole.log(total);",
+   "test": "check(total === 420, \"total should be 420\");",
+   "hint": "A function in braces only gives back what you return.",
+   "solution": "function lineTotal(qty, price) {\n  return qty * price;\n}\nconst total = lineTotal(1200, 0.35);\nconsole.log(total);"
+  },
+  "write": {
+   "task": "Write an arrow function `discountPrice(price, pct = 10)` that returns the price after a pct% discount. Log discountPrice(200) (should be 180) and discountPrice(200, 25) (should be 150).",
+   "starter": "",
+   "test": "check(typeof discountPrice === \"function\", \"Define discountPrice\");\ncheck(discountPrice(200) === 180, \"discountPrice(200) should be 180\");\ncheck(discountPrice(200, 25) === 150, \"discountPrice(200, 25) should be 150\");\ncheck(__code.includes(\"=>\"), \"Use an arrow function\");",
+   "solution": "const discountPrice = (price, pct = 10) => price - price * pct / 100;\nconsole.log(discountPrice(200));\nconsole.log(discountPrice(200, 25));"
+  },
+  "quiz": [
+   {
+    "q": "What does a function return if it has no return statement?",
+    "opts": [
+     "null",
+     "0",
+     "undefined",
+     "An error"
+    ],
+    "ans": 2,
+    "why": "Without return, a JavaScript function returns undefined."
+   },
+   {
+    "q": "Which arrow function returns the square of n?",
+    "opts": [
+     "n => { n * n }",
+     "n => n * n",
+     "n -> n * n",
+     "(n) { n * n }"
+    ],
+    "ans": 1,
+    "why": "Without braces, the expression is returned. With braces, you need return."
+   },
+   {
+    "q": "When is a default parameter used?",
+    "opts": [
+     "When the argument is 0",
+     "When the argument is undefined or missing",
+     "When it is null",
+     "Always"
+    ],
+    "ans": 1,
+    "why": "Defaults replace undefined only. null and 0 are kept."
+   }
+  ]
+ },
+ {
+  "id": "py09",
+  "track": "py",
+  "n": 9,
+  "unit": "Loops",
+  "title": "while loops",
+  "goal": "Repeat work with `while` loops and make sure they stop.",
+  "cards": [
+   {
+    "h": "while repeats while a condition is True",
+    "p": "Python checks the condition before each round. When it becomes False, the loop ends and the code after it runs.",
+    "code": "stock = 1000\nwhile stock > 0:\n    stock -= 300\n    print(\"Stock now\", stock)\nprint(\"Out of stock\")"
+   },
+   {
+    "h": "Something must change",
+    "p": "If nothing inside the loop changes the condition, it runs forever. That's an infinite loop. In this app, it stops after 10 seconds.",
+    "code": "count = 0\nwhile count < 3:\n    print(\"Box\", count + 1)\n    count += 1   # without this line, it never ends"
+   },
+   {
+    "h": "Counting and adding up",
+    "p": "A common pattern: a counter for how many rounds, and a total that grows each round.",
+    "code": "day = 0\nproduced = 0\nwhile produced < 5000:\n    produced += 1200\n    day += 1\nprint(day, \"days\")   # 5 days"
+   },
+   {
+    "h": "while True with a stop",
+    "p": "Sometimes you don't know the number of rounds. Use `while True:` and `break` to leave when you're done. You'll practise break in lesson 11.",
+    "code": "n = 1\nwhile True:\n    n *= 2\n    if n > 100:\n        break\nprint(n)   # 128"
+   }
+  ],
+  "odoo": "Odoo's scheduled actions (cron jobs) sometimes process records in a while loop, batch by batch, until nothing is left.",
+  "predict": {
+   "code": "n = 10\nwhile n > 0:\n    n -= 4\nprint(n)",
+   "q": "What does this print?",
+   "opts": [
+    "0",
+    "2",
+    "-2",
+    "-4"
+   ],
+   "ans": 2,
+   "why": "n goes 10 → 6 → 2 → -2. At -2 the condition n > 0 is False, so the loop stops and prints -2."
+  },
+  "bug": {
+   "task": "This should print 1, 2, 3, 4, 5 (one per line) but never stops. Fix it.",
+   "code": "i = 1\nwhile i <= 5:\n    print(i)",
+   "test": "assert _output.split() == [\"1\", \"2\", \"3\", \"4\", \"5\"], \"Print the numbers 1 to 5, one per line\"",
+   "hint": "What should change each round so the loop can end?",
+   "solution": "i = 1\nwhile i <= 5:\n    print(i)\n    i += 1"
+  },
+  "write": {
+   "task": "A factory makes `per_day = 1800` zippers a day. An order needs `target = 10000`. Use a while loop to count how many days it takes. Store it in `days` and print it (it should be 6).",
+   "starter": "per_day = 1800\ntarget = 10000\n",
+   "test": "assert days == 6, \"days should be 6\"\nassert \"while\" in _code, \"Use a while loop\"",
+   "solution": "per_day = 1800\ntarget = 10000\ndays = 0\nmade = 0\nwhile made < target:\n    made += per_day\n    days += 1\nprint(days)"
+  },
+  "quiz": [
+   {
+    "q": "When does Python check a while condition?",
+    "opts": [
+     "Only once",
+     "Before each round",
+     "After the loop",
+     "Only at the end"
+    ],
+    "ans": 1,
+    "why": "The condition is checked before every round, including the first."
+   },
+   {
+    "q": "What causes an infinite loop?",
+    "opts": [
+     "Using print()",
+     "The condition never becomes False",
+     "Using +=",
+     "A colon"
+    ],
+    "ans": 1,
+    "why": "If the condition stays True forever, the loop never ends."
+   },
+   {
+    "q": "How many times does `while False:` run its block?",
+    "opts": [
+     "0",
+     "1",
+     "Forever",
+     "Error"
+    ],
+    "ans": 0,
+    "why": "The condition is False from the start, so the block never runs."
+   }
+  ]
+ },
+ {
+  "id": "js09",
+  "track": "js",
+  "n": 9,
+  "unit": "Modern JavaScript",
+  "title": "Destructuring and spread",
+  "goal": "Unpack arrays and objects with destructuring, and copy or merge them with spread.",
+  "cards": [
+   {
+    "h": "Object destructuring",
+    "p": "Pull properties into variables in one line. You can rename with `:` and give defaults with `=`.",
+    "code": "const order = { brand: \"GAP\", qty: 500 };\nconst { brand, qty, status = \"draft\" } = order;\nconsole.log(brand, qty, status);   // GAP 500 draft\nconst { brand: customer } = order;\nconsole.log(customer);             // GAP"
+   },
+   {
+    "h": "Array destructuring",
+    "p": "Variables take items by position. Skip one with an empty comma. Swap two values easily.",
+    "code": "const [first, , third] = [\"PO\", \"HM\", \"88412\"];\nconsole.log(first, third);   // PO 88412\nlet a = 1, b = 2;\n[a, b] = [b, a];\nconsole.log(a, b);           // 2 1"
+   },
+   {
+    "h": "Spread copies and merges",
+    "p": "`...` spreads the items of an array or the properties of an object into a new one. Later properties win.",
+    "code": "const base = { brand: \"H&M\", qty: 100 };\nconst updated = { ...base, qty: 250 };\nconsole.log(updated);              // {\"brand\":\"H&M\",\"qty\":250}\nconsole.log([...[1, 2], 3]);       // [1,2,3]"
+   },
+   {
+    "h": "Rest collects the remaining",
+    "p": "The same `...` on the left side collects what's left into an array or object.",
+    "code": "const [head, ...others] = [10, 20, 30];\nconsole.log(head, others);   // 10 [20,30]\nconst { id, ...data } = { id: 7, name: \"Zip\", qty: 3 };\nconsole.log(data);           // {\"name\":\"Zip\",\"qty\":3}"
+   }
+  ],
+  "odoo": "OWL and Odoo JS code destructure constantly, for example `const { resId, resModel } = this.props.record` or spreading a context: `{ ...context, default_partner_id: id }`.",
+  "predict": {
+   "code": "const a = { x: 1, y: 2 };\nconst b = { ...a, y: 9, z: 3 };\nconst { x, ...rest } = b;\nconsole.log(x, rest);",
+   "q": "What does this print?",
+   "opts": [
+    "1 {\"y\":2,\"z\":3}",
+    "1 {\"y\":9,\"z\":3}",
+    "1 {\"x\":1,\"y\":9,\"z\":3}",
+    "undefined {\"y\":9}"
+   ],
+   "ans": 1,
+   "why": "In b, y: 9 replaces the spread y: 2. Then x is taken out and rest gets the other properties."
+  },
+  "bug": {
+   "task": "`copy` should be a separate object. Changing copy.qty must not change order.qty. Fix it.",
+   "code": "const order = { brand: \"Kontoor\", qty: 1200 };\nconst copy = order;\ncopy.qty = 0;\nconsole.log(order.qty, copy.qty);",
+   "test": "check(order.qty === 1200, \"order.qty must stay 1200\");\ncheck(copy.qty === 0 && copy.brand === \"Kontoor\", \"copy should have brand Kontoor and qty 0\");",
+   "hint": "Assignment shares the object. Spread makes a new one.",
+   "solution": "const order = { brand: \"Kontoor\", qty: 1200 };\nconst copy = { ...order };\ncopy.qty = 0;\nconsole.log(order.qty, copy.qty);"
+  },
+  "write": {
+   "task": "From `line`, use destructuring to get `brand` and `qty`, and collect the remaining properties into `extra`. Then create `confirmed`: a new object with all of line's properties plus `state: \"confirmed\"`. Log brand, qty, extra and confirmed.",
+   "starter": "const line = { brand: \"Carter's\", qty: 3000, size: \"5 inch\", color: \"black\" };\n",
+   "test": "check(brand === \"Carter's\" && qty === 3000, \"brand and qty from destructuring\");\ncheck(JSON.stringify(extra) === JSON.stringify({ size: \"5 inch\", color: \"black\" }), \"extra should hold size and color\");\ncheck(confirmed.state === \"confirmed\" && confirmed.qty === 3000 && confirmed !== line, \"confirmed should be a new object with state confirmed\");\ncheck(line.state === undefined, \"Don't change line itself\");\ncheck(__code.includes(\"...\"), \"Use rest/spread\");",
+   "solution": "const line = { brand: \"Carter's\", qty: 3000, size: \"5 inch\", color: \"black\" };\nconst { brand, qty, ...extra } = line;\nconst confirmed = { ...line, state: \"confirmed\" };\nconsole.log(brand, qty, extra, confirmed);"
+  },
+  "quiz": [
+   {
+    "q": "const { qty = 5 } = { qty: 0 }; What is qty?",
+    "opts": [
+     "5",
+     "0",
+     "undefined",
+     "null"
+    ],
+    "ans": 1,
+    "why": "Defaults only apply to undefined. 0 is a real value."
+   },
+   {
+    "q": "In { ...a, ...b }, if both have key k, which value wins?",
+    "opts": [
+     "a's",
+     "b's",
+     "Neither",
+     "It throws"
+    ],
+    "ans": 1,
+    "why": "Later properties overwrite earlier ones."
+   },
+   {
+    "q": "Is { ...obj } a deep copy?",
+    "opts": [
+     "Yes",
+     "No, it's shallow: nested objects are still shared",
+     "Only for arrays",
+     "Only in OWL"
+    ],
+    "ans": 1,
+    "why": "Spread copies the top level only."
+   }
+  ]
+ },
+ {
+  "id": "py10",
+  "track": "py",
+  "n": 10,
+  "unit": "Loops",
+  "title": "for loops and range()",
+  "goal": "Loop over sequences with `for`, and count with `range()`.",
+  "cards": [
+   {
+    "h": "for goes through each item",
+    "p": "A `for` loop takes each item of a sequence in turn, such as each character of a string. You don't need a counter.",
+    "code": "for ch in \"OA1\":\n    print(ch)\n# O\n# A\n# 1"
+   },
+   {
+    "h": "range() makes numbers",
+    "p": "`range(stop)` gives 0 up to stop - 1. `range(start, stop)` starts somewhere else. `range(start, stop, step)` jumps by step.",
+    "code": "for i in range(3):\n    print(i)          # 0 1 2\nfor i in range(1, 4):\n    print(i)          # 1 2 3\nfor i in range(0, 10, 5):\n    print(i)          # 0 5"
+   },
+   {
+    "h": "Accumulating a total",
+    "p": "Start a total before the loop, then add to it inside the loop.",
+    "code": "total = 0\nfor carton in range(1, 6):\n    total += carton * 100\nprint(total)   # 1500"
+   },
+   {
+    "h": "for or while?",
+    "p": "Use `for` when you know what to loop over (a string, a range, later a list). Use `while` when you loop until something happens.",
+    "code": "# for: 'do this 12 times'\n# while: 'keep going until stock is 0'"
+   }
+  ],
+  "odoo": "You will write `for record in self:` in almost every Odoo method, because `self` can hold many records. It's the same for loop you learn today.",
+  "predict": {
+   "code": "total = 0\nfor i in range(1, 5):\n    total += i\nprint(total)",
+   "q": "What does this print?",
+   "opts": [
+    "15",
+    "10",
+    "4",
+    "6"
+   ],
+   "ans": 1,
+   "why": "range(1, 5) gives 1, 2, 3, 4 (5 is not included). 1 + 2 + 3 + 4 = 10."
+  },
+  "bug": {
+   "task": "This should print the box numbers 1 to 5, but it prints 0 to 4. Fix the range.",
+   "code": "for box in range(5):\n    print(\"Box\", box)",
+   "test": "assert _output.strip().split(\"\\n\") == [f\"Box {i}\" for i in range(1, 6)], \"Print Box 1 to Box 5\"",
+   "hint": "range() can take a start value.",
+   "solution": "for box in range(1, 6):\n    print(\"Box\", box)"
+  },
+  "write": {
+   "task": "Count how many letters in `code = \"KONTOOR-ZIP-0042\"` are digits. Use a for loop and the string method `isdigit()`. Store the answer in `digits` (it should be 4) and print it.",
+   "starter": "code = \"KONTOOR-ZIP-0042\"\n",
+   "test": "assert digits == 4, \"digits should be 4\"\nassert \"for \" in _code and \"isdigit\" in _code, \"Use a for loop and isdigit()\"",
+   "solution": "code = \"KONTOOR-ZIP-0042\"\ndigits = 0\nfor ch in code:\n    if ch.isdigit():\n        digits += 1\nprint(digits)"
+  },
+  "quiz": [
+   {
+    "q": "What numbers does range(2, 6) give?",
+    "opts": [
+     "2 3 4 5 6",
+     "2 3 4 5",
+     "3 4 5 6",
+     "2 4 6"
+    ],
+    "ans": 1,
+    "why": "range stops before the stop value."
+   },
+   {
+    "q": "What does range(0, 10, 3) give?",
+    "opts": [
+     "0 3 6 9",
+     "0 3 6",
+     "3 6 9",
+     "0 10 3"
+    ],
+    "ans": 0,
+    "why": "Start at 0, jump by 3, stop before 10: 0, 3, 6, 9."
+   },
+   {
+    "q": "for ch in \"GAP\": runs how many times?",
+    "opts": [
+     "1",
+     "2",
+     "3",
+     "4"
+    ],
+    "ans": 2,
+    "why": "Once for each character: G, A, P."
+   }
+  ]
+ },
+ {
+  "id": "js10",
+  "track": "js",
+  "n": 10,
+  "unit": "Modern JavaScript",
+  "title": "Scope, closures and this",
+  "goal": "Understand block scope, closures, and how `this` works in methods and arrow functions.",
+  "cards": [
+   {
+    "h": "Block scope",
+    "p": "`let` and `const` live only inside the braces `{ }` where you declare them. Outside, they don't exist.",
+    "code": "if (true) {\n  const msg = \"inside\";\n  console.log(msg);\n}\n// console.log(msg);  -> ReferenceError"
+   },
+   {
+    "h": "Closures",
+    "p": "A function remembers the variables around it when it was created, even after the outer function has finished. That memory is a closure.",
+    "code": "function makeCounter() {\n  let count = 0;\n  return () => {\n    count++;\n    return count;\n  };\n}\nconst next = makeCounter();\nnext();\nconsole.log(next());   // 2"
+   },
+   {
+    "h": "this in a method",
+    "p": "Inside a normal method, `this` is the object before the dot when you call it.",
+    "code": "const order = {\n  qty: 1200,\n  show() { return `Qty ${this.qty}`; },\n};\nconsole.log(order.show());   // Qty 1200"
+   },
+   {
+    "h": "Arrow functions keep the outer this",
+    "p": "An arrow function has no `this` of its own; it uses `this` from where it was written. That's why arrow callbacks inside methods work well. A method taken off its object loses its `this`.",
+    "code": "const order = {\n  qtys: [1, 2],\n  scaled() { return this.qtys.map(q => q * this.factor); },\n  factor: 10,\n};\nconsole.log(order.scaled());   // [10,20]\nconst f = order.show;           // detached: this is lost"
+   }
+  ],
+  "odoo": "OWL templates call your methods with the right `this`, and in JavaScript code you'll write `() => this.doSomething()` so `this` stays your component. Forgetting this causes 'cannot read properties of undefined'.",
+  "predict": {
+   "code": "function make() {\n  let n = 0;\n  return () => ++n;\n}\nconst a = make();\nconst b = make();\na(); a();\nconsole.log(a(), b());",
+   "q": "What does this print?",
+   "opts": [
+    "3 1",
+    "1 1",
+    "3 3",
+    "2 1"
+   ],
+   "ans": 0,
+   "why": "Each call to make() creates its own n. a has been called three times (3); b only once (1)."
+  },
+  "bug": {
+   "task": "`order.total()` should return [600, 1050] (each qty times this.price), but it crashes. Fix the callback.",
+   "code": "const order = {\n  price: 0.5,\n  qtys: [1200, 2100],\n  total() {\n    return this.qtys.map(function (q) { return q * this.price; });\n  },\n};\nconst result = order.total();\nconsole.log(result);",
+   "test": "check(JSON.stringify(result) === \"[600,1050]\", \"result should be [600,1050]\");",
+   "hint": "A normal function callback gets its own `this`. Which kind of function keeps the outer this?",
+   "solution": "const order = {\n  price: 0.5,\n  qtys: [1200, 2100],\n  total() {\n    return this.qtys.map(q => q * this.price);\n  },\n};\nconst result = order.total();\nconsole.log(result);"
+  },
+  "write": {
+   "task": "Write `makeSequence(prefix)` that returns a function. Each call of that function returns the next code: `OA-1`, `OA-2`, … Use a closure. Create `nextOA = makeSequence(\"OA\")` and log three calls.",
+   "starter": "",
+   "test": "const s = makeSequence(\"PI\");\ncheck(s() === \"PI-1\" && s() === \"PI-2\", \"Each call should give the next number: PI-1, PI-2\");\nconst t2 = makeSequence(\"X\");\ncheck(t2() === \"X-1\", \"Each sequence should count on its own\");\ncheck(typeof nextOA === \"function\", \"Create nextOA\");",
+   "solution": "function makeSequence(prefix) {\n  let n = 0;\n  return () => {\n    n++;\n    return `${prefix}-${n}`;\n  };\n}\nconst nextOA = makeSequence(\"OA\");\nconsole.log(nextOA());\nconsole.log(nextOA());\nconsole.log(nextOA());"
+  },
+  "quiz": [
+   {
+    "q": "Where can a const declared inside an if block be used?",
+    "opts": [
+     "Anywhere in the file",
+     "Only inside that block",
+     "Only in functions",
+     "After the block"
+    ],
+    "ans": 1,
+    "why": "let and const are block-scoped."
+   },
+   {
+    "q": "What is a closure?",
+    "opts": [
+     "A function that closes the program",
+     "A function that remembers variables from where it was created",
+     "A class",
+     "A loop"
+    ],
+    "ans": 1,
+    "why": "The function keeps access to the outer variables."
+   },
+   {
+    "q": "Why use arrow callbacks inside methods?",
+    "opts": [
+     "They're faster",
+     "They keep the method's this",
+     "They can't return values",
+     "They create new scope for this"
+    ],
+    "ans": 1,
+    "why": "Arrow functions use this from the surrounding method."
+   }
+  ]
+ },
+ {
+  "id": "py11",
+  "track": "py",
+  "n": 11,
+  "unit": "Loops",
+  "title": "break, continue and loop else",
+  "goal": "Control loops with `break`, `continue` and the loop `else`.",
+  "cards": [
+   {
+    "h": "break leaves the loop",
+    "p": "`break` stops the loop at once. Python continues with the code after the loop.",
+    "code": "for qty in [500, 1200, 30000, 800]:\n    if qty > 10000:\n        print(\"Big order found:\", qty)\n        break\n    print(\"Checked\", qty)"
+   },
+   {
+    "h": "continue skips one round",
+    "p": "`continue` jumps to the next round, skipping the rest of this one.",
+    "code": "for qty in [500, 0, 1200]:\n    if qty == 0:\n        continue        # skip empty lines\n    print(\"Pack\", qty)\n# Pack 500\n# Pack 1200"
+   },
+   {
+    "h": "The loop else",
+    "p": "A `for` or `while` can have an `else`. It runs only if the loop finished without `break`. It's perfect for 'search, and say if nothing was found'.",
+    "code": "for po in [\"PO-1\", \"PO-2\"]:\n    if po == \"PO-9\":\n        print(\"Found\")\n        break\nelse:\n    print(\"Not found\")   # runs: no break happened"
+   },
+   {
+    "h": "Keep it readable",
+    "p": "break and continue are useful, but too many make a loop hard to follow. Use them for clear cases: stop when found, skip bad data."
+   }
+  ],
+  "odoo": "When importing order lines, `continue` is a clean way to skip empty or invalid rows, and `break` stops a search once you've found the matching record.",
+  "predict": {
+   "code": "for i in range(5):\n    if i == 1:\n        continue\n    if i == 3:\n        break\n    print(i)\nelse:\n    print(\"end\")",
+   "q": "What does this print?",
+   "opts": [
+    "0\n2",
+    "0\n2\nend",
+    "0\n1\n2",
+    "0\n2\n4\nend"
+   ],
+   "ans": 0,
+   "why": "1 is skipped, 0 and 2 print, then break at 3. Because the loop ended with break, the else does not run."
+  },
+  "bug": {
+   "task": "This should print `Not found` when PO-7 isn't in the list. Right now it prints `Not found` once for every PO. Fix it so it prints once, only if nothing matched.",
+   "code": "pos = [\"PO-1\", \"PO-2\", \"PO-3\"]\nfor po in pos:\n    if po == \"PO-7\":\n        print(\"Found\")\n        break\n    else:\n        print(\"Not found\")",
+   "test": "assert _output == \"Not found\\n\", \"Print Not found exactly once\"",
+   "hint": "The else should belong to the for loop, not to the if. Check its indentation.",
+   "solution": "pos = [\"PO-1\", \"PO-2\", \"PO-3\"]\nfor po in pos:\n    if po == \"PO-7\":\n        print(\"Found\")\n        break\nelse:\n    print(\"Not found\")"
+  },
+  "write": {
+   "task": "Go through the characters of `line = \"GAP,1200,,500,X,300\"` split by commas. Skip empty parts with `continue`. Stop with `break` when you meet `X`. Add the other numbers into `total` (it should be 1700) and print it.",
+   "starter": "line = \"GAP,1200,,500,X,300\"\nparts = line.split(\",\")\ntotal = 0\n",
+   "test": "assert total == 1700, \"total should be 1700 (1200 + 500)\"\nassert \"continue\" in _code and \"break\" in _code, \"Use continue and break\"",
+   "solution": "line = \"GAP,1200,,500,X,300\"\nparts = line.split(\",\")\ntotal = 0\nfor p in parts:\n    if p == \"\":\n        continue\n    if p == \"X\":\n        break\n    if p.isdigit():\n        total += int(p)\nprint(total)"
+  },
+  "quiz": [
+   {
+    "q": "What does continue do?",
+    "opts": [
+     "Ends the loop",
+     "Skips to the next round",
+     "Restarts from the first item",
+     "Runs the else"
+    ],
+    "ans": 1,
+    "why": "continue skips the rest of this round only."
+   },
+   {
+    "q": "When does a loop's else run?",
+    "opts": [
+     "Always",
+     "Only after a break",
+     "Only if the loop ended without break",
+     "Never in a for loop"
+    ],
+    "ans": 2,
+    "why": "The else runs when the loop finishes normally."
+   },
+   {
+    "q": "In nested loops, break leaves…",
+    "opts": [
+     "All loops",
+     "Only the innermost loop",
+     "The function",
+     "The program"
+    ],
+    "ans": 1,
+    "why": "break only exits the loop it is directly inside."
+   }
+  ]
+ },
+ {
+  "id": "js11",
+  "track": "js",
+  "n": 11,
+  "unit": "Modern JavaScript",
+  "title": "Classes",
+  "goal": "Model things with classes: constructors, methods, getters, fields and inheritance.",
+  "cards": [
+   {
+    "h": "class and constructor",
+    "p": "A class is a blueprint. `new` creates an object from it and runs `constructor`, where you set up `this`.",
+    "code": "class Order {\n  constructor(brand, qty) {\n    this.brand = brand;\n    this.qty = qty;\n  }\n  label() {\n    return `${this.brand}: ${this.qty}`;\n  }\n}\nconst o = new Order(\"GAP\", 500);\nconsole.log(o.label());   // GAP: 500"
+   },
+   {
+    "h": "Class fields and getters",
+    "p": "Fields set default values without a constructor. A `get` method looks like a property when you read it.",
+    "code": "class Line {\n  qty = 0;\n  price = 0.35;\n  get total() { return this.qty * this.price; }\n}\nconst l = new Line();\nl.qty = 1000;\nconsole.log(l.total);   // 350"
+   },
+   {
+    "h": "extends and super",
+    "p": "A subclass gets everything from its parent class. `super(...)` calls the parent constructor; `super.method()` calls the parent's method.",
+    "code": "class UrgentOrder extends Order {\n  label() {\n    return super.label() + \" (URGENT)\";\n  }\n}\nconsole.log(new UrgentOrder(\"H&M\", 9000).label());\n// H&M: 9000 (URGENT)"
+   },
+   {
+    "h": "static members",
+    "p": "`static` belongs to the class itself, not to each object. You'll see it in every OWL component: `static template = ...`.",
+    "code": "class Order2 {\n  static currency = \"USD\";\n}\nconsole.log(Order2.currency);   // USD"
+   }
+  ],
+  "odoo": "Every OWL component is a class that extends Component, with `static template` and `static components`. Odoo models in Python are classes too, so this idea works on both sides.",
+  "predict": {
+   "code": "class A {\n  name = \"A\";\n  hello() { return \"I am \" + this.name; }\n}\nclass B extends A {\n  name = \"B\";\n}\nconsole.log(new B().hello());",
+   "q": "What does this print?",
+   "opts": [
+    "I am A",
+    "I am B",
+    "I am undefined",
+    "Error"
+   ],
+   "ans": 1,
+   "why": "hello() is inherited from A, but this is the B object, whose name field is \"B\"."
+  },
+  "bug": {
+   "task": "This crashes with a ReferenceError. `UrgentOrder` must call the parent constructor before using `this`. Fix it so `u.label()` returns `H&M: 9000 (2 days)`.",
+   "code": "class Order {\n  constructor(brand, qty) {\n    this.brand = brand;\n    this.qty = qty;\n  }\n  label() { return `${this.brand}: ${this.qty}`; }\n}\nclass UrgentOrder extends Order {\n  constructor(brand, qty, days) {\n    this.days = days;\n  }\n  label() { return `${super.label()} (${this.days} days)`; }\n}\nconst u = new UrgentOrder(\"H&M\", 9000, 2);\nconsole.log(u.label());",
+   "test": "check(u.label() === \"H&M: 9000 (2 days)\", \"u.label() should be H&M: 9000 (2 days)\");",
+   "hint": "In a subclass constructor, call super(...) first.",
+   "solution": "class Order {\n  constructor(brand, qty) {\n    this.brand = brand;\n    this.qty = qty;\n  }\n  label() { return `${this.brand}: ${this.qty}`; }\n}\nclass UrgentOrder extends Order {\n  constructor(brand, qty, days) {\n    super(brand, qty);\n    this.days = days;\n  }\n  label() { return `${super.label()} (${this.days} days)`; }\n}\nconst u = new UrgentOrder(\"H&M\", 9000, 2);\nconsole.log(u.label());"
+  },
+  "write": {
+   "task": "Write a class `Shipment` with:\n- a constructor(ref, cartons)\n- a field `delivered = false`\n- a method `deliver()` that sets delivered to true\n- a getter `status` that returns \"delivered\" or \"in transit\"\nCreate `s = new Shipment(\"SH-77\", 40)`, log s.status, call deliver(), log s.status again.",
+   "starter": "",
+   "test": "const t1 = new Shipment(\"SH-1\", 5);\ncheck(t1.ref === \"SH-1\" && t1.cartons === 5, \"Store ref and cartons\");\ncheck(t1.status === \"in transit\", \"A new shipment's status should be 'in transit'\");\nt1.deliver();\ncheck(t1.delivered === true && t1.status === \"delivered\", \"After deliver(), status should be 'delivered'\");\ncheck(/get\\s+status/.test(__code), \"Make status a getter\");",
+   "solution": "class Shipment {\n  delivered = false;\n  constructor(ref, cartons) {\n    this.ref = ref;\n    this.cartons = cartons;\n  }\n  deliver() {\n    this.delivered = true;\n  }\n  get status() {\n    return this.delivered ? \"delivered\" : \"in transit\";\n  }\n}\nconst s = new Shipment(\"SH-77\", 40);\nconsole.log(s.status);\ns.deliver();\nconsole.log(s.status);"
+  },
+  "quiz": [
+   {
+    "q": "What does new do?",
+    "opts": [
+     "Copies a class",
+     "Creates an object and runs the constructor",
+     "Declares a variable",
+     "Imports a module"
+    ],
+    "ans": 1,
+    "why": "new builds a new object from the class."
+   },
+   {
+    "q": "How do you read a getter called total?",
+    "opts": [
+     "obj.total()",
+     "obj.total",
+     "obj.get(total)",
+     "obj[total()]"
+    ],
+    "ans": 1,
+    "why": "Getters are read like properties, without brackets."
+   },
+   {
+    "q": "Where does a static field live?",
+    "opts": [
+     "On each object",
+     "On the class itself",
+     "In the constructor",
+     "In the module"
+    ],
+    "ans": 1,
+    "why": "Static members belong to the class, like Component's static template."
+   }
+  ]
+ },
+ {
+  "id": "py12",
+  "track": "py",
+  "n": 12,
+  "unit": "Loops",
+  "title": "Practice: number games",
+  "goal": "Practise everything so far by building small number games and checks.",
+  "cards": [
+   {
+    "h": "Plan before you code",
+    "p": "Write the steps in plain English first: what goes in, what repeats, when it stops, what comes out. Then turn each step into a line of code.",
+    "code": "# 1. read the guesses\n# 2. compare each with the secret\n# 3. say higher / lower / correct\n# 4. stop when correct"
+   },
+   {
+    "h": "A guessing game",
+    "p": "This uses input(), int(), a while loop, if/elif/else and break together. The Input box in this app gives one line to each input() call.",
+    "code": "secret = 42\nwhile True:\n    guess = int(input(\"Guess: \"))\n    if guess < secret:\n        print(\"Higher\")\n    elif guess > secret:\n        print(\"Lower\")\n    else:\n        print(\"Correct!\")\n        break"
+   },
+   {
+    "h": "Checking a number",
+    "p": "% (remainder) answers many questions: is it even? Does it divide exactly? A loop can test many divisors.",
+    "code": "n = 29\nis_prime = n > 1\nfor d in range(2, n):\n    if n % d == 0:\n        is_prime = False\n        break\nprint(is_prime)   # True"
+   },
+   {
+    "h": "Test with several values",
+    "p": "Try normal values, edge values (0, 1, the exact limit) and strange values. Most bugs hide at the edges."
+   }
+  ],
+  "odoo": "Odoo developers check data in small loops like these all the time: validating quantities, checking sequence numbers, or finding gaps in OA numbers.",
+  "predict": {
+   "code": "count = 0\nfor n in range(1, 11):\n    if n % 3 == 0:\n        count += 1\nprint(count)",
+   "q": "What does this print?",
+   "opts": [
+    "3",
+    "4",
+    "10",
+    "33"
+   ],
+   "ans": 0,
+   "why": "Between 1 and 10, the multiples of 3 are 3, 6 and 9: three numbers."
+  },
+  "bug": {
+   "task": "This game reads guesses until it's correct. With inputs 10, 50, 42 it should print Higher, Lower, Correct!, but it crashes. Fix it.",
+   "stdin": "10\n50\n42",
+   "code": "secret = 42\nwhile True:\n    guess = input()\n    if guess < secret:\n        print(\"Higher\")\n    elif guess > secret:\n        print(\"Lower\")\n    else:\n        print(\"Correct!\")\n        break",
+   "test": "assert _output.split() == [\"Higher\", \"Lower\", \"Correct!\"], \"Expected Higher, Lower, Correct!\"",
+   "hint": "input() gives a string. Can you compare a string with a number?",
+   "solution": "secret = 42\nwhile True:\n    guess = int(input())\n    if guess < secret:\n        print(\"Higher\")\n    elif guess > secret:\n        print(\"Lower\")\n    else:\n        print(\"Correct!\")\n        break"
+  },
+  "write": {
+   "task": "FizzBuzz for cartons: for numbers 1 to 15, print `Fizz` if divisible by 3, `Buzz` if divisible by 5, `FizzBuzz` if divisible by both, otherwise the number itself.",
+   "starter": "",
+   "test": "want = []\nfor n in range(1, 16):\n    want.append(\"FizzBuzz\" if n % 15 == 0 else \"Fizz\" if n % 3 == 0 else \"Buzz\" if n % 5 == 0 else str(n))\nassert _output.split() == want, \"Check each line from 1 to 15. 15 should be FizzBuzz\"",
+   "solution": "for n in range(1, 16):\n    if n % 3 == 0 and n % 5 == 0:\n        print(\"FizzBuzz\")\n    elif n % 3 == 0:\n        print(\"Fizz\")\n    elif n % 5 == 0:\n        print(\"Buzz\")\n    else:\n        print(n)"
+  },
+  "quiz": [
+   {
+    "q": "In FizzBuzz, why must the 'both' test come first?",
+    "opts": [
+     "It's faster",
+     "Otherwise 15 matches 'divisible by 3' first and prints Fizz",
+     "Python requires it",
+     "It doesn't matter"
+    ],
+    "ans": 1,
+    "why": "if/elif stops at the first True test, so the most specific test must come first."
+   },
+   {
+    "q": "What is 17 % 4?",
+    "opts": [
+     "4",
+     "1",
+     "4.25",
+     "0"
+    ],
+    "ans": 1,
+    "why": "17 = 4 × 4 + 1."
+   },
+   {
+    "q": "Which values are the best tests for 'qty must be 1 to 100'?",
+    "opts": [
+     "50 only",
+     "0, 1, 100, 101",
+     "1000",
+     "Any random value"
+    ],
+    "ans": 1,
+    "why": "Edge values just inside and just outside the limits find most bugs."
+   }
+  ]
+ },
+ {
+  "id": "js12",
+  "track": "js",
+  "n": 12,
+  "unit": "Modern JavaScript",
+  "title": "Modules: import and export",
+  "goal": "Split code into modules with `export` and `import`, the way every Odoo JS file works.",
+  "cards": [
+   {
+    "h": "One file, one module",
+    "p": "A module is a JavaScript file with its own scope. Nothing leaks out unless you `export` it.",
+    "code": "// money.js\nexport const CURRENCY = \"USD\";\nexport function lineTotal(qty, price) {\n  return qty * price;\n}"
+   },
+   {
+    "h": "Named imports",
+    "p": "Import exactly the names you need, in braces. You can rename with `as`.",
+    "code": "// order.js\nimport { lineTotal, CURRENCY } from \"./money.js\";\nimport { lineTotal as total } from \"./money.js\";\nconsole.log(lineTotal(10, 2), CURRENCY);"
+   },
+   {
+    "h": "Default export",
+    "p": "A module can have one default export, imported without braces and with any name. Odoo code mostly prefers named exports, which are easier to search.",
+    "code": "// shipment.js\nexport default class Shipment {}\n\n// main.js\nimport Shipment from \"./shipment.js\";"
+   },
+   {
+    "h": "Why modules help",
+    "p": "Each file has a clear job, names don't clash, and you can see what a file depends on by reading its imports. Note: this app's runner executes one snippet, so today's exercises practise the idea with objects instead of real files."
+   }
+  ],
+  "odoo": "Every Odoo 20 JS file is an ES module, for example `import { Component, signal } from \"@odoo/owl\";` and `import { registry } from \"@web/core/registry\";`. `@web` points to the web addon's static/src folder.",
+  "predict": {
+   "code": "const money = (() => {\n  const RATE = 2;          // private\n  const total = q => q * RATE;\n  return { total };        // the 'exports'\n})();\nconsole.log(money.total(5), money.RATE);",
+   "q": "This imitates a module. What does it print?",
+   "opts": [
+    "10 2",
+    "10 undefined",
+    "Error",
+    "5 2"
+   ],
+   "ans": 1,
+   "why": "Only total is returned (exported). RATE stays private, so money.RATE is undefined, just like a name a module didn't export."
+  },
+  "bug": {
+   "task": "These lines imitate a module that should export `formatPO`. The code that uses it crashes. Fix the 'exports' so `label` is `PO-00042`.",
+   "code": "const poModule = (() => {\n  const formatPO = n => \"PO-\" + String(n).padStart(5, \"0\");\n  return {};\n})();\nconst label = poModule.formatPO(42);\nconsole.log(label);",
+   "test": "check(label === \"PO-00042\", \"label should be PO-00042\");",
+   "hint": "What does the module return? Nothing is exported yet.",
+   "solution": "const poModule = (() => {\n  const formatPO = n => \"PO-\" + String(n).padStart(5, \"0\");\n  return { formatPO };\n})();\nconst label = poModule.formatPO(42);\nconsole.log(label);"
+  },
+  "write": {
+   "task": "Write the real module syntax as a string, to practise it. Set `importLine` to the exact line that imports `Component` and `signal` from \"@odoo/owl\" (with a semicolon at the end). Then set `exportLine` to a line that exports a const `MAX_QTY` equal to 50000. Log both.",
+   "starter": "",
+   "test": "const norm = s => s.replace(/\\s+/g, \" \").trim();\ncheck(/^import \\{ ?(Component, ?signal|signal, ?Component) ?\\} from [\"']@odoo\\/owl[\"'];$/.test(norm(importLine)), \"importLine should look like: import { Component, signal } from \\\"@odoo/owl\\\";\");\ncheck(/^export const MAX_QTY = 50000;?$/.test(norm(exportLine)), \"exportLine should be: export const MAX_QTY = 50000;\");",
+   "solution": "const importLine = 'import { Component, signal } from \"@odoo/owl\";';\nconst exportLine = \"export const MAX_QTY = 50000;\";\nconsole.log(importLine);\nconsole.log(exportLine);"
+  },
+  "quiz": [
+   {
+    "q": "How do you import a named export total from ./money.js?",
+    "opts": [
+     "import total from \"./money.js\"",
+     "import { total } from \"./money.js\"",
+     "require(total)",
+     "include ./money.js"
+    ],
+    "ans": 1,
+    "why": "Named exports are imported inside braces."
+   },
+   {
+    "q": "How many default exports can a module have?",
+    "opts": [
+     "None",
+     "One",
+     "Two",
+     "Any number"
+    ],
+    "ans": 1,
+    "why": "At most one default export, plus any number of named exports."
+   },
+   {
+    "q": "In Odoo, what does \"@web/core/registry\" point to?",
+    "opts": [
+     "A website URL",
+     "The web addon's static/src/core/registry.js",
+     "An npm package on the internet",
+     "The Python registry"
+    ],
+    "ans": 1,
+    "why": "@web is an alias for the web module's static/src folder."
+   }
+  ]
+ },
+ {
+  "id": "py13",
+  "track": "py",
+  "n": 13,
+  "unit": "Data structures",
+  "title": "Lists",
+  "goal": "Store many values in a list, read them by position, and change them.",
+  "cards": [
+   {
+    "h": "A list holds items in order",
+    "p": "Write a list with square brackets and commas. It can hold any types, but usually holds one kind of thing. `len()` counts the items.",
+    "code": "brands = [\"H&M\", \"GAP\", \"Kohl's\"]\nqtys = [1200, 500, 3400]\nprint(len(brands))   # 3"
+   },
+   {
+    "h": "Indexes, like strings",
+    "p": "The first item is at index 0, the last at -1. Reading an index that doesn't exist raises IndexError.",
+    "code": "brands = [\"H&M\", \"GAP\", \"Kohl's\"]\nprint(brands[0])    # H&M\nprint(brands[-1])   # Kohl's\n# brands[3]  -> IndexError"
+   },
+   {
+    "h": "Lists can change",
+    "p": "Unlike strings, lists are mutable: you can replace an item by assigning to its index.",
+    "code": "qtys = [1200, 500, 3400]\nqtys[1] = 650\nprint(qtys)   # [1200, 650, 3400]"
+   },
+   {
+    "h": "Loop and check membership",
+    "p": "`for item in list` visits each item. `in` checks if a value is in the list. `sum()`, `min()` and `max()` work on lists of numbers.",
+    "code": "qtys = [1200, 650, 3400]\nfor q in qtys:\n    print(q)\nprint(650 in qtys)           # True\nprint(sum(qtys), max(qtys))  # 5250 3400"
+   }
+  ],
+  "odoo": "Odoo recordsets feel like lists: you can loop over them, use len(), and index them. Values you send to Odoo, such as a list of ids [3, 7, 9], are plain Python lists.",
+  "predict": {
+   "code": "items = [10, 20, 30]\nitems[0] = items[-1] + 5\nprint(items)",
+   "q": "What does this print?",
+   "opts": [
+    "[10, 20, 30]",
+    "[35, 20, 30]",
+    "[15, 20, 30]",
+    "[10, 20, 35]"
+   ],
+   "ans": 1,
+   "why": "items[-1] is 30, plus 5 is 35, which replaces the first item."
+  },
+  "bug": {
+   "task": "This should print the last shipment number, `SH-003`, but it crashes. Fix the index.",
+   "code": "shipments = [\"SH-001\", \"SH-002\", \"SH-003\"]\nlast = shipments[3]\nprint(last)",
+   "test": "assert last == \"SH-003\", \"last should be SH-003\"",
+   "hint": "Three items have the indexes 0, 1 and 2. There's also a shortcut for 'the last one'.",
+   "solution": "shipments = [\"SH-001\", \"SH-002\", \"SH-003\"]\nlast = shipments[-1]\nprint(last)"
+  },
+  "write": {
+   "task": "`qtys` holds order quantities. Using a for loop (not sum()), add up only the quantities of 1000 or more into `big_total`, and count them in `big_count`. Print both. (Expected: 9600 and 3.)",
+   "starter": "qtys = [1200, 500, 3400, 800, 5000]\n",
+   "test": "assert big_total == 9600, \"big_total should be 9600\"\nassert big_count == 3, \"big_count should be 3\"\nassert \"for \" in _code and \"sum(\" not in _code, \"Use a for loop instead of sum()\"",
+   "solution": "qtys = [1200, 500, 3400, 800, 5000]\nbig_total = 0\nbig_count = 0\nfor q in qtys:\n    if q >= 1000:\n        big_total += q\n        big_count += 1\nprint(big_total, big_count)"
+  },
+  "quiz": [
+   {
+    "q": "What is [5, 6, 7][-2]?",
+    "opts": [
+     "5",
+     "6",
+     "7",
+     "Error"
+    ],
+    "ans": 1,
+    "why": "-1 is the last (7), -2 is the one before (6)."
+   },
+   {
+    "q": "Which is true about lists?",
+    "opts": [
+     "They can't change",
+     "They can be changed in place",
+     "They only hold numbers",
+     "They start at index 1"
+    ],
+    "ans": 1,
+    "why": "Lists are mutable, and indexes start at 0."
+   },
+   {
+    "q": "What does 3 in [1, 2, 3] give?",
+    "opts": [
+     "3",
+     "True",
+     "2",
+     "Error"
+    ],
+    "ans": 1,
+    "why": "in checks membership and returns True or False."
+   }
+  ]
+ },
+ {
+  "id": "js13",
+  "track": "js",
+  "n": 13,
+  "unit": "Modern JavaScript",
+  "title": "Promises",
+  "goal": "Understand promises: values that arrive later, with then, catch and Promise.all.",
+  "cards": [
+   {
+    "h": "Why promises",
+    "p": "Talking to a server takes time. JavaScript doesn't wait and freeze; it gives you a Promise, which will later be fulfilled with a value or rejected with an error.",
+    "code": "const p = new Promise(resolve => {\n  setTimeout(() => resolve(\"OA-1001 confirmed\"), 100);\n});\np.then(msg => console.log(msg));\nconsole.log(\"waiting...\");   // prints first!"
+   },
+   {
+    "h": "then chains",
+    "p": "`then` runs when the value arrives. Whatever you return from then becomes the value for the next then.",
+    "code": "Promise.resolve(1200)\n  .then(qty => qty * 0.35)\n  .then(total => console.log(total));   // 420"
+   },
+   {
+    "h": "catch handles errors",
+    "p": "If any step rejects or throws, the chain jumps to `catch`. `finally` runs either way.",
+    "code": "Promise.reject(new Error(\"Server down\"))\n  .then(() => console.log(\"never\"))\n  .catch(err => console.log(\"Failed:\", err.message))\n  .finally(() => console.log(\"done\"));"
+   },
+   {
+    "h": "Promise.all waits for many",
+    "p": "Start several jobs at once, then wait for all of them. The result is an array in the same order. If one fails, the whole thing fails.",
+    "code": "const wait = (v, ms) => new Promise(r => setTimeout(() => r(v), ms));\nPromise.all([wait(\"GAP\", 50), wait(\"H&M\", 10)])\n  .then(names => console.log(names));   // [\"GAP\",\"H&M\"]"
+   }
+  ],
+  "odoo": "Every call to the server, like `this.orm.searchRead(...)`, returns a promise. In OWL code you usually await it (next lesson) instead of writing then chains.",
+  "predict": {
+   "code": "console.log(\"A\");\nsetTimeout(() => console.log(\"B\"), 0);\nPromise.resolve().then(() => console.log(\"C\"));\nconsole.log(\"D\");",
+   "q": "In what order are the lines printed?",
+   "opts": [
+    "A\nB\nC\nD",
+    "A\nD\nC\nB",
+    "A\nD\nB\nC",
+    "A\nC\nD\nB"
+   ],
+   "ans": 1,
+   "why": "Normal code runs first (A, D). Then promise callbacks (C) run before timer callbacks (B), even with a 0 ms timer."
+  },
+  "bug": {
+   "task": "This should log the total, 420. Nothing useful arrives at the second then. Fix the chain.",
+   "code": "let result;\nPromise.resolve(1200)\n  .then(qty => { qty * 0.35; })\n  .then(total => { result = total; console.log(total); });\nawait new Promise(r => setTimeout(r, 20));",
+   "test": "check(result === 420, \"result should be 420\");",
+   "hint": "A then callback with braces must return its value.",
+   "solution": "let result;\nPromise.resolve(1200)\n  .then(qty => qty * 0.35)\n  .then(total => { result = total; console.log(total); });\nawait new Promise(r => setTimeout(r, 20));"
+  },
+  "write": {
+   "task": "`fetchQty(brand)` imitates a server call. Use Promise.all to load the quantities for \"H&M\", \"GAP\" and \"Kohl's\" at the same time, then put the sum in `total` (it should be 5100) and log it. Use then (not await) for this exercise; the last line waits for you.",
+   "starter": "const fetchQty = brand => new Promise(resolve => {\n  const data = { \"H&M\": 1200, \"GAP\": 500, \"Kohl's\": 3400 };\n  setTimeout(() => resolve(data[brand]), 10);\n});\nlet total;\n\n// your code here\n\nawait new Promise(r => setTimeout(r, 100));\n",
+   "test": "check(total === 5100, \"total should be 5100\");\ncheck(__code.includes(\"Promise.all\"), \"Use Promise.all\");",
+   "solution": "const fetchQty = brand => new Promise(resolve => {\n  const data = { \"H&M\": 1200, \"GAP\": 500, \"Kohl's\": 3400 };\n  setTimeout(() => resolve(data[brand]), 10);\n});\nlet total;\n\nPromise.all([fetchQty(\"H&M\"), fetchQty(\"GAP\"), fetchQty(\"Kohl's\")])\n  .then(qtys => {\n    total = qtys.reduce((a, b) => a + b, 0);\n    console.log(total);\n  });\n\nawait new Promise(r => setTimeout(r, 100));\n"
+  },
+  "quiz": [
+   {
+    "q": "What are the three states of a promise?",
+    "opts": [
+     "start, middle, end",
+     "pending, fulfilled, rejected",
+     "open, closed, error",
+     "true, false, null"
+    ],
+    "ans": 1,
+    "why": "A promise starts pending, then is either fulfilled or rejected."
+   },
+   {
+    "q": "Where does an error in a then chain go?",
+    "opts": [
+     "It's ignored",
+     "To the next catch",
+     "To finally only",
+     "It stops the browser"
+    ],
+    "ans": 1,
+    "why": "Rejections skip the remaining thens until a catch."
+   },
+   {
+    "q": "What does Promise.all give when all succeed?",
+    "opts": [
+     "The first value",
+     "An array of values in order",
+     "The fastest value",
+     "Nothing"
+    ],
+    "ans": 1,
+    "why": "It resolves with all values, in the same order as the input."
+   }
+  ]
+ },
+ {
+  "id": "py14",
+  "track": "py",
+  "n": 14,
+  "unit": "Data structures",
+  "title": "List methods and slicing",
+  "goal": "Grow, shrink, sort and slice lists with their methods.",
+  "cards": [
+   {
+    "h": "Adding items",
+    "p": "`append(x)` adds one item at the end. `extend(list)` adds many. `insert(i, x)` puts an item at a position.",
+    "code": "pos = [\"PO-1\"]\npos.append(\"PO-2\")\npos.extend([\"PO-3\", \"PO-4\"])\npos.insert(0, \"PO-0\")\nprint(pos)   # ['PO-0', 'PO-1', 'PO-2', 'PO-3', 'PO-4']"
+   },
+   {
+    "h": "Removing items",
+    "p": "`remove(x)` deletes the first matching value. `pop()` removes and returns the last item; `pop(i)` removes position i.",
+    "code": "pos = [\"PO-1\", \"PO-2\", \"PO-3\"]\npos.remove(\"PO-2\")\nlast = pos.pop()\nprint(pos, last)   # ['PO-1'] PO-3"
+   },
+   {
+    "h": "sort() vs sorted()",
+    "p": "`list.sort()` changes the list itself and returns None. `sorted(list)` returns a new sorted list and leaves the original alone. Add `reverse=True` for big to small.",
+    "code": "qtys = [300, 5, 1200]\nprint(sorted(qtys))   # [5, 300, 1200]\nprint(qtys)           # [300, 5, 1200]\nqtys.sort(reverse=True)\nprint(qtys)           # [1200, 300, 5]"
+   },
+   {
+    "h": "Slicing and copying",
+    "p": "Slices work like strings: `lst[start:stop]`, and `lst[::-1]` reverses. `lst[:]` or `lst.copy()` makes a copy. Plain `b = a` does not copy: both names share one list.",
+    "code": "a = [1, 2, 3, 4]\nprint(a[1:3])    # [2, 3]\nprint(a[::-1])   # [4, 3, 2, 1]\nb = a\nb.append(5)\nprint(a)         # [1, 2, 3, 4, 5]"
+   }
+  ],
+  "odoo": "Recordsets have their own versions of these ideas: sorted(key=...), filtered(), and slicing like orders[:5] for the first five records.",
+  "predict": {
+   "code": "a = [3, 1, 2]\nb = a.sort()\nprint(a, b)",
+   "q": "What does this print?",
+   "opts": [
+    "[1, 2, 3] [1, 2, 3]",
+    "[3, 1, 2] [1, 2, 3]",
+    "[1, 2, 3] None",
+    "None None"
+   ],
+   "ans": 2,
+   "why": "sort() sorts the list in place and returns None, so b is None."
+  },
+  "bug": {
+   "task": "`top3` should be the three biggest quantities, biggest first: [5000, 3400, 1200]. Fix it.",
+   "code": "qtys = [1200, 500, 3400, 800, 5000]\ntop3 = qtys.sort(reverse=True)[:3]\nprint(top3)",
+   "test": "assert top3 == [5000, 3400, 1200], \"top3 should be [5000, 3400, 1200]\"",
+   "hint": "sort() returns None. Which function returns a new sorted list?",
+   "solution": "qtys = [1200, 500, 3400, 800, 5000]\ntop3 = sorted(qtys, reverse=True)[:3]\nprint(top3)"
+  },
+  "write": {
+   "task": "Start with `queue = [\"OA-101\", \"OA-102\"]`.\n1. Add \"OA-103\" at the end.\n2. Add \"OA-100\" at the start.\n3. Remove \"OA-102\".\n4. Make `backup`, a real copy of queue.\n5. Pop the last item from queue into `done`.\nPrint queue, backup and done.",
+   "starter": "queue = [\"OA-101\", \"OA-102\"]\n",
+   "test": "assert queue == [\"OA-100\", \"OA-101\"], \"queue should end as ['OA-100', 'OA-101']\"\nassert backup == [\"OA-100\", \"OA-101\", \"OA-103\"], \"backup should be a copy made before the pop\"\nassert backup is not queue, \"backup must be a copy, not the same list\"\nassert done == \"OA-103\", \"done should be OA-103\"",
+   "solution": "queue = [\"OA-101\", \"OA-102\"]\nqueue.append(\"OA-103\")\nqueue.insert(0, \"OA-100\")\nqueue.remove(\"OA-102\")\nbackup = queue.copy()\ndone = queue.pop()\nprint(queue, backup, done)"
+  },
+  "quiz": [
+   {
+    "q": "What does append([7, 8]) do to [1]?",
+    "opts": [
+     "[1, 7, 8]",
+     "[1, [7, 8]]",
+     "[7, 8]",
+     "Error"
+    ],
+    "ans": 1,
+    "why": "append adds one item, and here that item is a list. Use extend to add 7 and 8 separately."
+   },
+   {
+    "q": "What does pop() return?",
+    "opts": [
+     "Nothing",
+     "The removed last item",
+     "The new list",
+     "Its index"
+    ],
+    "ans": 1,
+    "why": "pop removes the last item and gives it back."
+   },
+   {
+    "q": "After b = a, a list change through b…",
+    "opts": [
+     "only changes b",
+     "also shows in a",
+     "raises an error",
+     "copies the list"
+    ],
+    "ans": 1,
+    "why": "b = a doesn't copy; both names point to the same list."
+   }
+  ]
+ },
+ {
+  "id": "js14",
+  "track": "js",
+  "n": 14,
+  "unit": "Modern JavaScript",
+  "title": "async / await",
+  "goal": "Write asynchronous code that reads like normal code with `async` and `await`.",
+  "cards": [
+   {
+    "h": "async functions",
+    "p": "An `async` function always returns a promise. Inside it, `await` pauses that function until a promise settles, without freezing the page.",
+    "code": "const wait = ms => new Promise(r => setTimeout(r, ms));\nasync function confirmOrder() {\n  await wait(50);\n  return \"confirmed\";\n}\nconfirmOrder().then(s => console.log(s));"
+   },
+   {
+    "h": "await gives you the value",
+    "p": "Instead of `.then(value => ...)`, write `const value = await promise;`. The code reads top to bottom. (In this app's runner you can use await directly at the top level.)",
+    "code": "const fetchQty = () => new Promise(r => setTimeout(() => r(1200), 20));\nconst qty = await fetchQty();\nconsole.log(qty * 0.35);   // 420"
+   },
+   {
+    "h": "try / catch for errors",
+    "p": "A rejected promise makes `await` throw. Catch it with try/catch, the same tool you use for normal errors.",
+    "code": "async function load() {\n  throw new Error(\"Access denied\");\n}\ntry {\n  await load();\n} catch (err) {\n  console.log(\"Could not load:\", err.message);\n}"
+   },
+   {
+    "h": "One after another, or together?",
+    "p": "Two awaits in a row run one after the other. If the jobs don't depend on each other, start them together and use `await Promise.all([...])`, which is faster.",
+    "code": "// slow: about 200 ms\n// const a = await job(100); const b = await job(100);\n// fast: about 100 ms\n// const [a, b] = await Promise.all([job(100), job(100)]);"
+   }
+  ],
+  "odoo": "OWL code loads data like this: `onWillStart(async () => { this.orders = await this.orm.searchRead(\"sale.order\", [], [\"name\"]); })`. You'll write that in the OWL lessons.",
+  "predict": {
+   "code": "async function f() {\n  console.log(\"in f\");\n  return 5;\n}\nconst p = f();\nconsole.log(typeof p);\nconsole.log(await p);",
+   "q": "What does this print?",
+   "opts": [
+    "in f\nnumber\n5",
+    "in f\nobject\n5",
+    "object\nin f\n5",
+    "in f\nobject\nundefined"
+   ],
+   "ans": 1,
+   "why": "The code before the first await runs at once, so \"in f\" prints first. An async function returns a promise (typeof \"object\"), and awaiting it gives 5."
+  },
+  "bug": {
+   "task": "`qty` should be the number 1200, but it's a Promise, so `total` is NaN. Fix it.",
+   "code": "const fetchQty = () => new Promise(r => setTimeout(() => r(1200), 10));\nconst qty = fetchQty();\nconst total = qty * 0.35;\nconsole.log(total);",
+   "test": "check(qty === 1200, \"qty should be 1200\");\ncheck(total === 420, \"total should be 420\");",
+   "hint": "You need to wait for the value.",
+   "solution": "const fetchQty = () => new Promise(r => setTimeout(() => r(1200), 10));\nconst qty = await fetchQty();\nconst total = qty * 0.35;\nconsole.log(total);"
+  },
+  "write": {
+   "task": "Write an async function `loadOrder(id)` that awaits `fakeServer(id)` and returns the order. If the server rejects, catch the error and return `null` instead. Then log `await loadOrder(1)` (an order) and `await loadOrder(99)` (null).",
+   "starter": "const fakeServer = id => new Promise((resolve, reject) => {\n  setTimeout(() => {\n    if (id === 1) resolve({ id: 1, name: \"OA-1001\", brand: \"Kontoor\" });\n    else reject(new Error(\"Record not found\"));\n  }, 10);\n});\n",
+   "test": "const a = await loadOrder(1);\ncheck(a && a.name === \"OA-1001\", \"loadOrder(1) should return the order\");\nconst b = await loadOrder(99);\ncheck(b === null, \"loadOrder(99) should return null\");\ncheck(/async/.test(__code) && /await/.test(__code) && /catch/.test(__code), \"Use async, await and try/catch\");",
+   "solution": "const fakeServer = id => new Promise((resolve, reject) => {\n  setTimeout(() => {\n    if (id === 1) resolve({ id: 1, name: \"OA-1001\", brand: \"Kontoor\" });\n    else reject(new Error(\"Record not found\"));\n  }, 10);\n});\nasync function loadOrder(id) {\n  try {\n    return await fakeServer(id);\n  } catch (err) {\n    return null;\n  }\n}\nconsole.log(await loadOrder(1));\nconsole.log(await loadOrder(99));"
+  },
+  "quiz": [
+   {
+    "q": "What does an async function always return?",
+    "opts": [
+     "undefined",
+     "A promise",
+     "A string",
+     "Whatever you return, unchanged"
+    ],
+    "ans": 1,
+    "why": "Even return 5 becomes a promise that resolves to 5."
+   },
+   {
+    "q": "How do you handle a rejected await?",
+    "opts": [
+     "if (error)",
+     "try / catch",
+     "Promise.ignore",
+     "You can't"
+    ],
+    "ans": 1,
+    "why": "A rejected promise makes await throw, so try/catch handles it."
+   },
+   {
+    "q": "Two independent server calls should be…",
+    "opts": [
+     "awaited one by one",
+     "started together with Promise.all",
+     "run in a while loop",
+     "avoided"
+    ],
+    "ans": 1,
+    "why": "Starting them together saves time."
+   }
+  ]
+ },
+ {
+  "id": "py15",
+  "track": "py",
+  "n": 15,
+  "unit": "Data structures",
+  "title": "Tuples and unpacking",
+  "goal": "Use tuples for fixed groups of values, and unpack them into names.",
+  "cards": [
+   {
+    "h": "A tuple is a fixed list",
+    "p": "Write a tuple with round brackets. Like a list it has order and indexes, but you can't change it after creating it. Use it for values that belong together.",
+    "code": "size = (5, \"inch\")\nprint(size[0])     # 5\n# size[0] = 7      -> TypeError"
+   },
+   {
+    "h": "Unpacking",
+    "p": "Put several names on the left of `=` to take the items out by position. The number of names must match.",
+    "code": "po = (\"PO-88412\", \"H&M\", 12000)\nnumber, brand, qty = po\nprint(brand, qty)   # H&M 12000"
+   },
+   {
+    "h": "Collect the rest with *",
+    "p": "A star name collects the remaining items into a list. `_` is a common name for a value you don't need.",
+    "code": "first, *rest = (10, 20, 30)\nprint(first, rest)   # 10 [20, 30]\n_, brand, _ = (\"PO-1\", \"GAP\", 500)\nprint(brand)         # GAP"
+   },
+   {
+    "h": "Functions returning several values",
+    "p": "`return a, b` actually returns a tuple. Unpack it where you call the function. `divmod()` is a built-in example.",
+    "code": "boxes, left = divmod(12345, 500)\nprint(boxes, left)   # 24 345\none = (\"only\",)       # a one-item tuple needs a comma"
+   }
+  ],
+  "odoo": "Odoo domains are lists of tuples, like [('state', '=', 'sale'), ('amount_total', '>', 1000)]. Selection fields are defined as tuples too: ('draft', 'Draft').",
+  "predict": {
+   "code": "a, *b, c = (1, 2, 3, 4)\nprint(a, b, c)",
+   "q": "What does this print?",
+   "opts": [
+    "1 [2, 3] 4",
+    "1 2 3",
+    "1 (2, 3) 4",
+    "Error"
+   ],
+   "ans": 0,
+   "why": "a takes the first item, c the last, and *b collects what's in between into a list."
+  },
+  "bug": {
+   "task": "This crashes with a ValueError. The tuple has four values. Unpack it so `po`, `brand`, `qty` and `price` get the four values, then print the total.",
+   "code": "line = (\"PO-501\", \"Kontoor\", 2000, 0.4)\npo, brand, qty = line\nprint(qty * price)",
+   "test": "assert (po, brand, qty, price) == (\"PO-501\", \"Kontoor\", 2000, 0.4), \"Unpack all four values\"\nassert \"800\" in _output, \"Print the total, 800.0\"",
+   "hint": "The number of names on the left must match the number of items.",
+   "solution": "line = (\"PO-501\", \"Kontoor\", 2000, 0.4)\npo, brand, qty, price = line\nprint(qty * price)"
+  },
+  "write": {
+   "task": "`lines` is a list of (brand, qty) tuples. Loop over it, unpacking each tuple in the for line itself (`for brand, qty in lines:`), and print `brand: qty` for each. Also add up `total` (it should be 4900).",
+   "starter": "lines = [(\"H&M\", 1200), (\"GAP\", 300), (\"Kohl's\", 3400)]\n",
+   "test": "assert total == 4900, \"total should be 4900\"\nassert \"H&M: 1200\" in _output and \"Kohl's: 3400\" in _output, \"Print lines like H&M: 1200\"\nassert \"for brand, qty in\" in _code.replace(\"(\", \"\").replace(\")\", \"\"), \"Unpack in the for line: for brand, qty in lines:\"",
+   "solution": "lines = [(\"H&M\", 1200), (\"GAP\", 300), (\"Kohl's\", 3400)]\ntotal = 0\nfor brand, qty in lines:\n    print(f\"{brand}: {qty}\")\n    total += qty\nprint(total)"
+  },
+  "quiz": [
+   {
+    "q": "What is the main difference between a tuple and a list?",
+    "opts": [
+     "Tuples can't be indexed",
+     "Tuples can't be changed",
+     "Tuples only hold numbers",
+     "Tuples are slower"
+    ],
+    "ans": 1,
+    "why": "Tuples are immutable."
+   },
+   {
+    "q": "What is type((5))?",
+    "opts": [
+     "tuple",
+     "int",
+     "list",
+     "Error"
+    ],
+    "ans": 1,
+    "why": "Brackets alone don't make a tuple. (5,) with a comma does."
+   },
+   {
+    "q": "What does return x, y give the caller?",
+    "opts": [
+     "Only x",
+     "A list",
+     "A tuple (x, y)",
+     "An error"
+    ],
+    "ans": 2,
+    "why": "Commas create a tuple."
+   }
+  ]
+ },
+ {
+  "id": "js15",
+  "track": "js",
+  "n": 15,
+  "unit": "The DOM",
+  "title": "Selecting and changing the page",
+  "runner": "dom",
+  "goal": "Find elements on a web page and change their text, classes and attributes.",
+  "cards": [
+   {
+    "h": "The DOM",
+    "p": "The browser turns HTML into a tree of objects called the DOM (Document Object Model). JavaScript changes the page by changing these objects. From today, your code runs in a real mini page; Run shows it below your output.",
+    "code": "document.body.innerHTML = \"<h1>Orders</h1><p id='count'>0 orders</p>\";\nconsole.log(document.querySelector(\"h1\").textContent);   // Orders"
+   },
+   {
+    "h": "querySelector",
+    "p": "`document.querySelector(css)` returns the first element that matches a CSS selector, or `null`. `querySelectorAll` returns all of them.",
+    "code": "document.querySelector(\"#count\");      // by id\ndocument.querySelector(\".late\");       // by class\ndocument.querySelectorAll(\"li\");       // all <li> elements"
+   },
+   {
+    "h": "Change text and HTML",
+    "p": "`textContent` sets plain text (safe). `innerHTML` parses HTML; never put user input into it, or someone could inject code.",
+    "code": "const p = document.querySelector(\"#count\");\np.textContent = \"3 orders\";"
+   },
+   {
+    "h": "Classes, attributes, new elements",
+    "p": "`classList.add/remove/toggle` changes CSS classes. `setAttribute` sets attributes. `createElement` + `append` adds new elements.",
+    "code": "p.classList.add(\"late\");\np.setAttribute(\"title\", \"Updated today\");\nconst li = document.createElement(\"li\");\nli.textContent = \"PO-1\";\ndocument.body.append(li);"
+   }
+  ],
+  "odoo": "In OWL you rarely touch the DOM by hand: you change state and the template updates the page. But knowing the DOM explains what OWL does for you, and you'll still use it with refs and in tests.",
+  "predict": {
+   "code": "document.body.innerHTML = \"<ul><li>GAP</li><li class='x'>H&amp;M</li><li class='x'>Kohl's</li></ul>\";\nconst items = document.querySelectorAll(\".x\");\nconsole.log(items.length, items[0].textContent, document.querySelector(\"li\").textContent);",
+   "q": "What does this print?",
+   "opts": [
+    "2 H&M GAP",
+    "3 GAP GAP",
+    "2 H&amp;M GAP",
+    "2 H&M H&M"
+   ],
+   "ans": 0,
+   "why": "Two items have class x; the first is H&M (textContent shows the real character, not &amp;). querySelector(\"li\") finds the first <li>, GAP."
+  },
+  "bug": {
+   "task": "This should change the status text to `Shipped`, but it crashes. Fix the selector.",
+   "code": "document.body.innerHTML = \"<p id='status'>Pending</p>\";\nconst el = document.querySelector(\"status\");\nel.textContent = \"Shipped\";",
+   "test": "check(document.querySelector(\"#status\").textContent === \"Shipped\", \"The #status paragraph should say Shipped\");",
+   "hint": "To select by id, the CSS selector needs a #.",
+   "solution": "document.body.innerHTML = \"<p id='status'>Pending</p>\";\nconst el = document.querySelector(\"#status\");\nel.textContent = \"Shipped\";"
+  },
+  "write": {
+   "task": "The page has a list of shipments. Using JavaScript (don't edit the HTML string):\n1. Add the class `late` to every <li> whose `data-days` is more than 0. (Read it with `li.dataset.days`.)\n2. Set the #summary text to `2 late of 4`.\n3. Add a new <li> with the text `SH-5` at the end of the list.",
+   "starter": "document.body.innerHTML = `\n  <ul id=\"list\">\n    <li data-days=\"0\">SH-1</li>\n    <li data-days=\"3\">SH-2</li>\n    <li data-days=\"0\">SH-3</li>\n    <li data-days=\"1\">SH-4</li>\n  </ul>\n  <p id=\"summary\"></p>`;\n\n// your code here\n",
+   "test": "const lis = [...document.querySelectorAll(\"#list li\")];\ncheck(lis.length === 5 && lis[4].textContent === \"SH-5\", \"Add <li>SH-5</li> at the end of #list\");\ncheck(lis[1].classList.contains(\"late\") && lis[3].classList.contains(\"late\"), \"SH-2 and SH-4 should have the class late\");\ncheck(!lis[0].classList.contains(\"late\") && !lis[2].classList.contains(\"late\"), \"SH-1 and SH-3 are on time\");\ncheck(document.querySelector(\"#summary\").textContent === \"2 late of 4\", \"#summary should say: 2 late of 4\");",
+   "solution": "document.body.innerHTML = `\n  <ul id=\"list\">\n    <li data-days=\"0\">SH-1</li>\n    <li data-days=\"3\">SH-2</li>\n    <li data-days=\"0\">SH-3</li>\n    <li data-days=\"1\">SH-4</li>\n  </ul>\n  <p id=\"summary\"></p>`;\n\nconst items = document.querySelectorAll(\"#list li\");\nlet late = 0;\nfor (const li of items) {\n  if (Number(li.dataset.days) > 0) {\n    li.classList.add(\"late\");\n    late++;\n  }\n}\ndocument.querySelector(\"#summary\").textContent = `${late} late of ${items.length}`;\nconst li = document.createElement(\"li\");\nli.textContent = \"SH-5\";\ndocument.querySelector(\"#list\").append(li);\n"
+  },
+  "quiz": [
+   {
+    "q": "What does querySelector return when nothing matches?",
+    "opts": [
+     "undefined",
+     "null",
+     "An empty list",
+     "An error"
+    ],
+    "ans": 1,
+    "why": "It returns null, so calling a method on the result crashes."
+   },
+   {
+    "q": "Which is safe for text that came from a user?",
+    "opts": [
+     "innerHTML",
+     "textContent",
+     "outerHTML",
+     "document.write"
+    ],
+    "ans": 1,
+    "why": "textContent never parses HTML."
+   },
+   {
+    "q": "How do you select elements with class late?",
+    "opts": [
+     "\"late\"",
+     "\"#late\"",
+     "\".late\"",
+     "\"<late>\""
+    ],
+    "ans": 2,
+    "why": "In CSS, . means class and # means id."
+   }
+  ]
+ },
+ {
+  "id": "py16",
+  "track": "py",
+  "n": 16,
+  "unit": "Data structures",
+  "title": "Dictionaries",
+  "goal": "Store data by name with dictionaries: create, read, add, change and delete.",
+  "cards": [
+   {
+    "h": "Keys and values",
+    "p": "A dictionary maps keys to values, written `{key: value}`. You look a value up by its key, not by position.",
+    "code": "order = {\"po\": \"PO-88412\", \"brand\": \"H&M\", \"qty\": 12000}\nprint(order[\"brand\"])   # H&M"
+   },
+   {
+    "h": "Add and change",
+    "p": "Assigning to a key adds it if it's new, or replaces the value if it exists. Keys are unique.",
+    "code": "order = {\"brand\": \"H&M\"}\norder[\"qty\"] = 12000      # add\norder[\"qty\"] = 15000      # change\nprint(order)   # {'brand': 'H&M', 'qty': 15000}"
+   },
+   {
+    "h": "Missing keys",
+    "p": "Reading a key that doesn't exist raises KeyError. Check first with `in`, or use `get()`, which returns None (or your default) instead.",
+    "code": "order = {\"brand\": \"GAP\"}\nprint(\"qty\" in order)          # False\nprint(order.get(\"qty\"))        # None\nprint(order.get(\"qty\", 0))     # 0"
+   },
+   {
+    "h": "Delete",
+    "p": "`del d[key]` removes a key. `pop(key)` removes it and gives back the value.",
+    "code": "order = {\"brand\": \"GAP\", \"note\": \"rush\", \"qty\": 5}\ndel order[\"note\"]\nqty = order.pop(\"qty\")\nprint(order, qty)   # {'brand': 'GAP'} 5"
+   }
+  ],
+  "odoo": "Dictionaries are Odoo's daily bread: `self.env['sale.order'].create({'partner_id': 7, 'note': 'rush'})` takes a dict of field values, and `write()` does too.",
+  "predict": {
+   "code": "d = {\"a\": 1, \"b\": 2}\nd[\"a\"] = d.get(\"c\", 10) + d[\"b\"]\nprint(d)",
+   "q": "What does this print?",
+   "opts": [
+    "{'a': 3, 'b': 2}",
+    "{'a': 12, 'b': 2}",
+    "{'a': 1, 'b': 2, 'c': 10}",
+    "KeyError"
+   ],
+   "ans": 1,
+   "why": "There is no \"c\", so get returns the default 10. 10 + 2 = 12 replaces the value of \"a\". get() doesn't add the key."
+  },
+  "bug": {
+   "task": "This crashes with KeyError because some orders have no `note`. Make `note` the order's note, or the text \"-\" if there isn't one.",
+   "code": "order = {\"po\": \"PO-7\", \"brand\": \"Carter's\"}\nnote = order[\"note\"]\nprint(note)",
+   "test": "assert note == \"-\", \"note should be - when there is no note\"",
+   "hint": "One dictionary method takes a default value.",
+   "solution": "order = {\"po\": \"PO-7\", \"brand\": \"Carter's\"}\nnote = order.get(\"note\", \"-\")\nprint(note)"
+  },
+  "write": {
+   "task": "Start with `stock = {\"zipper\": 5000, \"slider\": 1200}`.\n1. Add \"puller\" with 800.\n2. Reduce \"zipper\" by 1500.\n3. Remove \"slider\" with pop() and keep the value in `removed`.\nPrint stock and removed.",
+   "starter": "stock = {\"zipper\": 5000, \"slider\": 1200}\n",
+   "test": "assert stock == {\"zipper\": 3500, \"puller\": 800}, \"stock should be {'zipper': 3500, 'puller': 800}\"\nassert removed == 1200, \"removed should be 1200\"\nassert \"pop(\" in _code, \"Use pop()\"",
+   "solution": "stock = {\"zipper\": 5000, \"slider\": 1200}\nstock[\"puller\"] = 800\nstock[\"zipper\"] -= 1500\nremoved = stock.pop(\"slider\")\nprint(stock, removed)"
+  },
+  "quiz": [
+   {
+    "q": "What happens with d[\"x\"] = 1 if \"x\" already exists?",
+    "opts": [
+     "Error",
+     "The value is replaced",
+     "A second x is added",
+     "Nothing"
+    ],
+    "ans": 1,
+    "why": "Keys are unique; assignment replaces the value."
+   },
+   {
+    "q": "What does {}.get(\"a\") return?",
+    "opts": [
+     "KeyError",
+     "None",
+     "False",
+     "\"\""
+    ],
+    "ans": 1,
+    "why": "get returns None when the key is missing and no default is given."
+   },
+   {
+    "q": "How do you check if a key is in a dict?",
+    "opts": [
+     "d.has(\"k\")",
+     "\"k\" in d",
+     "d.contains(\"k\")",
+     "d[\"k\"] == True"
+    ],
+    "ans": 1,
+    "why": "in checks the keys."
+   }
+  ]
+ },
+ {
+  "id": "js16",
+  "track": "js",
+  "n": 16,
+  "unit": "The DOM",
+  "title": "Events",
+  "runner": "dom",
+  "goal": "React to clicks, typing and form submits with event listeners.",
+  "cards": [
+   {
+    "h": "addEventListener",
+    "p": "`element.addEventListener(\"click\", handler)` runs the handler each time the event happens. The handler receives an event object.",
+    "code": "document.body.innerHTML = \"<button>Confirm</button>\";\nconst btn = document.querySelector(\"button\");\nbtn.addEventListener(\"click\", ev => {\n  console.log(\"clicked\", ev.type);\n});\nbtn.click();   // clicked click"
+   },
+   {
+    "h": "Reading input",
+    "p": "The `input` event fires on each key press in a field. `ev.target` is the element, and `ev.target.value` is its text.",
+    "code": "document.body.innerHTML = \"<input id='qty'>\";\ndocument.querySelector(\"#qty\").addEventListener(\"input\", ev => {\n  console.log(\"qty is now\", ev.target.value);\n});"
+   },
+   {
+    "h": "preventDefault on forms",
+    "p": "Submitting a form normally reloads the page. Call `ev.preventDefault()` to handle it in JavaScript instead.",
+    "code": "document.body.innerHTML = \"<form><input name='po'><button>Add</button></form>\";\ndocument.querySelector(\"form\").addEventListener(\"submit\", ev => {\n  ev.preventDefault();\n  console.log(\"add\", ev.target.elements.po.value);\n});"
+   },
+   {
+    "h": "Bubbling and delegation",
+    "p": "Events bubble up from the clicked element to its parents. One listener on a list can handle clicks on every item: check `ev.target`.",
+    "code": "document.body.innerHTML = \"<ul><li>PO-1</li><li>PO-2</li></ul>\";\ndocument.querySelector(\"ul\").addEventListener(\"click\", ev => {\n  if (ev.target.tagName === \"LI\") console.log(ev.target.textContent);\n});"
+   }
+  ],
+  "odoo": "OWL's `t-on-click=\"this.save\"` is addEventListener written in the template. Its `.prevent` and `.stop` modifiers call preventDefault() and stopPropagation() for you.",
+  "predict": {
+   "code": "document.body.innerHTML = \"<div id='box'><button>Go</button></div>\";\ndocument.querySelector(\"#box\").addEventListener(\"click\", () => console.log(\"box\"));\ndocument.querySelector(\"button\").addEventListener(\"click\", () => console.log(\"button\"));\ndocument.querySelector(\"button\").click();",
+   "q": "What does this print?",
+   "opts": [
+    "box\nbutton",
+    "button\nbox",
+    "button",
+    "box"
+   ],
+   "ans": 1,
+   "why": "The click starts at the button, then bubbles up to its parent div, so button logs first, then box."
+  },
+  "bug": {
+   "task": "Clicking the button should add 1 to the counter text each time, but nothing changes. Fix it.",
+   "code": "document.body.innerHTML = \"<button>Add carton</button><span id='n'>0</span>\";\nlet count = 0;\nconst btn = document.querySelector(\"button\");\nbtn.addEventListener(\"click\", update());\nfunction update() {\n  count++;\n  document.querySelector(\"#n\").textContent = count;\n}",
+   "test": "const b = document.querySelector(\"button\"), n = document.querySelector(\"#n\");\nconst start = Number(n.textContent);\nb.click(); b.click();\ncheck(Number(n.textContent) === start + 2, \"Each click should add 1 to the number\");\ncheck(start === 0, \"The number should start at 0 (don't call update right away)\");",
+   "hint": "Pass the function itself. With brackets, you call it once and pass its result (undefined).",
+   "solution": "document.body.innerHTML = \"<button>Add carton</button><span id='n'>0</span>\";\nlet count = 0;\nconst btn = document.querySelector(\"button\");\nbtn.addEventListener(\"click\", update);\nfunction update() {\n  count++;\n  document.querySelector(\"#n\").textContent = count;\n}"
+  },
+  "write": {
+   "task": "Make the form work: on submit, prevent the page reload, read the qty field as a number, and if it's more than 0, add it to `total` and show `Total: <total>` in #total. Then clear the field.",
+   "starter": "document.body.innerHTML = `\n  <form id=\"f\"><input id=\"qty\" type=\"number\"><button>Add</button></form>\n  <p id=\"total\">Total: 0</p>`;\nlet total = 0;\n\n// your code here\n",
+   "test": "const f = document.querySelector(\"#f\"), q = document.querySelector(\"#qty\");\nconst submit = v => { q.value = v; f.requestSubmit(); };\nsubmit(\"1200\"); submit(\"500\"); submit(\"-5\");\ncheck(total === 1700, \"After adding 1200 and 500 (and ignoring -5), total should be 1700\");\ncheck(document.querySelector(\"#total\").textContent === \"Total: 1700\", \"#total should say Total: 1700\");\ncheck(q.value === \"\" || q.value === \"-5\", \"Clear the field after adding\");\ncheck(__code.includes(\"preventDefault\"), \"Call preventDefault() in the submit handler\");",
+   "solution": "document.body.innerHTML = `\n  <form id=\"f\"><input id=\"qty\" type=\"number\"><button>Add</button></form>\n  <p id=\"total\">Total: 0</p>`;\nlet total = 0;\n\nconst input = document.querySelector(\"#qty\");\ndocument.querySelector(\"#f\").addEventListener(\"submit\", ev => {\n  ev.preventDefault();\n  const qty = Number(input.value);\n  if (qty > 0) {\n    total += qty;\n    document.querySelector(\"#total\").textContent = `Total: ${total}`;\n    input.value = \"\";\n  }\n});\n"
+  },
+  "quiz": [
+   {
+    "q": "What does ev.preventDefault() do on a form submit?",
+    "opts": [
+     "Stops the event bubbling",
+     "Stops the browser's default action (reloading the page)",
+     "Deletes the form",
+     "Clears the inputs"
+    ],
+    "ans": 1,
+    "why": "It cancels the default action; stopPropagation stops bubbling."
+   },
+   {
+    "q": "btn.addEventListener(\"click\", save()) is wrong because…",
+    "opts": [
+     "click isn't an event",
+     "save() runs immediately and its return value is passed",
+     "You need quotes around save",
+     "Nothing is wrong"
+    ],
+    "ans": 1,
+    "why": "Pass the function, save, not the result of calling it."
+   },
+   {
+    "q": "Which event fires on every key press in a text field?",
+    "opts": [
+     "change",
+     "input",
+     "submit",
+     "click"
+    ],
+    "ans": 1,
+    "why": "input fires on each change; change fires when the field loses focus."
+   }
+  ]
+ },
+ {
+  "id": "py17",
+  "track": "py",
+  "n": 17,
+  "unit": "Data structures",
+  "title": "Dictionary methods and looping",
+  "goal": "Loop over dictionaries and use their methods to count and group data.",
+  "cards": [
+   {
+    "h": "keys(), values(), items()",
+    "p": "Looping over a dict gives its keys. `values()` gives the values. `items()` gives (key, value) pairs, which you unpack in the for line.",
+    "code": "stock = {\"zipper\": 5000, \"slider\": 1200}\nfor name, qty in stock.items():\n    print(name, qty)\nprint(sum(stock.values()))   # 6200"
+   },
+   {
+    "h": "Counting with get()",
+    "p": "A classic pattern: count how many times each thing appears. `get(key, 0)` gives 0 the first time.",
+    "code": "brands = [\"GAP\", \"H&M\", \"GAP\", \"GAP\"]\ncount = {}\nfor b in brands:\n    count[b] = count.get(b, 0) + 1\nprint(count)   # {'GAP': 3, 'H&M': 1}"
+   },
+   {
+    "h": "Grouping with setdefault()",
+    "p": "`setdefault(key, [])` returns the list for that key, creating it if needed. Then you append to it.",
+    "code": "lines = [(\"GAP\", \"PO-1\"), (\"H&M\", \"PO-2\"), (\"GAP\", \"PO-3\")]\nby_brand = {}\nfor brand, po in lines:\n    by_brand.setdefault(brand, []).append(po)\nprint(by_brand)   # {'GAP': ['PO-1', 'PO-3'], 'H&M': ['PO-2']}"
+   },
+   {
+    "h": "update() and order",
+    "p": "`update(other)` copies keys from another dict, replacing existing ones. Dicts keep the order in which keys were added.",
+    "code": "defaults = {\"state\": \"draft\", \"qty\": 0}\ndefaults.update({\"qty\": 500, \"brand\": \"GAP\"})\nprint(defaults)   # {'state': 'draft', 'qty': 500, 'brand': 'GAP'}"
+   }
+  ],
+  "odoo": "This counting and grouping is what read_group does in the database. In Python, you'll often build dicts like {partner_id: total} before writing a report or a summary.",
+  "predict": {
+   "code": "d = {\"a\": 1}\nfor k in [\"a\", \"b\", \"a\"]:\n    d[k] = d.get(k, 0) + 1\nprint(d)",
+   "q": "What does this print?",
+   "opts": [
+    "{'a': 2, 'b': 1}",
+    "{'a': 3, 'b': 1}",
+    "{'a': 1, 'b': 1}",
+    "{'a': 3}"
+   ],
+   "ans": 1,
+   "why": "a starts at 1 and is counted twice (3). b starts from the default 0 (1)."
+  },
+  "bug": {
+   "task": "This should count orders per brand, but it crashes with KeyError on the first brand. Fix it.",
+   "code": "brands = [\"GAP\", \"H&M\", \"GAP\"]\ncount = {}\nfor b in brands:\n    count[b] = count[b] + 1\nprint(count)",
+   "test": "assert count == {\"GAP\": 2, \"H&M\": 1}, \"count should be {'GAP': 2, 'H&M': 1}\"",
+   "hint": "The first time you see a brand, it isn't in the dict yet. Use a method with a default.",
+   "solution": "brands = [\"GAP\", \"H&M\", \"GAP\"]\ncount = {}\nfor b in brands:\n    count[b] = count.get(b, 0) + 1\nprint(count)"
+  },
+  "write": {
+   "task": "From `lines` (brand, qty), build `totals`: a dict of total qty per brand. Then print one line per brand like `GAP: 1700`, and store the brand with the biggest total in `top` (it should be \"Kohl's\").",
+   "starter": "lines = [(\"GAP\", 1200), (\"Kohl's\", 3400), (\"GAP\", 500), (\"H&M\", 900), (\"H&M\", 400)]\n",
+   "test": "assert totals == {\"GAP\": 1700, \"Kohl's\": 3400, \"H&M\": 1300}, \"totals per brand are wrong\"\nassert top == \"Kohl's\", \"top should be Kohl's\"\nassert \"GAP: 1700\" in _output, \"Print lines like GAP: 1700\"",
+   "solution": "lines = [(\"GAP\", 1200), (\"Kohl's\", 3400), (\"GAP\", 500), (\"H&M\", 900), (\"H&M\", 400)]\ntotals = {}\nfor brand, qty in lines:\n    totals[brand] = totals.get(brand, 0) + qty\nfor brand, total in totals.items():\n    print(f\"{brand}: {total}\")\ntop = None\nfor brand, total in totals.items():\n    if top is None or total > totals[top]:\n        top = brand\nprint(top)"
+  },
+  "quiz": [
+   {
+    "q": "for x in my_dict: gives x as…",
+    "opts": [
+     "values",
+     "keys",
+     "(key, value) pairs",
+     "indexes"
+    ],
+    "ans": 1,
+    "why": "Looping over a dict gives its keys. Use items() for pairs."
+   },
+   {
+    "q": "What does d.setdefault(\"k\", []) return?",
+    "opts": [
+     "Always a new list",
+     "The existing value for k, or the new [] it just stored",
+     "None",
+     "True"
+    ],
+    "ans": 1,
+    "why": "It stores the default only if the key is missing, then returns the value."
+   },
+   {
+    "q": "In which order are keys kept?",
+    "opts": [
+     "Random",
+     "Sorted",
+     "The order they were added",
+     "Reverse"
+    ],
+    "ans": 2,
+    "why": "Since Python 3.7, dicts keep insertion order."
+   }
+  ]
+ },
+ {
+  "id": "js17",
+  "track": "js",
+  "n": 17,
+  "unit": "The DOM",
+  "title": "Practice: a to-do list in plain JavaScript",
+  "runner": "dom",
+  "goal": "Build a small to-do list in plain JavaScript, and feel why frameworks like OWL exist.",
+  "cards": [
+   {
+    "h": "State first",
+    "p": "Keep the data in a JavaScript array (the state). The page is just a picture of that state.",
+    "code": "const todos = [\n  { id: 1, text: \"Confirm OA-1001\", done: false },\n  { id: 2, text: \"Send PI to GAP\", done: true },\n];"
+   },
+   {
+    "h": "One render function",
+    "p": "Write one function that rebuilds the list from the state. After every change to the state, call it again.",
+    "code": "function render() {\n  const ul = document.querySelector(\"#todos\");\n  ul.innerHTML = \"\";\n  for (const t of todos) {\n    const li = document.createElement(\"li\");\n    li.textContent = t.text;\n    li.classList.toggle(\"done\", t.done);\n    ul.append(li);\n  }\n}"
+   },
+   {
+    "h": "Change state, then render",
+    "p": "Event handlers only change the state and call render(). Use `data-` attributes so a click knows which item it belongs to.",
+    "code": "// li.dataset.id = t.id;   when rendering\n// on click: find the todo by id, flip done, render()"
+   },
+   {
+    "h": "The pain point",
+    "p": "You must remember to call render() every time, and rebuilding everything is slow for big lists. OWL solves both: it re-renders automatically when reactive state changes, and only updates what changed."
+   }
+  ],
+  "odoo": "This 'state → render' idea is exactly how OWL components work in Odoo. Tomorrow you'll write the same kind of thing as an OWL component, without a manual render().",
+  "predict": {
+   "code": "document.body.innerHTML = \"<ul id='l'></ul>\";\nconst items = [\"A\", \"B\"];\nfunction render() {\n  document.querySelector(\"#l\").innerHTML = items.map(x => `<li>${x}</li>`).join(\"\");\n}\nrender();\nitems.push(\"C\");\nconsole.log(document.querySelectorAll(\"li\").length);\nrender();\nconsole.log(document.querySelectorAll(\"li\").length);",
+   "q": "What does this print?",
+   "opts": [
+    "2\n3",
+    "3\n3",
+    "2\n2",
+    "3\n2"
+   ],
+   "ans": 0,
+   "why": "Changing the array doesn't change the page. Only after render() runs again does the page show 3 items."
+  },
+  "bug": {
+   "task": "Clicking Add should add the typed task to the list, but the list never updates on screen. Fix it.",
+   "code": "document.body.innerHTML = `<input id=\"t\"><button id=\"add\">Add</button><ul id=\"todos\"></ul>`;\nconst todos = [];\nfunction render() {\n  document.querySelector(\"#todos\").innerHTML = \"\";\n  for (const t of todos) {\n    const li = document.createElement(\"li\");\n    li.textContent = t;\n    document.querySelector(\"#todos\").append(li);\n  }\n}\ndocument.querySelector(\"#add\").addEventListener(\"click\", () => {\n  const input = document.querySelector(\"#t\");\n  todos.push(input.value);\n  input.value = \"\";\n});\nrender();",
+   "test": "document.querySelector(\"#t\").value = \"Book vessel\";\ndocument.querySelector(\"#add\").click();\nconst lis = document.querySelectorAll(\"#todos li\");\ncheck(lis.length === 1 && lis[0].textContent === \"Book vessel\", \"After clicking Add, the list should show the new task\");",
+   "hint": "The state changes, but who updates the page afterwards?",
+   "solution": "document.body.innerHTML = `<input id=\"t\"><button id=\"add\">Add</button><ul id=\"todos\"></ul>`;\nconst todos = [];\nfunction render() {\n  document.querySelector(\"#todos\").innerHTML = \"\";\n  for (const t of todos) {\n    const li = document.createElement(\"li\");\n    li.textContent = t;\n    document.querySelector(\"#todos\").append(li);\n  }\n}\ndocument.querySelector(\"#add\").addEventListener(\"click\", () => {\n  const input = document.querySelector(\"#t\");\n  todos.push(input.value);\n  input.value = \"\";\n  render();\n});\nrender();"
+  },
+  "write": {
+   "task": "Finish the to-do list:\n1. `render()` must show each todo as an <li> with `data-id` set to its id, and the class `done` when it's done.\n2. Clicking an <li> toggles its todo's `done` (use one listener on the <ul>).\n3. #left shows how many are not done, like `1 left`.",
+   "starter": "document.body.innerHTML = `<ul id=\"todos\"></ul><p id=\"left\"></p>`;\nconst todos = [\n  { id: 1, text: \"Confirm OA-1001\", done: false },\n  { id: 2, text: \"Send PI to GAP\", done: true },\n  { id: 3, text: \"Book shipment\", done: false },\n];\n\nfunction render() {\n  // build the list and the counter here\n}\n\n// one click listener on #todos here\n\nrender();\n",
+   "test": "const lis = () => [...document.querySelectorAll(\"#todos li\")];\ncheck(lis().length === 3, \"Show the 3 todos as <li> elements\");\ncheck(lis()[1].classList.contains(\"done\") && !lis()[0].classList.contains(\"done\"), \"Only done todos have the class done\");\ncheck(document.querySelector(\"#left\").textContent === \"2 left\", \"#left should say 2 left\");\nlis()[0].click();\ncheck(todos[0].done === true, \"Clicking the first item should mark it done\");\ncheck(lis()[0].classList.contains(\"done\") && document.querySelector(\"#left\").textContent === \"1 left\", \"After the click, re-render: the item is done and #left says 1 left\");\nlis()[1].click();\ncheck(todos[1].done === false, \"Clicking a done item should make it not done\");",
+   "solution": "document.body.innerHTML = `<ul id=\"todos\"></ul><p id=\"left\"></p>`;\nconst todos = [\n  { id: 1, text: \"Confirm OA-1001\", done: false },\n  { id: 2, text: \"Send PI to GAP\", done: true },\n  { id: 3, text: \"Book shipment\", done: false },\n];\n\nfunction render() {\n  const ul = document.querySelector(\"#todos\");\n  ul.innerHTML = \"\";\n  for (const t of todos) {\n    const li = document.createElement(\"li\");\n    li.textContent = t.text;\n    li.dataset.id = t.id;\n    li.classList.toggle(\"done\", t.done);\n    ul.append(li);\n  }\n  const left = todos.filter(t => !t.done).length;\n  document.querySelector(\"#left\").textContent = `${left} left`;\n}\n\ndocument.querySelector(\"#todos\").addEventListener(\"click\", ev => {\n  const li = ev.target.closest(\"li\");\n  if (!li) return;\n  const todo = todos.find(t => t.id === Number(li.dataset.id));\n  todo.done = !todo.done;\n  render();\n});\n\nrender();\n"
+  },
+  "quiz": [
+   {
+    "q": "In the 'state → render' pattern, what do event handlers do?",
+    "opts": [
+     "Edit the HTML directly",
+     "Change the state, then render",
+     "Reload the page",
+     "Nothing"
+    ],
+    "ans": 1,
+    "why": "Keep one source of truth: the state."
+   },
+   {
+    "q": "Why put data-id on each <li>?",
+    "opts": [
+     "For CSS only",
+     "So a click can find which todo it belongs to",
+     "It's required by HTML",
+     "To sort the list"
+    ],
+    "ans": 1,
+    "why": "The listener reads ev.target's data-id to find the right item."
+   },
+   {
+    "q": "What does OWL add to this pattern?",
+    "opts": [
+     "Nothing",
+     "It re-renders automatically when reactive state changes",
+     "It removes the need for state",
+     "It only works on the server"
+    ],
+    "ans": 1,
+    "why": "Reactive state means no manual render() calls."
+   }
+  ]
+ },
+ {
+  "id": "py18",
+  "track": "py",
+  "n": 18,
+  "unit": "Data structures",
+  "title": "Sets",
+  "goal": "Use sets to remove duplicates and compare groups of values.",
+  "cards": [
+   {
+    "h": "A set holds unique values",
+    "p": "Write a set with braces, or convert a list with `set()`. Duplicates disappear. A set has no order and no indexes.",
+    "code": "brands = set([\"GAP\", \"H&M\", \"GAP\"])\nprint(len(brands))   # 2\nempty = set()        # {} would be an empty dict!"
+   },
+   {
+    "h": "Fast membership",
+    "p": "`in` is very fast on a set, even with millions of items. `add()` and `discard()` change it.",
+    "code": "shipped = {\"PO-1\", \"PO-2\"}\nshipped.add(\"PO-3\")\nshipped.discard(\"PO-9\")   # no error if missing\nprint(\"PO-2\" in shipped)  # True"
+   },
+   {
+    "h": "Set maths",
+    "p": "`|` union (in either), `&` intersection (in both), `-` difference (in the first, not the second).",
+    "code": "ordered = {\"PO-1\", \"PO-2\", \"PO-3\"}\nshipped = {\"PO-2\", \"PO-3\", \"PO-4\"}\nprint(sorted(ordered & shipped))   # ['PO-2', 'PO-3']\nprint(sorted(ordered - shipped))   # ['PO-1']"
+   },
+   {
+    "h": "Only hashable items",
+    "p": "Set items (and dict keys) must be unchangeable types: numbers, strings, tuples. A list can't go in a set. To print a set in a fixed order, use `sorted()`."
+   }
+  ],
+  "odoo": "Odoo recordsets support the same operators: `orders_a | orders_b` (union) and `orders_a & orders_b` (intersection), and they also remove duplicates.",
+  "predict": {
+   "code": "a = {1, 2, 3}\nb = {3, 4}\nprint(sorted(a | b), sorted(a - b), len(a & b))",
+   "q": "What does this print?",
+   "opts": [
+    "[1, 2, 3, 4] [1, 2] 1",
+    "[1, 2, 3, 3, 4] [1, 2] 1",
+    "[1, 2, 3, 4] [4] 1",
+    "[3] [1, 2] 2"
+   ],
+   "ans": 0,
+   "why": "Union has each value once. a - b keeps 1 and 2. Only 3 is in both, so the intersection has 1 item."
+  },
+  "bug": {
+   "task": "`unique` should be a set of the brands. This crashes. Fix the way the set is created and filled.",
+   "code": "names = [\"GAP\", \"H&M\", \"GAP\", \"Kohl's\"]\nunique = {}\nfor n in names:\n    unique.add(n)\nprint(sorted(unique))",
+   "test": "assert unique == {\"GAP\", \"H&M\", \"Kohl's\"}, \"unique should hold the 3 brands\"",
+   "hint": "{} creates an empty dictionary, not an empty set.",
+   "solution": "names = [\"GAP\", \"H&M\", \"GAP\", \"Kohl's\"]\nunique = set()\nfor n in names:\n    unique.add(n)\nprint(sorted(unique))"
+  },
+  "write": {
+   "task": "`ordered` and `shipped` are lists of PO numbers. Using sets, create:\n- `missing`: POs ordered but not shipped\n- `extra`: POs shipped but never ordered\n- `both`: POs in both\nPrint each one sorted.",
+   "starter": "ordered = [\"PO-1\", \"PO-2\", \"PO-3\", \"PO-4\", \"PO-2\"]\nshipped = [\"PO-2\", \"PO-4\", \"PO-5\"]\n",
+   "test": "assert set(missing) == {\"PO-1\", \"PO-3\"}, \"missing should be PO-1 and PO-3\"\nassert set(extra) == {\"PO-5\"}, \"extra should be PO-5\"\nassert set(both) == {\"PO-2\", \"PO-4\"}, \"both should be PO-2 and PO-4\"\nassert \"set(\" in _code, \"Use sets\"",
+   "solution": "ordered = [\"PO-1\", \"PO-2\", \"PO-3\", \"PO-4\", \"PO-2\"]\nshipped = [\"PO-2\", \"PO-4\", \"PO-5\"]\no, s = set(ordered), set(shipped)\nmissing = o - s\nextra = s - o\nboth = o & s\nprint(sorted(missing), sorted(extra), sorted(both))"
+  },
+  "quiz": [
+   {
+    "q": "What is type({})?",
+    "opts": [
+     "set",
+     "dict",
+     "list",
+     "tuple"
+    ],
+    "ans": 1,
+    "why": "Empty braces make a dict. Use set() for an empty set."
+   },
+   {
+    "q": "What does {\"a\", \"b\"} & {\"b\", \"c\"} give?",
+    "opts": [
+     "{'a', 'b', 'c'}",
+     "{'b'}",
+     "{'a'}",
+     "{'a', 'c'}"
+    ],
+    "ans": 1,
+    "why": "& keeps the values in both sets."
+   },
+   {
+    "q": "Can you do my_set[0]?",
+    "opts": [
+     "Yes",
+     "No, sets have no order or index",
+     "Only for numbers",
+     "Only after sorting the set"
+    ],
+    "ans": 1,
+    "why": "Sets are unordered; use sorted(my_set)[0] if you need one."
+   }
+  ]
+ },
+ {
+  "id": "js18",
+  "track": "js",
+  "n": 18,
+  "unit": "OWL 3 basics",
+  "title": "What OWL is: your first component",
+  "runner": "dom",
+  "goal": "Create and mount your first OWL 3 component with a template and a signal.",
+  "cards": [
+   {
+    "h": "What OWL is",
+    "p": "OWL is Odoo's UI framework. You write components: classes that describe a piece of the screen with a template. OWL turns the template into DOM and keeps it up to date. In this runner, OWL 3 is loaded as the global `owl`.",
+    "code": "const { Component, xml, mount } = owl;\n// In an Odoo file you would write:\n// import { Component, xml } from \"@odoo/owl\";"
+   },
+   {
+    "h": "A component",
+    "p": "Extend `Component` and give it a `static template`. The `xml` helper lets you write the template inline, which is handy for learning.",
+    "code": "class Hello extends Component {\n  static template = xml`<h2>Hello, <t t-out=\"this.name\"/>!</h2>`;\n  name = \"Asif\";\n}"
+   },
+   {
+    "h": "mount() puts it on the page",
+    "p": "`mount(Component, target)` creates the component and adds it to the target element. It returns a promise, so await it before you look at the page.",
+    "code": "await mount(Hello, document.body);\nconsole.log(document.querySelector(\"h2\").textContent);   // Hello, Asif!"
+   },
+   {
+    "h": "Signals make it live",
+    "p": "A `signal(value)` is reactive state. Read it by calling it: `this.count()`. Change it with `.set()`. When it changes, OWL re-renders only what depends on it. In templates, always write `this.` before component fields and methods.",
+    "code": "const { signal } = owl;\nclass Counter extends Component {\n  static template = xml`<button t-on-click=\"this.add\">Cartons: <t t-out=\"this.count()\"/></button>`;\n  count = signal(0);\n  add() { this.count.set(this.count() + 1); }\n}"
+   }
+  ],
+  "odoo": "Odoo 20's web client is a tree of OWL 3 components. In Odoo, templates usually live in XML files (static template = \"my_module.MyComponent\"), and you rarely call mount() yourself: the web client mounts your component through a registry.",
+  "owl2": "OWL 2 used `this.state = useState({ count: 0 })` and templates read `state.count` without `this.`. OWL 3 replaces useState with signals (or `proxy`), and template expressions read the component through `this.`.",
+  "predict": {
+   "code": "const { Component, xml, mount, signal } = owl;\nclass Badge extends Component {\n  static template = xml`<span><t t-out=\"this.label\"/>: <t t-out=\"this.qty()\"/></span>`;\n  label = \"GAP\";\n  qty = signal(500);\n}\nconst comp = await mount(Badge, document.body);\nconsole.log(document.querySelector(\"span\").textContent);\ncomp.qty.set(800);\nawait __tick();\nconsole.log(document.querySelector(\"span\").textContent);",
+   "q": "What does this print? (`__tick()` waits for OWL to re-render.)",
+   "opts": [
+    "GAP: 500\nGAP: 500",
+    "GAP: 500\nGAP: 800",
+    "GAP: \nGAP: 800",
+    "label: qty"
+   ],
+   "ans": 1,
+   "why": "mount() returns the component. Setting the signal makes OWL re-render the span, so the second read shows 800."
+  },
+  "bug": {
+   "task": "Clicking the button should increase the count, but the page stays at 0. Fix the component so it re-renders. (Tip: Run shows the live preview; you can click it.)",
+   "code": "const { Component, xml, mount, signal } = owl;\nclass Counter extends Component {\n  static template = xml`<button t-on-click=\"this.add\">Cartons: <t t-out=\"this.count()\"/></button>`;\n  count = signal(0);\n  add() {\n    this.count = signal(this.count() + 1);\n  }\n}\nawait mount(Counter, document.body);",
+   "test": "const b = document.querySelector(\"button\");\nb.click(); await __tick(); b.click(); await __tick();\ncheck(b.textContent.trim() === \"Cartons: 2\", \"After two clicks the button should say Cartons: 2\");",
+   "hint": "Creating a new signal replaces the old one, but the template is still watching the old one. Change the value of the existing signal.",
+   "solution": "const { Component, xml, mount, signal } = owl;\nclass Counter extends Component {\n  static template = xml`<button t-on-click=\"this.add\">Cartons: <t t-out=\"this.count()\"/></button>`;\n  count = signal(0);\n  add() {\n    this.count.set(this.count() + 1);\n  }\n}\nawait mount(Counter, document.body);"
+  },
+  "write": {
+   "task": "Write a component `OrderCard` that shows:\n<div class=\"card\"><h3>OA-1001</h3><p>Qty: 1200</p><button>+100</button></div>\n- `po` is a plain field (\"OA-1001\"); `qty` is a signal starting at 1200.\n- Clicking the button adds 100 to qty.\nMount it on document.body.",
+   "starter": "const { Component, xml, mount, signal } = owl;\n\n// your component here\n",
+   "test": "const card = document.querySelector(\".card\");\ncheck(card, \"Render a <div class=\\\"card\\\">\");\ncheck(card.querySelector(\"h3\").textContent.trim() === \"OA-1001\", \"The h3 should show OA-1001\");\ncheck(card.querySelector(\"p\").textContent.trim() === \"Qty: 1200\", \"The p should show Qty: 1200\");\ncard.querySelector(\"button\").click(); await __tick();\ncheck(card.querySelector(\"p\").textContent.trim() === \"Qty: 1300\", \"After one click, Qty: 1300\");\ncheck(__code.includes(\"signal(\"), \"Make qty a signal\");",
+   "solution": "const { Component, xml, mount, signal } = owl;\n\nclass OrderCard extends Component {\n  static template = xml`\n    <div class=\"card\">\n      <h3><t t-out=\"this.po\"/></h3>\n      <p>Qty: <t t-out=\"this.qty()\"/></p>\n      <button t-on-click=\"this.addHundred\">+100</button>\n    </div>`;\n  po = \"OA-1001\";\n  qty = signal(1200);\n  addHundred() {\n    this.qty.set(this.qty() + 100);\n  }\n}\nawait mount(OrderCard, document.body);\n"
+  },
+  "quiz": [
+   {
+    "q": "How do you read a signal called count in a template?",
+    "opts": [
+     "count",
+     "this.count",
+     "this.count()",
+     "{{count}}"
+    ],
+    "ans": 2,
+    "why": "A signal is a function: call it to read the value, and use this. in OWL 3 templates."
+   },
+   {
+    "q": "How do you change a signal's value?",
+    "opts": [
+     "this.count = 5",
+     "this.count(5)",
+     "this.count.set(5)",
+     "setState(5)"
+    ],
+    "ans": 2,
+    "why": ".set() writes the value and tells OWL to re-render."
+   },
+   {
+    "q": "What does mount() return?",
+    "opts": [
+     "Nothing",
+     "A promise that gives the component",
+     "The HTML string",
+     "The template"
+    ],
+    "ans": 1,
+    "why": "Await it before you read the page."
+   }
+  ]
+ },
+ {
+  "id": "py19",
+  "track": "py",
+  "n": 19,
+  "unit": "Data structures",
+  "title": "Comprehensions",
+  "goal": "Build lists, dicts and sets in one readable line with comprehensions.",
+  "cards": [
+   {
+    "h": "List comprehension",
+    "p": "`[expression for item in items]` builds a new list. It replaces the pattern 'empty list, loop, append'.",
+    "code": "qtys = [1200, 500, 3400]\ndoubled = [q * 2 for q in qtys]\nprint(doubled)   # [2400, 1000, 6800]"
+   },
+   {
+    "h": "With a filter",
+    "p": "Add `if condition` at the end to keep only some items.",
+    "code": "qtys = [1200, 500, 3400, 800]\nbig = [q for q in qtys if q >= 1000]\nprint(big)   # [1200, 3400]"
+   },
+   {
+    "h": "Dict and set comprehensions",
+    "p": "Use braces with `key: value` for a dict, or braces with one expression for a set.",
+    "code": "brands = [\"gap\", \"h&m\", \"gap\"]\nupper = {b.upper() for b in brands}       # set\nlengths = {b: len(b) for b in brands}     # dict\nprint(sorted(upper), lengths)"
+   },
+   {
+    "h": "Keep it readable",
+    "p": "A choice inside the expression uses `a if cond else b`. If a comprehension needs more than one line of thinking, a normal loop is clearer.",
+    "code": "labels = [\"big\" if q >= 1000 else \"small\" for q in [1200, 500]]\nprint(labels)   # ['big', 'small']"
+   }
+  ],
+  "odoo": "Odoo code uses comprehensions often, for example `[(0, 0, {'product_id': p.id}) for p in products]` to build order lines, or `{r.id: r.name for r in records}`.",
+  "predict": {
+   "code": "print([n * n for n in range(5) if n % 2 == 0])",
+   "q": "What does this print?",
+   "opts": [
+    "[0, 4, 16]",
+    "[1, 9]",
+    "[0, 1, 4, 9, 16]",
+    "[4, 16]"
+   ],
+   "ans": 0,
+   "why": "The even numbers in range(5) are 0, 2 and 4. Their squares are 0, 4 and 16."
+  },
+  "bug": {
+   "task": "`codes` should be the PO numbers in upper case, only for lines with qty > 0. It crashes. Fix the comprehension.",
+   "code": "lines = [(\"po-1\", 500), (\"po-2\", 0), (\"po-3\", 1200)]\ncodes = [if qty > 0 po.upper() for po, qty in lines]\nprint(codes)",
+   "test": "assert codes == [\"PO-1\", \"PO-3\"], \"codes should be ['PO-1', 'PO-3']\"",
+   "hint": "The filter goes at the end: [expression for ... in ... if condition].",
+   "solution": "lines = [(\"po-1\", 500), (\"po-2\", 0), (\"po-3\", 1200)]\ncodes = [po.upper() for po, qty in lines if qty > 0]\nprint(codes)"
+  },
+  "write": {
+   "task": "From `prices` (a dict of item: price in USD), use comprehensions to create:\n- `bdt`: the same dict with prices converted to BDT (multiply by `rate`, round to 2 decimals)\n- `cheap`: a sorted list of item names that cost less than 0.2 USD\nPrint both.",
+   "starter": "rate = 122.5\nprices = {\"zipper\": 0.35, \"slider\": 0.12, \"puller\": 0.08, \"tape\": 0.5}\n",
+   "test": "assert bdt == {\"zipper\": 42.88, \"slider\": 14.7, \"puller\": 9.8, \"tape\": 61.25}, \"bdt values should be price * rate, rounded to 2 decimals\"\nassert cheap == [\"puller\", \"slider\"], \"cheap should be ['puller', 'slider']\"\nassert _code.count(\" for \") >= 2 and \"append\" not in _code, \"Use two comprehensions\"",
+   "solution": "rate = 122.5\nprices = {\"zipper\": 0.35, \"slider\": 0.12, \"puller\": 0.08, \"tape\": 0.5}\nbdt = {item: round(p * rate, 2) for item, p in prices.items()}\ncheap = sorted([item for item, p in prices.items() if p < 0.2])\nprint(bdt, cheap)"
+  },
+  "quiz": [
+   {
+    "q": "Which builds a set?",
+    "opts": [
+     "[x for x in a]",
+     "{x for x in a}",
+     "{x: x for x in a}",
+     "(x for x in a)"
+    ],
+    "ans": 1,
+    "why": "Braces with one expression make a set; with key: value they make a dict."
+   },
+   {
+    "q": "Where does the filter go?",
+    "opts": [
+     "At the start",
+     "At the end, after the for",
+     "Inside the expression only",
+     "Filters aren't allowed"
+    ],
+    "ans": 1,
+    "why": "[expr for x in items if cond]."
+   },
+   {
+    "q": "When is a normal loop better?",
+    "opts": [
+     "Never",
+     "When the logic is long or has several steps",
+     "When you have numbers",
+     "Always"
+    ],
+    "ans": 1,
+    "why": "Readability matters more than saving lines."
+   }
+  ]
+ },
+ {
+  "id": "js19",
+  "track": "js",
+  "n": 19,
+  "unit": "OWL 3 basics",
+  "title": "Templates: t-out, t-if, t-foreach",
+  "runner": "dom",
+  "goal": "Write OWL templates that output values, show things conditionally, and repeat lists.",
+  "cards": [
+   {
+    "h": "t-out",
+    "p": "`t-out` writes a value into the page, escaped so HTML in it is shown as text. It can sit on a `<t>` (which adds no element) or on a real tag, replacing its content.",
+    "code": "<p>Brand: <t t-out=\"this.brand\"/></p>\n<span t-out=\"this.qty() * 2\"/>"
+   },
+   {
+    "h": "t-if, t-elif, t-else",
+    "p": "Show an element only when a condition is true. Inside XML, you can write `gt`, `lt`, `and`, `or` instead of `>`, `<`, `&&`, `||`.",
+    "code": "<span t-if=\"this.days() gt 0\" class=\"late\">Late</span>\n<span t-elif=\"this.days() === 0\">Due today</span>\n<span t-else=\"\">On time</span>"
+   },
+   {
+    "h": "t-foreach with t-key",
+    "p": "Repeat an element for each item. `t-as` names the item. `t-key` is required: a unique id so OWL can match items between renders. You also get `name_index`, `name_first` and `name_last`.",
+    "code": "<ul>\n  <li t-foreach=\"this.orders\" t-as=\"o\" t-key=\"o.id\">\n    <t t-out=\"o_index + 1\"/>. <t t-out=\"o.po\"/>\n  </li>\n</ul>"
+   },
+   {
+    "h": "Dynamic attributes",
+    "p": "`t-att-name` sets an attribute from an expression. For classes, give an object: keys are class names, values are true/false. `t-attf-` builds text with `{{ }}`.",
+    "code": "<li t-att-class=\"{ late: o.days gt 0 }\" t-attf-title=\"PO {{o.po}}\">...</li>"
+   }
+  ],
+  "odoo": "Odoo XML templates use the same QWeb directives. Server-side reports (QWeb PDF) also use t-if and t-foreach, so this knowledge works for reports too.",
+  "owl2": "OWL 2 also had `t-esc` for escaped output; OWL 3 removed it, so always use `t-out`. OWL 2 templates read component values without `this.` (for example `t-foreach=\"orders\"`).",
+  "predict": {
+   "code": "const { Component, xml, mount } = owl;\nclass L extends Component {\n  static template = xml`\n    <ul>\n      <li t-foreach=\"this.items\" t-as=\"it\" t-key=\"it\" t-if=\"it !== 'B'\"><t t-out=\"it_index\"/><t t-out=\"it\"/></li>\n    </ul>`;\n  items = [\"A\", \"B\", \"C\"];\n}\nawait mount(L, document.body);\nconsole.log([...document.querySelectorAll(\"li\")].map(li => li.textContent).join(\",\"));",
+   "q": "What does this print?",
+   "opts": [
+    "0A,1C",
+    "0A,2C",
+    "A,C",
+    "0A,1B,2C"
+   ],
+   "ans": 1,
+   "why": "B is skipped by t-if, but it_index still counts every item, so C has index 2."
+  },
+  "bug": {
+   "task": "This should list the three brands, but OWL throws an error. Fix the template.",
+   "code": "const { Component, xml, mount } = owl;\nclass Brands extends Component {\n  static template = xml`\n    <ul>\n      <li t-foreach=\"this.brands\" t-as=\"b\"><t t-out=\"b.name\"/></li>\n    </ul>`;\n  brands = [{ id: 1, name: \"H&M\" }, { id: 2, name: \"GAP\" }, { id: 3, name: \"Kohl's\" }];\n}\nawait mount(Brands, document.body);",
+   "test": "const names = [...document.querySelectorAll(\"li\")].map(li => li.textContent.trim());\ncheck(names.join(\"|\") === \"H&M|GAP|Kohl's\", \"The list should show H&M, GAP, Kohl's\");",
+   "hint": "OWL requires something on every t-foreach so it can track each item.",
+   "solution": "const { Component, xml, mount } = owl;\nclass Brands extends Component {\n  static template = xml`\n    <ul>\n      <li t-foreach=\"this.brands\" t-as=\"b\" t-key=\"b.id\"><t t-out=\"b.name\"/></li>\n    </ul>`;\n  brands = [{ id: 1, name: \"H&M\" }, { id: 2, name: \"GAP\" }, { id: 3, name: \"Kohl's\" }];\n}\nawait mount(Brands, document.body);"
+  },
+  "write": {
+   "task": "Write a `ShipmentList` component that renders a <table> with one <tr> per shipment (use t-foreach and t-key):\n- a <td> with the ref, and a <td> with the cartons\n- the <tr> gets the class `late` when days_late is more than 0\n- after the table, a <p> that says `All on time` if no shipment is late, otherwise `2 late` (the number of late ones)\nMount it on document.body.",
+   "starter": "const { Component, xml, mount } = owl;\n\nconst SHIPMENTS = [\n  { id: 1, ref: \"SH-1\", cartons: 40, days_late: 0 },\n  { id: 2, ref: \"SH-2\", cartons: 25, days_late: 3 },\n  { id: 3, ref: \"SH-3\", cartons: 10, days_late: 1 },\n];\n\nclass ShipmentList extends Component {\n  static template = xml`<table></table>`;\n  shipments = SHIPMENTS;\n}\nawait mount(ShipmentList, document.body);\n",
+   "test": "const rows = [...document.querySelectorAll(\"tr\")];\ncheck(rows.length === 3, \"Render one <tr> per shipment\");\ncheck(rows[0].textContent.includes(\"SH-1\") && rows[0].textContent.includes(\"40\"), \"Each row shows ref and cartons\");\ncheck(!rows[0].classList.contains(\"late\") && rows[1].classList.contains(\"late\") && rows[2].classList.contains(\"late\"), \"Rows with days_late > 0 get the class late\");\nconst p = document.querySelector(\"p\");\ncheck(p && p.textContent.trim() === \"2 late\", \"The <p> should say 2 late\");\ncheck(__code.includes(\"t-key\"), \"Use t-key\");",
+   "solution": "const { Component, xml, mount } = owl;\n\nconst SHIPMENTS = [\n  { id: 1, ref: \"SH-1\", cartons: 40, days_late: 0 },\n  { id: 2, ref: \"SH-2\", cartons: 25, days_late: 3 },\n  { id: 3, ref: \"SH-3\", cartons: 10, days_late: 1 },\n];\n\nclass ShipmentList extends Component {\n  static template = xml`\n    <table>\n      <tr t-foreach=\"this.shipments\" t-as=\"s\" t-key=\"s.id\" t-att-class=\"{ late: s.days_late gt 0 }\">\n        <td t-out=\"s.ref\"/>\n        <td t-out=\"s.cartons\"/>\n      </tr>\n    </table>\n    <p t-if=\"this.lateCount === 0\">All on time</p>\n    <p t-else=\"\"><t t-out=\"this.lateCount\"/> late</p>`;\n  shipments = SHIPMENTS;\n  get lateCount() {\n    return this.shipments.filter(s => s.days_late > 0).length;\n  }\n}\nawait mount(ShipmentList, document.body);\n"
+  },
+  "quiz": [
+   {
+    "q": "Which directive outputs a value in OWL 3?",
+    "opts": [
+     "t-esc",
+     "t-out",
+     "t-print",
+     "{{ }}"
+    ],
+    "ans": 1,
+    "why": "OWL 3 only has t-out; it escapes by default."
+   },
+   {
+    "q": "Why is t-key required with t-foreach?",
+    "opts": [
+     "For sorting",
+     "So OWL can tell items apart between renders",
+     "For CSS",
+     "It isn't"
+    ],
+    "ans": 1,
+    "why": "Keys give each item an identity, so OWL updates the right DOM nodes."
+   },
+   {
+    "q": "What does t-att-class=\"{ late: true, done: false }\" render?",
+    "opts": [
+     "class=\"late done\"",
+     "class=\"late\"",
+     "class=\"true\"",
+     "Nothing"
+    ],
+    "ans": 1,
+    "why": "Only the keys with a true value become classes."
+   }
+  ]
+ },
+ {
+  "id": "py20",
+  "track": "py",
+  "n": 20,
+  "unit": "Data structures",
+  "title": "Nested data (lists of dicts)",
+  "goal": "Work with nested data: lists of dictionaries, like records from Odoo or an API.",
+  "cards": [
+   {
+    "h": "A list of dicts is a table",
+    "p": "Each dict is one row, each key is one column. This is how most real data looks.",
+    "code": "orders = [\n    {\"po\": \"PO-1\", \"brand\": \"GAP\", \"qty\": 1200},\n    {\"po\": \"PO-2\", \"brand\": \"H&M\", \"qty\": 500},\n]\nprint(orders[1][\"brand\"])   # H&M"
+   },
+   {
+    "h": "Loop and pick fields",
+    "p": "Loop over the rows, and read each field by key. Comprehensions work well here.",
+    "code": "for o in orders:\n    print(o[\"po\"], o[\"qty\"])\ntotal = sum(o[\"qty\"] for o in orders)\nprint(total)   # 1700"
+   },
+   {
+    "h": "Deeper nesting",
+    "p": "Values can be lists or dicts too. Read step by step from the outside in.",
+    "code": "order = {\"po\": \"PO-1\", \"lines\": [{\"item\": \"zipper\", \"qty\": 900}, {\"item\": \"slider\", \"qty\": 900}]}\nprint(order[\"lines\"][0][\"item\"])   # zipper\nprint(len(order[\"lines\"]))         # 2"
+   },
+   {
+    "h": "Sort and filter rows",
+    "p": "`sorted()` needs to know which field to compare. A `key=` with a small function does that; you'll study lambda properly in lesson 25.",
+    "code": "by_qty = sorted(orders, key=lambda o: o[\"qty\"])\nprint([o[\"po\"] for o in by_qty])   # ['PO-2', 'PO-1']"
+   }
+  ],
+  "odoo": "`search_read()` and the JSON-RPC API return exactly this: a list of dicts, one per record, like [{'id': 7, 'name': 'S00042', 'amount_total': 420.0}].",
+  "predict": {
+   "code": "data = [{\"n\": \"A\", \"tags\": [\"x\", \"y\"]}, {\"n\": \"B\", \"tags\": []}]\nprint(data[0][\"tags\"][-1], len(data[1][\"tags\"]))",
+   "q": "What does this print?",
+   "opts": [
+    "y 0",
+    "x 0",
+    "y 1",
+    "Error"
+   ],
+   "ans": 0,
+   "why": "The first row's tags are ['x', 'y'], so [-1] is y. The second row's tags list is empty."
+  },
+  "bug": {
+   "task": "`total` should be the sum of all line quantities across all orders (3800). The code only counts one line per order. Fix it.",
+   "code": "orders = [\n    {\"po\": \"PO-1\", \"lines\": [{\"qty\": 1000}, {\"qty\": 500}]},\n    {\"po\": \"PO-2\", \"lines\": [{\"qty\": 2000}, {\"qty\": 300}]},\n]\ntotal = 0\nfor o in orders:\n    total += o[\"lines\"][0][\"qty\"]\nprint(total)",
+   "test": "assert total == 3800, \"total should be 3800\"",
+   "hint": "Each order has several lines. You need a loop inside the loop.",
+   "solution": "orders = [\n    {\"po\": \"PO-1\", \"lines\": [{\"qty\": 1000}, {\"qty\": 500}]},\n    {\"po\": \"PO-2\", \"lines\": [{\"qty\": 2000}, {\"qty\": 300}]},\n]\ntotal = 0\nfor o in orders:\n    for line in o[\"lines\"]:\n        total += line[\"qty\"]\nprint(total)"
+  },
+  "write": {
+   "task": "`shipments` is a list of dicts. Build `late_refs`: the refs of shipments with `days_late` > 0, sorted. Build `cartons_by_brand`: a dict of total cartons per brand. Print both.",
+   "starter": "shipments = [\n    {\"ref\": \"SH-3\", \"brand\": \"GAP\", \"cartons\": 40, \"days_late\": 2},\n    {\"ref\": \"SH-1\", \"brand\": \"H&M\", \"cartons\": 25, \"days_late\": 0},\n    {\"ref\": \"SH-2\", \"brand\": \"GAP\", \"cartons\": 10, \"days_late\": 5},\n    {\"ref\": \"SH-4\", \"brand\": \"Carter's\", \"cartons\": 8, \"days_late\": 0},\n]\n",
+   "test": "assert late_refs == [\"SH-2\", \"SH-3\"], \"late_refs should be ['SH-2', 'SH-3']\"\nassert cartons_by_brand == {\"GAP\": 50, \"H&M\": 25, \"Carter's\": 8}, \"cartons_by_brand is wrong\"",
+   "solution": "shipments = [\n    {\"ref\": \"SH-3\", \"brand\": \"GAP\", \"cartons\": 40, \"days_late\": 2},\n    {\"ref\": \"SH-1\", \"brand\": \"H&M\", \"cartons\": 25, \"days_late\": 0},\n    {\"ref\": \"SH-2\", \"brand\": \"GAP\", \"cartons\": 10, \"days_late\": 5},\n    {\"ref\": \"SH-4\", \"brand\": \"Carter's\", \"cartons\": 8, \"days_late\": 0},\n]\nlate_refs = sorted(s[\"ref\"] for s in shipments if s[\"days_late\"] > 0)\ncartons_by_brand = {}\nfor s in shipments:\n    cartons_by_brand[s[\"brand\"]] = cartons_by_brand.get(s[\"brand\"], 0) + s[\"cartons\"]\nprint(late_refs, cartons_by_brand)"
+  },
+  "quiz": [
+   {
+    "q": "How do you read the qty of the 2nd line of order?",
+    "opts": [
+     "order[\"lines\"][1][\"qty\"]",
+     "order[1][\"lines\"][\"qty\"]",
+     "order.lines[2].qty",
+     "order[\"qty\"][1]"
+    ],
+    "ans": 0,
+    "why": "From the outside in: the lines list, then index 1, then the qty key."
+   },
+   {
+    "q": "What does search_read() return?",
+    "opts": [
+     "A string",
+     "A list of dicts",
+     "One dict",
+     "A set"
+    ],
+    "ans": 1,
+    "why": "One dict per record, in a list."
+   },
+   {
+    "q": "sorted(rows, key=lambda r: r[\"qty\"]) sorts by…",
+    "opts": [
+     "the whole dict",
+     "qty",
+     "the first key",
+     "nothing, it's an error"
+    ],
+    "ans": 1,
+    "why": "key tells sorted what to compare for each row."
+   }
+  ]
+ },
+ {
+  "id": "js20",
+  "track": "js",
+  "n": 20,
+  "unit": "OWL 3 basics",
+  "title": "Props",
+  "runner": "dom",
+  "goal": "Pass data from a parent component to a child with props, and declare them with `useProps`.",
+  "cards": [
+   {
+    "h": "Sub-components",
+    "p": "A parent uses a child by writing a capitalised tag in its template, and lists the class in `static components`.",
+    "code": "class Parent extends Component {\n  static components = { OrderLine };\n  static template = xml`<div><OrderLine po=\"'PO-1'\" qty=\"500\"/></div>`;\n}"
+   },
+   {
+    "h": "Prop values are expressions",
+    "p": "Each attribute on a component tag is a prop, and its value is JavaScript evaluated in the parent. Text needs inner quotes: `po=\"'PO-1'\"`. Parent fields need `this.`: `qty=\"this.qty()\"`."
+   },
+   {
+    "h": "useProps() in the child",
+    "p": "In OWL 3, a component only sees the props it asks for with `useProps`. Give it a schema with types from `t`; `.optional(default)` makes a prop optional with a default value.",
+    "code": "const { useProps, t } = owl;\nclass OrderLine extends Component {\n  static template = xml`<p><t t-out=\"this.props.po\"/>: <t t-out=\"this.props.qty\"/> <t t-out=\"this.props.unit\"/></p>`;\n  props = useProps({ po: t.string(), qty: t.number(), unit: t.string().optional(\"pcs\") });\n}"
+   },
+   {
+    "h": "Props belong to the parent",
+    "p": "A child must never change its props. Reads are reactive: when the parent re-renders with a new value, the child updates. Type checks only run in dev mode: `mount(App, el, { dev: true })`."
+   }
+  ],
+  "odoo": "Every Odoo field widget receives standard props such as `record`, `name` and `readonly`. In Odoo 20's CharField you can see `props = useProps(charFieldProps)`, with types like `t.string().optional()`.",
+  "owl2": "In OWL 2 every component had `this.props` automatically, and you described them with `static props = { ... }` and `static defaultProps`. OWL 3 ignores those: use `props = useProps({ ... })` with `t` types and `.optional(default)`.",
+  "predict": {
+   "code": "const { Component, xml, mount, useProps, t } = owl;\nclass Tag extends Component {\n  static template = xml`<b><t t-out=\"this.props.text\"/>(<t t-out=\"this.props.n\"/>)</b>`;\n  props = useProps({ text: t.string(), n: t.number().optional(1) });\n}\nclass App extends Component {\n  static components = { Tag };\n  static template = xml`<div><Tag text=\"'GAP'\" n=\"2 + 3\"/><Tag text=\"'H&amp;M'\"/></div>`;\n}\nawait mount(App, document.body);\nconsole.log(document.querySelector(\"div\").textContent);",
+   "q": "What does this print?",
+   "opts": [
+    "GAP(5)H&M(1)",
+    "GAP(2 + 3)H&M()",
+    "GAP(5)H&M()",
+    "'GAP'(5)'H&M'(1)"
+   ],
+   "ans": 0,
+   "why": "Prop values are expressions, so n is 5. The second Tag has no n, so the default 1 is used."
+  },
+  "bug": {
+   "task": "The child should show `Brand: Kontoor`, but it shows `Brand: ` and nothing else. Fix the prop in the parent's template.",
+   "code": "const { Component, xml, mount, useProps, t } = owl;\nclass BrandLabel extends Component {\n  static template = xml`<p>Brand: <t t-out=\"this.props.brand\"/></p>`;\n  props = useProps({ brand: t.string() });\n}\nclass App extends Component {\n  static components = { BrandLabel };\n  static template = xml`<BrandLabel brand=\"Kontoor\"/>`;\n}\nawait mount(App, document.body);",
+   "test": "check(document.querySelector(\"p\").textContent.trim() === \"Brand: Kontoor\", \"It should show Brand: Kontoor\");",
+   "hint": "Prop values are JavaScript expressions. Without inner quotes, Kontoor is read as a variable name.",
+   "solution": "const { Component, xml, mount, useProps, t } = owl;\nclass BrandLabel extends Component {\n  static template = xml`<p>Brand: <t t-out=\"this.props.brand\"/></p>`;\n  props = useProps({ brand: t.string() });\n}\nclass App extends Component {\n  static components = { BrandLabel };\n  static template = xml`<BrandLabel brand=\"'Kontoor'\"/>`;\n}\nawait mount(App, document.body);"
+  },
+  "write": {
+   "task": "Write a child component `LineRow` with props `item` (string), `qty` (number) and `price` (number, optional, default 0.35). It renders `<li>zipper: 1000 × 0.35 = 350</li>` (the total is qty × price).\nIn `Order`, render one LineRow per line with t-foreach (pass item, qty, and price only when the line has one). Mount Order.",
+   "starter": "const { Component, xml, mount, useProps, t } = owl;\n\n// LineRow here\n\nclass Order extends Component {\n  static components = {};\n  static template = xml`<ul></ul>`;\n  lines = [\n    { id: 1, item: \"zipper\", qty: 1000 },\n    { id: 2, item: \"slider\", qty: 500, price: 0.1 },\n  ];\n}\nawait mount(Order, document.body);\n",
+   "test": "const lis = [...document.querySelectorAll(\"li\")].map(li => li.textContent.replace(/\\s+/g, \" \").trim());\ncheck(lis.length === 2, \"Render one <li> per line\");\ncheck(lis[0] === \"zipper: 1000 × 0.35 = 350\", \"First line should be: zipper: 1000 × 0.35 = 350\");\ncheck(lis[1] === \"slider: 500 × 0.1 = 50\", \"Second line should be: slider: 500 × 0.1 = 50\");\ncheck(__code.includes(\"useProps\") && __code.includes(\"optional(0.35)\"), \"Use useProps with price: t.number().optional(0.35)\");",
+   "solution": "const { Component, xml, mount, useProps, t } = owl;\n\nclass LineRow extends Component {\n  static template = xml`<li><t t-out=\"this.props.item\"/>: <t t-out=\"this.props.qty\"/> × <t t-out=\"this.props.price\"/> = <t t-out=\"this.props.qty * this.props.price\"/></li>`;\n  props = useProps({ item: t.string(), qty: t.number(), price: t.number().optional(0.35) });\n}\n\nclass Order extends Component {\n  static components = { LineRow };\n  static template = xml`\n    <ul>\n      <t t-foreach=\"this.lines\" t-as=\"l\" t-key=\"l.id\">\n        <LineRow item=\"l.item\" qty=\"l.qty\" price=\"l.price\"/>\n      </t>\n    </ul>`;\n  lines = [\n    { id: 1, item: \"zipper\", qty: 1000 },\n    { id: 2, item: \"slider\", qty: 500, price: 0.1 },\n  ];\n}\nawait mount(Order, document.body);\n"
+  },
+  "quiz": [
+   {
+    "q": "How does a child read props in OWL 3?",
+    "opts": [
+     "this.props is always there",
+     "It calls useProps() and reads the object it returns",
+     "this.env.props",
+     "static props"
+    ],
+    "ans": 1,
+    "why": "OWL 3 removed the automatic this.props; useProps() gives the child its props."
+   },
+   {
+    "q": "What does <Child label=\"total\"/> pass?",
+    "opts": [
+     "The text \"total\"",
+     "The value of a variable called total",
+     "Nothing",
+     "An error always"
+    ],
+    "ans": 1,
+    "why": "Prop values are expressions. For text, write label=\"'total'\"."
+   },
+   {
+    "q": "Can a child change its props?",
+    "opts": [
+     "Yes, freely",
+     "No, props belong to the parent",
+     "Only numbers",
+     "Only in setup"
+    ],
+    "ans": 1,
+    "why": "Ask the parent to change them instead (for example with a callback prop)."
+   }
+  ]
+ },
+ {
+  "id": "py21",
+  "track": "py",
+  "n": 21,
+  "unit": "Functions",
+  "title": "Defining functions",
+  "goal": "Package logic into your own functions with `def` and `return`.",
+  "cards": [
+   {
+    "h": "def creates a function",
+    "p": "Give it a name, parameters in brackets, a colon, and an indented body. Calling it runs the body with the values you pass.",
+    "code": "def line_total(qty, price):\n    return qty * price\n\nprint(line_total(1200, 0.35))   # 420.0"
+   },
+   {
+    "h": "return vs print",
+    "p": "`return` hands a value back to the caller, so it can be stored or used. `print` only shows text. A function without return gives back `None`.",
+    "code": "def show(x):\n    print(x)\n\nresult = show(5)   # prints 5\nprint(result)      # None"
+   },
+   {
+    "h": "return ends the function",
+    "p": "As soon as `return` runs, the function stops. This is handy for early exits.",
+    "code": "def size(qty):\n    if qty >= 10000:\n        return \"large\"\n    if qty >= 1000:\n        return \"medium\"\n    return \"small\"\nprint(size(2500))   # medium"
+   },
+   {
+    "h": "Why functions",
+    "p": "Write the logic once, give it a clear name, and reuse it. Small functions are easy to test: same input, same output."
+   }
+  ],
+  "odoo": "Odoo models are mostly methods (functions inside a class), like `def action_confirm(self):` or `def _compute_amount(self):`. Today's skills are the base for all of them.",
+  "predict": {
+   "code": "def f(x):\n    if x > 0:\n        return \"pos\"\n    print(\"not pos\")\n\nprint(f(5))\nprint(f(-1))",
+   "q": "What does this print?",
+   "opts": [
+    "pos\nnot pos",
+    "pos\nnot pos\nNone",
+    "pos\nNone",
+    "pos\nnot pos\nnot pos"
+   ],
+   "ans": 1,
+   "why": "f(5) returns \"pos\". f(-1) prints \"not pos\", then ends without return, so it gives None, which is printed."
+  },
+  "bug": {
+   "task": "`total` should be 420.0, but it's None. Fix the function.",
+   "code": "def line_total(qty, price):\n    print(qty * price)\n\ntotal = line_total(1200, 0.35)",
+   "test": "assert total == 420.0, \"total should be 420.0\"",
+   "hint": "print shows a value; it doesn't give it back.",
+   "solution": "def line_total(qty, price):\n    return qty * price\n\ntotal = line_total(1200, 0.35)"
+  },
+  "write": {
+   "task": "Write `carton_count(pcs, per_carton)` that returns how many cartons are needed (a part-full carton counts as a whole one). Example: carton_count(1001, 500) is 3, carton_count(1000, 500) is 2. Print carton_count(12345, 500).",
+   "starter": "",
+   "test": "assert carton_count(1001, 500) == 3, \"1001 pcs at 500 per carton need 3 cartons\"\nassert carton_count(1000, 500) == 2, \"1000 pcs at 500 per carton need 2 cartons\"\nassert carton_count(0, 500) == 0, \"0 pcs need 0 cartons\"\nassert \"25\" in _output, \"Print carton_count(12345, 500), which is 25\"",
+   "solution": "def carton_count(pcs, per_carton):\n    full, left = divmod(pcs, per_carton)\n    if left:\n        return full + 1\n    return full\n\nprint(carton_count(12345, 500))"
+  },
+  "quiz": [
+   {
+    "q": "What does a function return if it has no return statement?",
+    "opts": [
+     "0",
+     "None",
+     "\"\"",
+     "An error"
+    ],
+    "ans": 1,
+    "why": "Python functions return None by default."
+   },
+   {
+    "q": "What happens after return runs?",
+    "opts": [
+     "The next line runs",
+     "The function stops",
+     "The function restarts",
+     "Python exits"
+    ],
+    "ans": 1,
+    "why": "return ends the function immediately."
+   },
+   {
+    "q": "Which line defines a function?",
+    "opts": [
+     "function f():",
+     "def f():",
+     "f = def():",
+     "define f:"
+    ],
+    "ans": 1,
+    "why": "Python uses def."
+   }
+  ]
+ },
+ {
+  "id": "js21",
+  "track": "js",
+  "n": 21,
+  "unit": "OWL 3 basics",
+  "title": "Event handling with t-on",
+  "runner": "dom",
+  "goal": "Handle user events in OWL templates with `t-on-*`, arguments and modifiers.",
+  "cards": [
+   {
+    "h": "t-on-<event>",
+    "p": "`t-on-click=\"this.confirm\"` calls the method when the element is clicked. OWL binds it to your component, so `this` works inside the method. The method receives the event.",
+    "code": "<button t-on-click=\"this.confirm\">Confirm</button>\n<input t-on-input=\"this.onInput\"/>   <!-- onInput(ev) { ev.target.value } -->"
+   },
+   {
+    "h": "Passing arguments",
+    "p": "Use an arrow function in the template to pass your own values, for example the item of a t-foreach loop.",
+    "code": "<li t-foreach=\"this.orders()\" t-as=\"o\" t-key=\"o.id\">\n  <button t-on-click=\"() => this.remove(o.id)\">Remove</button>\n</li>"
+   },
+   {
+    "h": "Modifiers",
+    "p": "`.prevent` calls preventDefault(), `.stop` calls stopPropagation(), `.self` only reacts when the element itself was clicked. You can combine them.",
+    "code": "<form t-on-submit.prevent=\"this.save\">...</form>\n<a href=\"#\" t-on-click.prevent.stop=\"this.open\">Open</a>"
+   },
+   {
+    "h": "Collection signals",
+    "p": "To change a list in place, use `signal.Array([...])`. Read it with `this.orders()`, then mutate: `this.orders().push(x)`. OWL notices the change. (A plain signal only notices `.set()` with a new value.)",
+    "code": "orders = signal.Array([{ id: 1, po: \"PO-1\" }]);\nadd() { this.orders().push({ id: 2, po: \"PO-2\" }); }"
+   }
+  ],
+  "odoo": "Odoo buttons in OWL components use exactly this, like `t-on-click=\"() => this.openRecord(record.id)\"`. Odoo also defines its own `t-custom-click` directive in env.js to handle middle-click and Ctrl+click on links.",
+  "owl2": "In OWL 2 you wrote `t-on-click=\"confirm\"` (no `this.`) and changed lists inside `useState`. In OWL 3, write `this.confirm`, and use `signal.Array` or `proxy` for lists you mutate.",
+  "predict": {
+   "code": "const { Component, xml, mount, signal } = owl;\nclass C extends Component {\n  static template = xml`\n    <div t-on-click=\"() => this.log.set(this.log() + 'D')\">\n      <button id=\"a\" t-on-click=\"() => this.log.set(this.log() + 'A')\">a</button>\n      <button id=\"b\" t-on-click.stop=\"() => this.log.set(this.log() + 'B')\">b</button>\n    </div>`;\n  log = signal(\"\");\n}\nconst c = await mount(C, document.body);\ndocument.querySelector(\"#a\").click();\ndocument.querySelector(\"#b\").click();\nconsole.log(c.log());",
+   "q": "What does this print?",
+   "opts": [
+    "ADBD",
+    "ADB",
+    "AB",
+    "ABD"
+   ],
+   "ans": 1,
+   "why": "Clicking a logs A, then the click bubbles to the div (D). Clicking b logs B, but .stop stops the bubbling, so the div doesn't log."
+  },
+  "bug": {
+   "task": "Each Remove button should remove its own line, but clicking one removes nothing and shows an error in the console. Fix the event handler.",
+   "code": "const { Component, xml, mount, signal } = owl;\nclass Lines extends Component {\n  static template = xml`\n    <ul>\n      <li t-foreach=\"this.lines()\" t-as=\"l\" t-key=\"l.id\">\n        <t t-out=\"l.po\"/> <button t-on-click=\"this.remove(l.id)\">Remove</button>\n      </li>\n    </ul>`;\n  lines = signal.Array([{ id: 1, po: \"PO-1\" }, { id: 2, po: \"PO-2\" }, { id: 3, po: \"PO-3\" }]);\n  remove(id) {\n    const list = this.lines();\n    list.splice(list.findIndex(l => l.id === id), 1);\n  }\n}\nawait mount(Lines, document.body);",
+   "test": "document.querySelectorAll(\"li button\")[1].click(); await __tick();\nconst left = [...document.querySelectorAll(\"li\")].map(li => li.textContent.replace(\"Remove\", \"\").trim());\ncheck(left.join(\",\") === \"PO-1,PO-3\", \"Clicking the 2nd Remove should leave PO-1 and PO-3\");",
+   "hint": "this.remove(l.id) calls remove while rendering. The handler must be a function that calls it later.",
+   "solution": "const { Component, xml, mount, signal } = owl;\nclass Lines extends Component {\n  static template = xml`\n    <ul>\n      <li t-foreach=\"this.lines()\" t-as=\"l\" t-key=\"l.id\">\n        <t t-out=\"l.po\"/> <button t-on-click=\"() => this.remove(l.id)\">Remove</button>\n      </li>\n    </ul>`;\n  lines = signal.Array([{ id: 1, po: \"PO-1\" }, { id: 2, po: \"PO-2\" }, { id: 3, po: \"PO-3\" }]);\n  remove(id) {\n    const list = this.lines();\n    list.splice(list.findIndex(l => l.id === id), 1);\n  }\n}\nawait mount(Lines, document.body);"
+  },
+  "write": {
+   "task": "Build `CartonCounter`:\n- a signal `cartons` starting at 0, shown in <span id=\"n\">\n- a button #plus (adds 1) and a button #minus (takes away 1, but never below 0)\n- a button #reset inside a <form>; submitting the form (t-on-submit.prevent) sets cartons back to 0\nMount it.",
+   "starter": "const { Component, xml, mount, signal } = owl;\n\n// your component here\n",
+   "test": "const $ = s => document.querySelector(s);\ncheck($(\"#n\") && $(\"#n\").textContent.trim() === \"0\", \"#n should start at 0\");\n$(\"#plus\").click(); $(\"#plus\").click(); $(\"#plus\").click(); await __tick();\ncheck($(\"#n\").textContent.trim() === \"3\", \"Three clicks on #plus should show 3\");\n$(\"#minus\").click(); await __tick();\ncheck($(\"#n\").textContent.trim() === \"2\", \"#minus should take away 1\");\n$(\"#reset\").click(); await __tick();\ncheck($(\"#n\").textContent.trim() === \"0\", \"Submitting the form with #reset should set it to 0\");\n$(\"#minus\").click(); await __tick();\ncheck($(\"#n\").textContent.trim() === \"0\", \"It should never go below 0\");\ncheck(__code.includes(\"t-on-submit.prevent\"), \"Use t-on-submit.prevent on the form\");",
+   "solution": "const { Component, xml, mount, signal } = owl;\n\nclass CartonCounter extends Component {\n  static template = xml`\n    <div>\n      <span id=\"n\" t-out=\"this.cartons()\"/>\n      <button id=\"plus\" t-on-click=\"() => this.change(1)\">+</button>\n      <button id=\"minus\" t-on-click=\"() => this.change(-1)\">-</button>\n      <form t-on-submit.prevent=\"this.reset\"><button id=\"reset\">Reset</button></form>\n    </div>`;\n  cartons = signal(0);\n  change(delta) {\n    this.cartons.set(Math.max(0, this.cartons() + delta));\n  }\n  reset() {\n    this.cartons.set(0);\n  }\n}\nawait mount(CartonCounter, document.body);\n"
+  },
+  "quiz": [
+   {
+    "q": "How do you pass an argument to a handler in a t-foreach?",
+    "opts": [
+     "t-on-click=\"this.remove(o.id)\"",
+     "t-on-click=\"() => this.remove(o.id)\"",
+     "t-on-click=\"remove\" t-args=\"o.id\"",
+     "You can't"
+    ],
+    "ans": 1,
+    "why": "Wrap the call in an arrow function so it runs on click, not during rendering."
+   },
+   {
+    "q": "What does t-on-submit.prevent do?",
+    "opts": [
+     "Disables the form",
+     "Calls preventDefault() before your handler",
+     "Stops all events",
+     "Submits twice"
+    ],
+    "ans": 1,
+    "why": "The .prevent modifier stops the browser's default action."
+   },
+   {
+    "q": "Which state lets you push() into a list and still re-render?",
+    "opts": [
+     "A plain array field",
+     "signal.Array([...])",
+     "signal([...]) with push",
+     "const list = []"
+    ],
+    "ans": 1,
+    "why": "Collection signals track in-place changes; a plain signal only tracks .set()."
    }
   ]
  }

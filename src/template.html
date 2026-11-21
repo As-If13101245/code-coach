@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Code Coach">
+<meta name="theme-color" content="#14202b">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<title>Code Coach</title>
+<style>
+/* Plan: a calm study notebook with a dark code panel. Cool paper + slate ink; blue marks Python, amber marks JavaScript/OWL.
+   Layout: one column, phone first, bottom tab bar. */
+:root{
+  --paper:#f2f4f7; --card:#ffffff; --ink:#14202b; --muted:#5b6876; --line:#dbe0e6;
+  --py:#2f62c4; --py-bg:#e2eafb; --js:#a86f00; --js-bg:#fbefd2;
+  --accent:#2f62c4; --accent-ink:#ffffff;
+  --good:#1d8456; --good-bg:#e3f4ea; --bad:#c23a2b; --bad-bg:#fbe5e2; --warn:#b8650f; --warn-bg:#fbeedd;
+  --code-bg:#0f1720; --code-ink:#e4ebf2; --code-muted:#8a99a8;
+  --font:-apple-system, system-ui, "Segoe UI", Roboto, sans-serif;
+  --mono:ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --paper:#0d1219; --card:#151c26; --ink:#e6ebf1; --muted:#97a3b1; --line:#26303d;
+    --py:#8fb0ff; --py-bg:#1c2944; --js:#f2c055; --js-bg:#3a2d0c; --accent:#8fb0ff; --accent-ink:#0b1220;
+    --good:#5fd29a; --good-bg:#16301f; --bad:#ff8a7a; --bad-bg:#3a1c19; --warn:#f0ad5c; --warn-bg:#35270f;
+    --code-bg:#070b10; color-scheme:dark; }
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--paper);color:var(--ink);font-family:var(--font);font-size:17px;line-height:1.5;-webkit-text-size-adjust:100%}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:8px}
+h1,h2,h3{line-height:1.2;margin:0;text-wrap:balance}
+code{font-family:var(--mono);font-size:.9em;background:color-mix(in srgb, var(--ink) 8%, transparent);padding:1px 5px;border-radius:5px}
+pre{margin:0;font-family:var(--mono);font-size:14px;line-height:1.55;background:var(--code-bg);color:var(--code-ink);padding:12px 14px;border-radius:12px;overflow-x:auto;white-space:pre}
+.app{max-width:640px;margin:0 auto;padding:calc(env(safe-area-inset-top) + 12px) max(16px, env(safe-area-inset-right)) calc(env(safe-area-inset-bottom) + 96px) max(16px, env(safe-area-inset-left));display:flex;flex-direction:column;gap:16px}
+.view{display:flex;flex-direction:column;gap:18px}
+.view[hidden]{display:none}
+.brand{font-weight:800;font-size:15px;color:var(--muted);letter-spacing:.02em}
+.brand b{color:var(--ink)}
+.eyebrow{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.pill{font-size:12px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;padding:3px 9px;border-radius:999px}
+.pill.py{background:var(--py-bg);color:var(--py)}
+.pill.js{background:var(--js-bg);color:var(--js)}
+.pill.done{background:var(--good-bg);color:var(--good)}
+.pill.shaky{background:var(--warn-bg);color:var(--warn)}
+h1.title{font-size:28px;font-weight:800}
+.goal{font-size:16px;color:var(--muted)}
+.backtoday{align-self:flex-start;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:4px 12px;font-size:14px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 12px}
+.stat .n{font-weight:800;font-size:22px;font-variant-numeric:tabular-nums}
+.stat .l{font-size:12px;color:var(--muted)}
+section.step{display:flex;flex-direction:column;gap:10px}
+.stephead{display:flex;align-items:center;gap:10px}
+.stepnum{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:14px;background:var(--ink);color:var(--paper);flex:none}
+.stepnum.ok{background:var(--good);color:#fff}
+.stephead h2{font-size:20px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.card h3{font-size:17px}
+.card p{margin:0}
+.note{border-radius:14px;padding:10px 14px;font-size:15px}
+.note.odoo{background:color-mix(in srgb, #8b3f8c 12%, var(--card));border:1px solid color-mix(in srgb, #8b3f8c 30%, var(--line))}
+.note.owl2{background:var(--js-bg)}
+.note b{display:block;font-size:12px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:2px;color:var(--muted)}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opts button{text-align:left;border:1px solid var(--line);background:var(--card);border-radius:12px;padding:10px 14px;min-height:46px;font-size:15px;font-family:var(--mono);white-space:pre-wrap}
+.opts.text button{font-family:var(--font);font-size:16px}
+.opts button.right{background:var(--good-bg);border-color:var(--good)}
+.opts button.wrong{background:var(--bad-bg);border-color:var(--bad)}
+.why{font-size:15px;border-radius:12px;padding:10px 14px}
+.why.ok{background:var(--good-bg)} .why.no{background:var(--bad-bg)}
+.task{white-space:pre-line}
+.editor{width:100%;min-height:150px;resize:vertical;font-family:var(--mono);font-size:15px;line-height:1.55;background:var(--code-bg);color:var(--code-ink);border:1px solid var(--line);border-radius:12px;padding:12px 14px;tab-size:4;caret-color:#ffd166}
+.stdin{width:100%;min-height:52px;font-family:var(--mono);font-size:14px;border:1px solid var(--line);background:var(--card);border-radius:10px;padding:8px 10px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:8px 14px;font-size:15px;font-weight:700;min-height:40px}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.small{font-size:13px;min-height:32px;padding:4px 10px}
+.btn[disabled]{opacity:.55;cursor:default}
+.out{display:flex;flex-direction:column;gap:6px}
+.preview{width:100%;height:120px;border:1px solid var(--line);border-radius:12px;background:#fff}
+.preview.hidden{position:absolute;left:-9999px;top:0;width:420px;height:320px}
+.out pre.err{color:#ff9d8f;white-space:pre-wrap}
+.result{border-radius:12px;padding:10px 14px;font-weight:700;font-size:15px}
+.result.ok{background:var(--good-bg);color:var(--good)}
+.result.no{background:var(--bad-bg);color:var(--bad)}
+.result.info{background:var(--card);border:1px solid var(--line);color:var(--muted);font-weight:400}
+.hint{font-size:13px;color:var(--muted)}
+.donebar{display:flex;gap:10px;align-items:center;justify-content:space-between;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px 14px;flex-wrap:wrap}
+.list{display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.list h3{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:12px 14px 4px;border-top:1px solid var(--line)}
+.list h3:first-child{border-top:0}
+.item{display:grid;grid-template-columns:44px 1fr auto;gap:10px;align-items:center;padding:10px 14px;border:0;border-top:1px solid var(--line);background:transparent;text-align:left;width:100%}
+.item .d{font-weight:800;font-variant-numeric:tabular-nums;color:var(--muted);font-size:14px}
+.item .m{display:flex;flex-direction:column;min-width:0}
+.item .m b{font-size:15px}
+.item .m small{color:var(--muted);font-size:13px}
+.item.locked{opacity:.55}
+.item.today{background:color-mix(in srgb, var(--accent) 10%, transparent)}
+.check{width:24px;height:24px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center}
+.check.on{background:var(--good);border-color:var(--good);color:#fff}
+.check svg{width:13px;height:13px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chips button{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:6px 12px;font-size:14px;font-weight:700}
+.chips button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.review{background:var(--warn-bg);border-radius:14px;padding:10px 14px;display:flex;flex-direction:column;gap:6px}
+.review a{color:var(--warn);font-weight:700}
+.progressbar{height:8px;border-radius:999px;background:var(--line);overflow:hidden}
+.progressbar i{display:block;height:100%;background:var(--accent)}
+.tabs{position:fixed;left:0;right:0;bottom:0;background:color-mix(in srgb, var(--card) 92%, transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid var(--line);display:flex;justify-content:center;padding:6px 8px calc(env(safe-area-inset-bottom) + 6px)}
+.tabs nav{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;width:100%;max-width:640px}
+.tabs a{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px;border-radius:12px;color:var(--muted);text-decoration:none;font-size:12px;font-weight:700}
+.tabs a svg{width:24px;height:24px}
+.tabs a[aria-current="page"]{color:var(--accent)}
+.empty{padding:16px;color:var(--muted)}
+@media (prefers-reduced-motion: no-preference){ .result,.why{animation:rise .18s ease-out} @keyframes rise{from{transform:translateY(3px);opacity:.6}to{transform:none;opacity:1}} }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="brand"><b>Code</b> Coach · Python &amp; OWL</div>
+  <main class="view" id="v-today"></main>
+  <main class="view" id="v-lessons" hidden></main>
+  <main class="view" id="v-progress" hidden></main>
+</div>
+<div class="tabs"><nav aria-label="Sections">
+  <a href="#today" id="t-today"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 9l-4 3 4 3M16 9l4 3-4 3M13.5 6l-3 12"/></svg>Today</a>
+  <a href="#lessons" id="t-lessons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5V5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M8 7h7M8 11h5"/></svg>Lessons</a>
+  <a href="#progress" id="t-progress"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Progress</a>
+</nav></div>
+
+<script>
+const SYLLABUS = __SYLLABUS__;
+const SCHEDULE = __SCHEDULE__;
+const START = Date.UTC(2026,10,22);
+const TOTAL = SCHEDULE.length;
+const META = Object.fromEntries(SYLLABUS.map(l => [l.id, l]));
+let LESSONS = {};
+
+/* ---------- helpers ---------- */
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const rich = s => esc(s).replace(/`([^`]+)`/g, "<code>$1</code>");
+const CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>';
+function dhakaISO(d){ try { return new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Dhaka",year:"numeric",month:"2-digit",day:"2-digit"}).format(d||new Date()); } catch(e){ return (d||new Date()).toISOString().slice(0,10); } }
+function dayIndexRaw(){ const [y,m,d] = dhakaISO().split("-").map(Number); return Math.round((Date.UTC(y,m-1,d)-START)/86400000)+1; }
+const todayNum = () => Math.min(TOTAL, Math.max(1, dayIndexRaw()));
+const dateOf = day => new Date(START + (day-1)*86400000).toLocaleDateString("en-GB",{weekday:"short",day:"numeric",month:"short",timeZone:"UTC"});
+const dayOfLesson = id => SCHEDULE.indexOf(id) + 1;
+const trackName = t => t === "py" ? "Python" : "JavaScript · OWL";
+const normalize = s => s.replace(/[“”„″]/g,'"').replace(/[‘’′]/g,"'").replace(/—/g,"--").replace(/–/g,"-").replace(/ /g," ");
+
+/* ---------- state (this device) ---------- */
+const S = { done:{}, shaky:{}, passed:{}, drafts:{} };
+try { Object.assign(S, JSON.parse(localStorage.getItem("code-coach")||"{}")); } catch(e){}
+let saveT = null;
+function save(){ clearTimeout(saveT); saveT = setTimeout(() => { try { localStorage.setItem("code-coach", JSON.stringify(S)); } catch(e){} }, 250); }
+function addDays(iso, n){ const [y,m,d] = iso.split("-").map(Number); return new Date(Date.UTC(y,m-1,d) + n*86400000).toISOString().slice(0,10); }
+function markShaky(id, on){ if (on) S.shaky[id] = { step:0, due: addDays(dhakaISO(),1) }; else delete S.shaky[id]; save(); }
+function reviewed(id){ const r = S.shaky[id]; if (!r) return; const gaps = [1,3,7]; r.step++; if (r.step >= gaps.length) delete S.shaky[id]; else r.due = addDays(dhakaISO(), gaps[r.step]); save(); }
+function dueReviews(){ const t = dhakaISO(); return Object.entries(S.shaky).filter(([id,r]) => r.due <= t).map(([id]) => id); }
+function streak(){ let d = todayNum(); if (!S.done[SCHEDULE[d-1]]) d--; let n = 0; while (d >= 1 && S.done[SCHEDULE[d-1]]){ n++; d--; } return n; }
+
+/* ---------- runners ---------- */
+let pyWorker = null, pyState = "idle", pyQueue = [], pyCalls = {}, runId = 0;
+function startPy(){
+  pyState = "loading";
+  pyWorker = new Worker("py-worker.js");
+  pyWorker.onmessage = e => {
+    const m = e.data;
+    if (m.type === "ready"){ pyState = "ready"; document.querySelectorAll("[data-pystatus]").forEach(x => x.textContent = ""); pyQueue.splice(0).forEach(f => f()); }
+    else if (m.type === "loaderror"){ pyState = "error"; document.querySelectorAll("[data-pystatus]").forEach(x => x.textContent = "Python couldn't load. Check your connection, then reload."); }
+    else if (m.type === "result" && pyCalls[m.id]){ pyCalls[m.id](m); delete pyCalls[m.id]; }
+  };
+  pyWorker.onerror = () => {
+    pyState = "error";
+    document.querySelectorAll("[data-pystatus]").forEach(x => x.textContent = "");
+    try { pyWorker.terminate(); } catch(e){}
+    pyWorker = null;
+    const msg = { err: "Python couldn't load. It needs an internet connection the first time. Check your connection and tap Run again." };
+    Object.keys(pyCalls).forEach(k => { pyCalls[k](msg); delete pyCalls[k]; });
+    pyQueue.splice(0).forEach(() => {});
+    pendingFail.splice(0).forEach(f => f(msg));
+  };
+}
+const pendingFail = [];
+function runPython(code, test, stdin){
+  return new Promise(resolve => {
+    if (!pyWorker) startPy();
+    pendingFail.push(resolve);
+    const go = () => {
+      const i = pendingFail.indexOf(resolve); if (i >= 0) pendingFail.splice(i, 1);
+      const id = ++runId;
+      const timer = setTimeout(() => { delete pyCalls[id]; pyWorker.terminate(); pyWorker = null; pyState = "idle"; resolve({ err: "Stopped after 10 seconds. Is there an endless loop?" }); }, 10000);
+      pyCalls[id] = m => { clearTimeout(timer); resolve(m); };
+      pyWorker.postMessage({ id, code, test, stdin });
+    };
+    if (pyState === "ready") go(); else { pyQueue.push(go); document.querySelectorAll("[data-pystatus]").forEach(x => x.textContent = "Loading Python (first time takes a few seconds)…"); }
+  });
+}
+const JS_WORKER = `
+const fmt = v => typeof v === "string" ? v : v === undefined ? "undefined" : (typeof v === "function" ? v.toString() : (() => { try { return JSON.stringify(v); } catch(e) { return String(v); } })());
+const AF = Object.getPrototypeOf(async function(){}).constructor;
+self.onmessage = async (e) => {
+  const { code, test } = e.data; const logs = []; let userDone = false;
+  const con = { log:(...a)=>logs.push(a.map(fmt).join(" ")), info:(...a)=>logs.push(a.map(fmt).join(" ")), warn:(...a)=>logs.push("⚠ "+a.map(fmt).join(" ")), error:(...a)=>logs.push("✖ "+a.map(fmt).join(" ")) };
+  const check = (c, m) => { if (!c) throw new Error(m || "A check failed."); };
+  let fn;
+  try { fn = new AF("console","check","__logs","__code","__mark", code + "\\n;__mark();\\n" + (test || "")); }
+  catch (err) { self.postMessage({ out: "", err: "SyntaxError: " + err.message }); return; }
+  try {
+    await fn(con, check, logs, code, () => { userDone = true; });
+    await new Promise(r => setTimeout(r, 50));
+    self.postMessage({ out: logs.join("\\n"), pass: test ? true : null });
+  } catch (err) {
+    await new Promise(r => setTimeout(r, 0));
+    if (userDone && test) self.postMessage({ out: logs.join("\\n"), pass: false, fail: err.message });
+    else self.postMessage({ out: logs.join("\\n"), err: (err && err.name ? err.name + ": " : "") + (err && err.message || err) });
+  }
+};`;
+const jsWorkerURL = URL.createObjectURL(new Blob([JS_WORKER], { type: "text/javascript" }));
+function runJS(code, test){
+  return new Promise(resolve => {
+    const w = new Worker(jsWorkerURL);
+    const timer = setTimeout(() => { w.terminate(); resolve({ err: "Stopped after 5 seconds. Is there an endless loop?" }); }, 5000);
+    w.onmessage = e => { clearTimeout(timer); w.terminate(); resolve(e.data); };
+    w.onerror = e => { clearTimeout(timer); w.terminate(); resolve({ err: e.message || "Error" }); };
+    w.postMessage({ code, test });
+  });
+}
+
+/* DOM / OWL lessons run in a sandboxed iframe with OWL 3 loaded. Run shows a live preview; Check runs hidden. */
+const DOM_FRAME = __DOM_FRAME__;
+const isDom = L => L.runner === "dom";
+function runDOM(code, test, host){
+  return new Promise(resolve => {
+    const f = document.createElement("iframe");
+    f.setAttribute("sandbox", "allow-scripts allow-forms");
+    f.className = host ? "preview" : "preview hidden";
+    f.title = "Preview of your code";
+    f.srcdoc = DOM_FRAME;
+    let done = false;
+    const size = h => { if (host && h) f.style.height = Math.min(460, Math.max(56, h + 4)) + "px"; };
+    const finish = r => { if (done) return; done = true; clearTimeout(timer); if (!host){ window.removeEventListener("message", on); f.remove(); } resolve(r); };
+    const timer = setTimeout(() => { window.removeEventListener("message", on); f.remove(); finish({ err: "Stopped after 10 seconds. Is there an endless loop, or is the connection slow?" }); }, 10000);
+    function on(e){
+      if (!f.isConnected){ window.removeEventListener("message", on); return; }
+      if (e.source !== f.contentWindow || !e.data || !e.data.__cc) return;
+      const m = e.data;
+      if (m.ready){ f.contentWindow.postMessage({ __cc: "run", code, test }, "*"); return; }
+      if (m.resize){ size(m.resize); return; }
+      size(m.h); finish(m);
+    }
+    window.addEventListener("message", on);
+    (host || document.body).appendChild(f);
+  });
+}
+function runFor(L, code, test, stdin, host){
+  if (META[L.id].track === "py") return runPython(code, test, stdin);
+  return isDom(L) ? runDOM(code, test, host) : runJS(code, test);
+}
+
+/* ---------- lesson view ---------- */
+let viewDay = todayNum();
+let viewId = null; // set when opened from the list
+const ui = {};
+function currentId(){ return viewId || SCHEDULE[viewDay-1]; }
+
+function codeBlock(code){ return `<pre>${esc(code)}</pre>`; }
+function renderToday(){
+  const id = currentId(), meta = META[id], L = LESSONS[id], day = dayOfLesson(id), tday = todayNum();
+  const v = $("#v-today");
+  let h = "";
+  if (viewId || viewDay !== tday) h += `<button class="backtoday" type="button" id="go-today">Back to today (Day ${tday})</button>`;
+  const due = dueReviews().filter(x => x !== id);
+  if (due.length && !viewId && viewDay === tday) h += `<div class="review"><b>Review due</b>${due.map(x => `<a href="#today" data-open="${x}">${esc(META[x].title)} (${trackName(META[x].track)} ${META[x].n})</a>`).join("")}</div>`;
+  h += `<div class="eyebrow">Day ${day} of ${TOTAL} · ${esc(dateOf(day))} <span class="pill ${meta.track}">${trackName(meta.track)} ${meta.n}</span>${S.done[id]?'<span class="pill done">Done</span>':""}${S.shaky[id]?'<span class="pill shaky">Review</span>':""}</div>
+    <h1 class="title">${esc(meta.title)}</h1><div class="goal">${esc(meta.unit)}${L ? " · " + rich(L.goal) : ""}</div>`;
+  if (!L){
+    h += `<div class="card"><p><b>This lesson arrives in an upcoming weekly update.</b></p><p class="hint">New lessons are added each week. Meanwhile, review earlier lessons from the Lessons tab.</p></div>`;
+    v.innerHTML = h; bindCommon(); return;
+  }
+  const st = ui[id] || (ui[id] = { predict:null, quiz:{}, out:{}, showSol:{}, hint:{} });
+  // 1. Learn
+  h += `<section class="step"><div class="stephead"><span class="stepnum">1</span><h2>Learn</h2></div>`;
+  L.cards.forEach(c => { h += `<div class="card"><h3>${esc(c.h)}</h3><p>${rich(c.p)}</p>${c.code?codeBlock(c.code):""}</div>`; });
+  if (L.odoo) h += `<div class="note odoo"><b>In Odoo</b>${rich(L.odoo)}</div>`;
+  if (L.owl2) h += `<div class="note owl2"><b>In OWL 2 (Odoo 17/19)</b>${rich(L.owl2)}</div>`;
+  h += `</section>`;
+  // 2. Predict
+  const p = L.predict, pk = st.predict;
+  h += `<section class="step"><div class="stephead"><span class="stepnum ${pk!=null&&pk===p.ans?"ok":""}">2</span><h2>Predict the output</h2></div>
+    ${codeBlock(p.code)}<div>${esc(p.q)}</div>
+    <div class="opts">${p.opts.map((o,i)=>`<button type="button" data-pred="${i}" ${pk!=null?"disabled":""} class="${pk!=null?(i===p.ans?"right":(i===pk?"wrong":"")):""}">${esc(o)}</button>`).join("")}</div>
+    ${pk!=null?`<div class="why ${pk===p.ans?"ok":"no"}"><b>${pk===p.ans?"Correct.":"Not quite."}</b> ${rich(p.why)}</div><div><button class="btn small" type="button" id="pred-run">Run it</button></div><div class="out" id="out-pred">${outHTML(st.out.pred)}</div>`:""}
+  </section>`;
+  // 3 & 4. Bug + Write
+  h += exerciseHTML(L, "bug", 3, "Fix the bug", st);
+  h += exerciseHTML(L, "write", 4, "Write it yourself", st);
+  // 5. Quiz
+  const qok = L.quiz.every((q,i) => st.quiz[i] === q.ans);
+  h += `<section class="step"><div class="stephead"><span class="stepnum ${qok?"ok":""}">5</span><h2>Quick quiz</h2></div>`;
+  L.quiz.forEach((q,i) => { const a = st.quiz[i];
+    h += `<div class="card"><div><b>${i+1}.</b> ${esc(q.q)}</div><div class="opts text">${q.opts.map((o,k)=>`<button type="button" data-quiz="${i}:${k}" ${a!=null?"disabled":""} class="${a!=null?(k===q.ans?"right":(k===a?"wrong":"")):""}">${esc(o)}</button>`).join("")}</div>
+    ${a!=null?`<div class="why ${a===q.ans?"ok":"no"}">${rich(q.why)}</div>`:""}</div>`; });
+  h += `</section>`;
+  // Done bar
+  const passedBoth = S.passed[id+":bug"] && S.passed[id+":write"];
+  h += `<div class="donebar"><div>${S.done[id]?`<b>Lesson done.</b>`:passedBoth?`Both exercises passed. Nice work.`:`Pass both exercises, then mark the lesson done.`}</div>
+    <div class="row"><button class="btn" type="button" id="shaky">${S.shaky[id]?"Remove from review":"Review this again later"}</button>
+    <button class="btn ${S.done[id]?"":"primary"}" type="button" id="done">${S.done[id]?"Undo done":"Mark done"}</button></div></div>`;
+  v.innerHTML = h;
+  bindLesson(L, st);
+  bindCommon();
+}
+function outHTML(r){
+  if (!r) return "";
+  let h = "";
+  if (r.running) return `<div class="result info">Running…</div>`;
+  if (r.out) h += `<pre>${esc(r.out)}</pre>`;
+  if (r.err) h += `<pre class="err">${esc(r.err)}</pre>`;
+  if (!r.out && !r.err && r.pass == null) h += `<div class="result info">No output.</div>`;
+  if (r.pass === true) h += `<div class="result ok">Passed ✓</div>`;
+  if (r.pass === false) h += `<div class="result no">Not yet: ${esc(r.fail)}</div>`;
+  return h;
+}
+function exerciseHTML(L, part, num, title, st){
+  const ex = L[part], key = L.id+":"+part;
+  const code = S.drafts[key] ?? (part==="bug" ? ex.code : ex.starter);
+  const passed = S.passed[key];
+  return `<section class="step"><div class="stephead"><span class="stepnum ${passed?"ok":""}">${num}</span><h2>${title}</h2></div>
+    <div class="task">${rich(ex.task)}</div>
+    <textarea class="editor" id="ed-${part}" spellcheck="false" autocapitalize="off" autocorrect="off" autocomplete="off" aria-label="${title} code">${esc(code)}</textarea>
+    ${ex.stdin!=null?`<label class="hint" for="in-${part}">Input (one value per line)</label><textarea class="stdin" id="in-${part}" spellcheck="false" autocapitalize="off" autocorrect="off">${esc(ex.stdin)}</textarea>`:""}
+    <div class="row"><button class="btn" type="button" data-run="${part}">Run</button><button class="btn primary" type="button" data-check="${part}">Check</button>
+      <button class="btn small" type="button" data-hint="${part}">${ex.hint?"Hint":""}${ex.hint?"":"Show solution"}</button>
+      ${ex.hint?`<button class="btn small" type="button" data-sol="${part}">Solution</button>`:""}
+      <button class="btn small" type="button" data-reset="${part}">Reset</button>
+      ${part==="write"?`<button class="btn small" type="button" data-copy="${part}">Copy for Claude review</button>`:""}
+      <span class="hint" data-pystatus></span></div>
+    ${st.hint[part] && ex.hint ? `<div class="why no" style="background:var(--warn-bg)">${rich(ex.hint)}</div>`:""}
+    ${st.showSol[part] ? `<div class="card"><div class="hint">Solution</div>${codeBlock(ex.solution)}<div><button class="btn small" type="button" data-load="${part}">Put it in the editor</button></div></div>`:""}
+    <div class="out" id="out-${part}">${outHTML(st.out[part])}</div>
+    ${isDom(L)?`<div class="pv" id="pv-${part}"></div>`:""}
+  </section>`;
+}
+async function execute(L, part, withTest){
+  const st = ui[L.id], ex = L[part], key = L.id+":"+part;
+  const ed = $("#ed-"+part); const code = normalize(ed.value); if (code !== ed.value) ed.value = code;
+  S.drafts[key] = code; save();
+  const stdin = $("#in-"+part) ? normalize($("#in-"+part).value) : "";
+  st.out[part] = { running:true }; $("#out-"+part).innerHTML = outHTML(st.out[part]);
+  let host = null;
+  if (isDom(L) && !withTest){ host = $("#pv-"+part); if (host){ host.innerHTML = `<div class="hint">Preview (you can click it)</div>`; } }
+  const r = await runFor(L, code, withTest ? ex.test : "", stdin, host);
+  st.out[part] = r;
+  if (withTest && r.pass === true && !S.passed[key]){ S.passed[key] = true; save(); renderToday(); requestAnimationFrame(() => { const o = $("#out-"+part); if (o) o.scrollIntoView({block:"nearest"}); }); return; }
+  const o = $("#out-"+part); if (o) o.innerHTML = outHTML(r);
+}
+function bindLesson(L, st){
+  const v = $("#v-today");
+  v.querySelectorAll("[data-pred]").forEach(b => b.onclick = () => { st.predict = +b.dataset.pred; renderToday(); });
+  const pr = $("#pred-run"); if (pr) pr.onclick = async () => {
+    st.out.pred = { running:true }; $("#out-pred").innerHTML = outHTML(st.out.pred);
+    st.out.pred = await runFor(L, L.predict.code, "", "", null);
+    $("#out-pred").innerHTML = outHTML(st.out.pred);
+  };
+  v.querySelectorAll("[data-quiz]").forEach(b => b.onclick = () => { const [i,k] = b.dataset.quiz.split(":").map(Number); st.quiz[i] = k;
+    if (k !== L.quiz[i].ans && !S.shaky[L.id]) markShaky(L.id, true);
+    renderToday(); });
+  v.querySelectorAll("[data-run]").forEach(b => b.onclick = () => execute(L, b.dataset.run, false));
+  v.querySelectorAll("[data-check]").forEach(b => b.onclick = () => execute(L, b.dataset.check, true));
+  v.querySelectorAll("[data-hint]").forEach(b => b.onclick = () => { const p = b.dataset.hint; if (L[p].hint) st.hint[p] = !st.hint[p]; else st.showSol[p] = !st.showSol[p]; renderToday(); });
+  v.querySelectorAll("[data-sol]").forEach(b => b.onclick = () => { st.showSol[b.dataset.sol] = !st.showSol[b.dataset.sol]; renderToday(); });
+  v.querySelectorAll("[data-load]").forEach(b => b.onclick = () => { const p = b.dataset.load; S.drafts[L.id+":"+p] = L[p].solution; save(); renderToday(); });
+  v.querySelectorAll("[data-reset]").forEach(b => b.onclick = () => { const p = b.dataset.reset; delete S.drafts[L.id+":"+p]; delete st.out[p]; save(); renderToday(); });
+  v.querySelectorAll("[data-copy]").forEach(b => b.onclick = () => {
+    const p = b.dataset.copy, code = normalize($("#ed-"+p).value), meta = META[L.id];
+    const msg = `Please review my ${meta.track==="py"?"Python":"JavaScript"} code like a senior developer.\nLesson: ${trackName(meta.track)} ${meta.n} – ${meta.title}\nTask: ${L[p].task}\n\nMy code:\n\`\`\`\n${code}\n\`\`\`\nTell me what's good, what to improve, and show a cleaner version.`;
+    copyText(msg, b);
+  });
+  v.querySelectorAll(".editor").forEach(ed => {
+    ed.addEventListener("keydown", e => { if (e.key === "Tab"){ e.preventDefault(); const s = ed.selectionStart, en = ed.selectionEnd, ind = META[L.id].track==="py"?"    ":"  "; ed.value = ed.value.slice(0,s)+ind+ed.value.slice(en); ed.selectionStart = ed.selectionEnd = s+ind.length; } });
+    ed.addEventListener("input", () => { const part = ed.id.slice(3); S.drafts[L.id+":"+part] = ed.value; save(); });
+  });
+  $("#done").onclick = () => { const id = L.id; if (S.done[id]) delete S.done[id]; else { S.done[id] = dhakaISO(); if (S.shaky[id] && dueReviews().includes(id)) reviewed(id); } save(); renderToday(); };
+  $("#shaky").onclick = () => { markShaky(L.id, !S.shaky[L.id]); renderToday(); };
+}
+async function copyText(t, btn){
+  const old = btn.textContent;
+  try { await navigator.clipboard.writeText(t); btn.textContent = "Copied. Paste it to Claude"; }
+  catch(e){ const ta = document.createElement("textarea"); ta.value = t; ta.style.position="fixed"; ta.style.opacity="0"; document.body.appendChild(ta); ta.select(); ta.setSelectionRange(0, t.length); let ok=false; try { ok = document.execCommand("copy"); } catch(_){} ta.remove(); btn.textContent = ok ? "Copied. Paste it to Claude" : "Couldn't copy"; }
+  setTimeout(() => btn.textContent = old, 2500);
+}
+function bindCommon(){
+  const g = $("#go-today"); if (g) g.onclick = () => { viewId = null; viewDay = todayNum(); renderToday(); window.scrollTo(0,0); };
+  document.querySelectorAll("[data-open]").forEach(a => a.onclick = e => { e.preventDefault(); openLesson(a.dataset.open); });
+}
+function openLesson(id){ viewId = id; location.hash = "today"; route(); window.scrollTo(0,0); }
+
+/* ---------- lessons list ---------- */
+let listTrack = "all";
+function renderLessons(){
+  const t = todayNum();
+  let h = `<div class="eyebrow">Syllabus · basic to advanced</div><h1 class="title">All lessons</h1>
+    <div class="chips" role="group" aria-label="Track"><button type="button" data-tr="all" aria-pressed="${listTrack==="all"}">By day</button><button type="button" data-tr="py" aria-pressed="${listTrack==="py"}">Python</button><button type="button" data-tr="js" aria-pressed="${listTrack==="js"}">JavaScript · OWL</button></div><div class="list">`;
+  const item = (id) => { const m = META[id], d = dayOfLesson(id), avail = !!LESSONS[id];
+    return `<button type="button" class="item ${avail?"":"locked"} ${d===t?"today":""}" data-open="${id}"><span class="d">Day ${d}</span><span class="m"><b>${esc(m.title)}</b><small>${trackName(m.track)} ${m.n} · ${esc(dateOf(d))}${avail?"":" · coming soon"}${S.shaky[id]?" · review":""}</small></span><span class="check ${S.done[id]?"on":""}">${S.done[id]?CHECK:""}</span></button>`; };
+  if (listTrack === "all") h += SCHEDULE.map(item).join("");
+  else { let unit = null; SYLLABUS.filter(l => l.track === listTrack).forEach(l => { if (l.unit !== unit){ unit = l.unit; h += `<h3>${esc(unit)}</h3>`; } h += item(l.id); }); }
+  h += `</div>`;
+  $("#v-lessons").innerHTML = h;
+  document.querySelectorAll("[data-tr]").forEach(b => b.onclick = () => { listTrack = b.dataset.tr; renderLessons(); });
+  document.querySelectorAll("#v-lessons [data-open]").forEach(b => b.onclick = () => openLesson(b.dataset.open));
+}
+
+/* ---------- progress ---------- */
+function renderProgress(){
+  const done = Object.keys(S.done).length;
+  const pyDone = Object.keys(S.done).filter(x => x.startsWith("py")).length, jsDone = Object.keys(S.done).filter(x => x.startsWith("js")).length;
+  const pyTotal = SYLLABUS.filter(l=>l.track==="py").length, jsTotal = SYLLABUS.filter(l=>l.track==="js").length;
+  const shaky = Object.keys(S.shaky);
+  let h = `<div class="eyebrow">Progress · saved on this device</div><h1 class="title">How you're doing</h1>
+    <div class="stats"><div class="stat"><div class="n">${done}<span class="hint">/${TOTAL}</span></div><div class="l">lessons done</div></div>
+    <div class="stat"><div class="n">${streak()}</div><div class="l">day streak</div></div>
+    <div class="stat"><div class="n">${shaky.length}</div><div class="l">to review</div></div></div>
+    <div class="card"><div class="row" style="justify-content:space-between"><b>Python</b><span class="hint">${pyDone} / ${pyTotal}</span></div><div class="progressbar"><i style="width:${pyDone/pyTotal*100}%"></i></div>
+    <div class="row" style="justify-content:space-between"><b>JavaScript · OWL</b><span class="hint">${jsDone} / ${jsTotal}</span></div><div class="progressbar"><i style="width:${jsDone/jsTotal*100}%;background:var(--js)"></i></div></div>`;
+  h += `<div class="list"><h3>Review list</h3>${shaky.length ? shaky.map(id => `<button type="button" class="item" data-open="${id}"><span class="d">${trackName(META[id].track).slice(0,2)}</span><span class="m"><b>${esc(META[id].title)}</b><small>Next review ${esc(S.shaky[id].due)}</small></span><span></span></button>`).join("") : `<div class="empty">Nothing to review. Lessons you find hard, or where you miss a quiz question, come back after 1, 3 and 7 days.</div>`}</div>
+    <div class="hint">Progress is stored in this browser. Clearing Safari's website data will reset it.</div>`;
+  $("#v-progress").innerHTML = h;
+  document.querySelectorAll("#v-progress [data-open]").forEach(b => b.onclick = () => openLesson(b.dataset.open));
+}
+
+/* ---------- routing ---------- */
+function route(){
+  const h = (location.hash||"#today").slice(1), v = ["today","lessons","progress"].includes(h) ? h : "today";
+  ["today","lessons","progress"].forEach(k => { $("#v-"+k).hidden = k!==v; const t = $("#t-"+k); if (k===v) t.setAttribute("aria-current","page"); else t.removeAttribute("aria-current"); });
+  if (v==="today") renderToday(); if (v==="lessons") renderLessons(); if (v==="progress") renderProgress();
+}
+window.addEventListener("hashchange", route);
+fetch("lessons.json", { cache: "no-cache" }).then(r => r.json()).then(list => { list.forEach(l => LESSONS[l.id] = l); route(); })
+  .catch(() => { $("#v-today").innerHTML = `<div class="card"><b>Couldn't load the lessons.</b><p class="hint">Check your connection and reload. If you've opened the app before, it should work offline after the first visit.</p></div>`; });
+route();
+if ("serviceWorker" in navigator && location.protocol === "https:") { try { navigator.serviceWorker.register("sw.js"); } catch(e){} }
+/* warm up Python in the background on Python days */
+setTimeout(() => { if (META[currentId()] && META[currentId()].track === "py" && !pyWorker) startPy(); }, 1500);
+</script>
+</body>
+</html>
