@@ -1,0 +1,847 @@
+{
+ "start": "2026-11-22",
+ "schedule": [
+  "py01",
+  "js01",
+  "py02",
+  "js02",
+  "py03",
+  "js03",
+  "py04",
+  "js04",
+  "py05",
+  "js05",
+  "py06",
+  "js06",
+  "py07",
+  "js07",
+  "py08",
+  "js08",
+  "py09",
+  "js09",
+  "py10",
+  "js10",
+  "py11",
+  "js11",
+  "py12",
+  "js12",
+  "py13",
+  "js13",
+  "py14",
+  "js14",
+  "py15",
+  "js15",
+  "py16",
+  "js16",
+  "py17",
+  "js17",
+  "py18",
+  "js18",
+  "py19",
+  "js19",
+  "py20",
+  "js20",
+  "py21",
+  "js21",
+  "py22",
+  "js22",
+  "py23",
+  "js23",
+  "py24",
+  "js24",
+  "py25",
+  "js25",
+  "py26",
+  "js26",
+  "py27",
+  "js27",
+  "py28",
+  "js28",
+  "py29",
+  "js29",
+  "py30",
+  "js30",
+  "py31",
+  "js31",
+  "py32",
+  "js32",
+  "py33",
+  "js33",
+  "py34",
+  "js34",
+  "py35",
+  "js35",
+  "py36",
+  "js36",
+  "py37",
+  "js37",
+  "py38",
+  "js38",
+  "py39",
+  "js39",
+  "py40",
+  "js40",
+  "py41",
+  "js41",
+  "py42",
+  "js42",
+  "py43",
+  "js43",
+  "py44",
+  "js44",
+  "py45",
+  "js45",
+  "py46",
+  "py47",
+  "py48",
+  "py49",
+  "py50",
+  "py51",
+  "py52",
+  "py53",
+  "py54",
+  "py55",
+  "py56",
+  "py57",
+  "py58",
+  "py59",
+  "py60"
+ ],
+ "syllabus": [
+  {
+   "id": "py01",
+   "track": "py",
+   "n": 1,
+   "unit": "Basics",
+   "title": "Running Python and print()"
+  },
+  {
+   "id": "py02",
+   "track": "py",
+   "n": 2,
+   "unit": "Basics",
+   "title": "Variables and types"
+  },
+  {
+   "id": "py03",
+   "track": "py",
+   "n": 3,
+   "unit": "Basics",
+   "title": "Numbers and arithmetic"
+  },
+  {
+   "id": "py04",
+   "track": "py",
+   "n": 4,
+   "unit": "Basics",
+   "title": "Strings: the basics"
+  },
+  {
+   "id": "py05",
+   "track": "py",
+   "n": 5,
+   "unit": "Basics",
+   "title": "String methods and f-strings"
+  },
+  {
+   "id": "py06",
+   "track": "py",
+   "n": 6,
+   "unit": "Basics",
+   "title": "Input and type conversion"
+  },
+  {
+   "id": "py07",
+   "track": "py",
+   "n": 7,
+   "unit": "Basics",
+   "title": "Booleans and comparisons"
+  },
+  {
+   "id": "py08",
+   "track": "py",
+   "n": 8,
+   "unit": "Basics",
+   "title": "if / elif / else"
+  },
+  {
+   "id": "py09",
+   "track": "py",
+   "n": 9,
+   "unit": "Loops",
+   "title": "while loops"
+  },
+  {
+   "id": "py10",
+   "track": "py",
+   "n": 10,
+   "unit": "Loops",
+   "title": "for loops and range()"
+  },
+  {
+   "id": "py11",
+   "track": "py",
+   "n": 11,
+   "unit": "Loops",
+   "title": "break, continue and loop else"
+  },
+  {
+   "id": "py12",
+   "track": "py",
+   "n": 12,
+   "unit": "Loops",
+   "title": "Practice: number games"
+  },
+  {
+   "id": "py13",
+   "track": "py",
+   "n": 13,
+   "unit": "Data structures",
+   "title": "Lists"
+  },
+  {
+   "id": "py14",
+   "track": "py",
+   "n": 14,
+   "unit": "Data structures",
+   "title": "List methods and slicing"
+  },
+  {
+   "id": "py15",
+   "track": "py",
+   "n": 15,
+   "unit": "Data structures",
+   "title": "Tuples and unpacking"
+  },
+  {
+   "id": "py16",
+   "track": "py",
+   "n": 16,
+   "unit": "Data structures",
+   "title": "Dictionaries"
+  },
+  {
+   "id": "py17",
+   "track": "py",
+   "n": 17,
+   "unit": "Data structures",
+   "title": "Dictionary methods and looping"
+  },
+  {
+   "id": "py18",
+   "track": "py",
+   "n": 18,
+   "unit": "Data structures",
+   "title": "Sets"
+  },
+  {
+   "id": "py19",
+   "track": "py",
+   "n": 19,
+   "unit": "Data structures",
+   "title": "Comprehensions"
+  },
+  {
+   "id": "py20",
+   "track": "py",
+   "n": 20,
+   "unit": "Data structures",
+   "title": "Nested data (lists of dicts)"
+  },
+  {
+   "id": "py21",
+   "track": "py",
+   "n": 21,
+   "unit": "Functions",
+   "title": "Defining functions"
+  },
+  {
+   "id": "py22",
+   "track": "py",
+   "n": 22,
+   "unit": "Functions",
+   "title": "Parameters and defaults"
+  },
+  {
+   "id": "py23",
+   "track": "py",
+   "n": 23,
+   "unit": "Functions",
+   "title": "*args and **kwargs"
+  },
+  {
+   "id": "py24",
+   "track": "py",
+   "n": 24,
+   "unit": "Functions",
+   "title": "Scope and the LEGB rule"
+  },
+  {
+   "id": "py25",
+   "track": "py",
+   "n": 25,
+   "unit": "Functions",
+   "title": "Lambdas, sorted() and key="
+  },
+  {
+   "id": "py26",
+   "track": "py",
+   "n": 26,
+   "unit": "Functions",
+   "title": "Recursion"
+  },
+  {
+   "id": "py27",
+   "track": "py",
+   "n": 27,
+   "unit": "Functions",
+   "title": "Docstrings and type hints"
+  },
+  {
+   "id": "py28",
+   "track": "py",
+   "n": 28,
+   "unit": "Files and errors",
+   "title": "Exceptions: try / except"
+  },
+  {
+   "id": "py29",
+   "track": "py",
+   "n": 29,
+   "unit": "Files and errors",
+   "title": "raise and custom exceptions"
+  },
+  {
+   "id": "py30",
+   "track": "py",
+   "n": 30,
+   "unit": "Files and errors",
+   "title": "Files and the with statement"
+  },
+  {
+   "id": "py31",
+   "track": "py",
+   "n": 31,
+   "unit": "Files and errors",
+   "title": "JSON and CSV"
+  },
+  {
+   "id": "py32",
+   "track": "py",
+   "n": 32,
+   "unit": "Object-oriented programming",
+   "title": "Classes and objects"
+  },
+  {
+   "id": "py33",
+   "track": "py",
+   "n": 33,
+   "unit": "Object-oriented programming",
+   "title": "__init__ and attributes"
+  },
+  {
+   "id": "py34",
+   "track": "py",
+   "n": 34,
+   "unit": "Object-oriented programming",
+   "title": "Instance, class and static methods"
+  },
+  {
+   "id": "py35",
+   "track": "py",
+   "n": 35,
+   "unit": "Object-oriented programming",
+   "title": "Inheritance and super()"
+  },
+  {
+   "id": "py36",
+   "track": "py",
+   "n": 36,
+   "unit": "Object-oriented programming",
+   "title": "Multiple inheritance and the MRO"
+  },
+  {
+   "id": "py37",
+   "track": "py",
+   "n": 37,
+   "unit": "Object-oriented programming",
+   "title": "Dunder methods"
+  },
+  {
+   "id": "py38",
+   "track": "py",
+   "n": 38,
+   "unit": "Object-oriented programming",
+   "title": "Properties"
+  },
+  {
+   "id": "py39",
+   "track": "py",
+   "n": 39,
+   "unit": "Object-oriented programming",
+   "title": "Abstract classes and composition"
+  },
+  {
+   "id": "py40",
+   "track": "py",
+   "n": 40,
+   "unit": "Object-oriented programming",
+   "title": "Project: a mini ORM model"
+  },
+  {
+   "id": "py41",
+   "track": "py",
+   "n": 41,
+   "unit": "Modules",
+   "title": "Modules and imports"
+  },
+  {
+   "id": "py42",
+   "track": "py",
+   "n": 42,
+   "unit": "Modules",
+   "title": "Packages, venv and pip"
+  },
+  {
+   "id": "py43",
+   "track": "py",
+   "n": 43,
+   "unit": "Intermediate Python",
+   "title": "Iterators and the iterator protocol"
+  },
+  {
+   "id": "py44",
+   "track": "py",
+   "n": 44,
+   "unit": "Intermediate Python",
+   "title": "Generators and yield"
+  },
+  {
+   "id": "py45",
+   "track": "py",
+   "n": 45,
+   "unit": "Intermediate Python",
+   "title": "Closures"
+  },
+  {
+   "id": "py46",
+   "track": "py",
+   "n": 46,
+   "unit": "Intermediate Python",
+   "title": "Decorators"
+  },
+  {
+   "id": "py47",
+   "track": "py",
+   "n": 47,
+   "unit": "Intermediate Python",
+   "title": "Decorators with arguments"
+  },
+  {
+   "id": "py48",
+   "track": "py",
+   "n": 48,
+   "unit": "Intermediate Python",
+   "title": "Context managers"
+  },
+  {
+   "id": "py49",
+   "track": "py",
+   "n": 49,
+   "unit": "Intermediate Python",
+   "title": "itertools and functools"
+  },
+  {
+   "id": "py50",
+   "track": "py",
+   "n": 50,
+   "unit": "Advanced Python",
+   "title": "Typing in depth"
+  },
+  {
+   "id": "py51",
+   "track": "py",
+   "n": 51,
+   "unit": "Advanced Python",
+   "title": "Dataclasses and enums"
+  },
+  {
+   "id": "py52",
+   "track": "py",
+   "n": 52,
+   "unit": "Advanced Python",
+   "title": "Descriptors (how fields work)"
+  },
+  {
+   "id": "py53",
+   "track": "py",
+   "n": 53,
+   "unit": "Advanced Python",
+   "title": "Metaclasses (how Odoo registers models)"
+  },
+  {
+   "id": "py54",
+   "track": "py",
+   "n": 54,
+   "unit": "Advanced Python",
+   "title": "async / await"
+  },
+  {
+   "id": "py55",
+   "track": "py",
+   "n": 55,
+   "unit": "Advanced Python",
+   "title": "Performance and profiling"
+  },
+  {
+   "id": "py56",
+   "track": "py",
+   "n": 56,
+   "unit": "Professional Python",
+   "title": "Testing with unittest and pytest"
+  },
+  {
+   "id": "py57",
+   "track": "py",
+   "n": 57,
+   "unit": "Professional Python",
+   "title": "Logging and debugging"
+  },
+  {
+   "id": "py58",
+   "track": "py",
+   "n": 58,
+   "unit": "Professional Python",
+   "title": "Python and PostgreSQL"
+  },
+  {
+   "id": "py59",
+   "track": "py",
+   "n": 59,
+   "unit": "Professional Python",
+   "title": "How Odoo's ORM uses all of this"
+  },
+  {
+   "id": "py60",
+   "track": "py",
+   "n": 60,
+   "unit": "Professional Python",
+   "title": "Capstone project"
+  },
+  {
+   "id": "js01",
+   "track": "js",
+   "n": 1,
+   "unit": "Modern JavaScript",
+   "title": "JavaScript in the browser and console.log"
+  },
+  {
+   "id": "js02",
+   "track": "js",
+   "n": 2,
+   "unit": "Modern JavaScript",
+   "title": "let, const and types"
+  },
+  {
+   "id": "js03",
+   "track": "js",
+   "n": 3,
+   "unit": "Modern JavaScript",
+   "title": "Strings and template literals"
+  },
+  {
+   "id": "js04",
+   "track": "js",
+   "n": 4,
+   "unit": "Modern JavaScript",
+   "title": "Conditions and equality"
+  },
+  {
+   "id": "js05",
+   "track": "js",
+   "n": 5,
+   "unit": "Modern JavaScript",
+   "title": "Loops"
+  },
+  {
+   "id": "js06",
+   "track": "js",
+   "n": 6,
+   "unit": "Modern JavaScript",
+   "title": "Arrays and array methods"
+  },
+  {
+   "id": "js07",
+   "track": "js",
+   "n": 7,
+   "unit": "Modern JavaScript",
+   "title": "Objects"
+  },
+  {
+   "id": "js08",
+   "track": "js",
+   "n": 8,
+   "unit": "Modern JavaScript",
+   "title": "Functions and arrow functions"
+  },
+  {
+   "id": "js09",
+   "track": "js",
+   "n": 9,
+   "unit": "Modern JavaScript",
+   "title": "Destructuring and spread"
+  },
+  {
+   "id": "js10",
+   "track": "js",
+   "n": 10,
+   "unit": "Modern JavaScript",
+   "title": "Scope, closures and this"
+  },
+  {
+   "id": "js11",
+   "track": "js",
+   "n": 11,
+   "unit": "Modern JavaScript",
+   "title": "Classes"
+  },
+  {
+   "id": "js12",
+   "track": "js",
+   "n": 12,
+   "unit": "Modern JavaScript",
+   "title": "Modules: import and export"
+  },
+  {
+   "id": "js13",
+   "track": "js",
+   "n": 13,
+   "unit": "Modern JavaScript",
+   "title": "Promises"
+  },
+  {
+   "id": "js14",
+   "track": "js",
+   "n": 14,
+   "unit": "Modern JavaScript",
+   "title": "async / await"
+  },
+  {
+   "id": "js15",
+   "track": "js",
+   "n": 15,
+   "unit": "The DOM",
+   "title": "Selecting and changing the page"
+  },
+  {
+   "id": "js16",
+   "track": "js",
+   "n": 16,
+   "unit": "The DOM",
+   "title": "Events"
+  },
+  {
+   "id": "js17",
+   "track": "js",
+   "n": 17,
+   "unit": "The DOM",
+   "title": "Practice: a to-do list in plain JavaScript"
+  },
+  {
+   "id": "js18",
+   "track": "js",
+   "n": 18,
+   "unit": "OWL 3 basics",
+   "title": "What OWL is: your first component"
+  },
+  {
+   "id": "js19",
+   "track": "js",
+   "n": 19,
+   "unit": "OWL 3 basics",
+   "title": "Templates: t-out, t-if, t-foreach"
+  },
+  {
+   "id": "js20",
+   "track": "js",
+   "n": 20,
+   "unit": "OWL 3 basics",
+   "title": "Props"
+  },
+  {
+   "id": "js21",
+   "track": "js",
+   "n": 21,
+   "unit": "OWL 3 basics",
+   "title": "Event handling with t-on"
+  },
+  {
+   "id": "js22",
+   "track": "js",
+   "n": 22,
+   "unit": "OWL 3 basics",
+   "title": "Signals: reactive state"
+  },
+  {
+   "id": "js23",
+   "track": "js",
+   "n": 23,
+   "unit": "OWL 3 basics",
+   "title": "computed() and effect()"
+  },
+  {
+   "id": "js24",
+   "track": "js",
+   "n": 24,
+   "unit": "OWL 3 basics",
+   "title": "Forms and t-model"
+  },
+  {
+   "id": "js25",
+   "track": "js",
+   "n": 25,
+   "unit": "OWL components",
+   "title": "Lifecycle hooks"
+  },
+  {
+   "id": "js26",
+   "track": "js",
+   "n": 26,
+   "unit": "OWL components",
+   "title": "Sub-components and composition"
+  },
+  {
+   "id": "js27",
+   "track": "js",
+   "n": 27,
+   "unit": "OWL components",
+   "title": "Slots"
+  },
+  {
+   "id": "js28",
+   "track": "js",
+   "n": 28,
+   "unit": "OWL components",
+   "title": "Child-to-parent communication"
+  },
+  {
+   "id": "js29",
+   "track": "js",
+   "n": 29,
+   "unit": "OWL components",
+   "title": "Refs"
+  },
+  {
+   "id": "js30",
+   "track": "js",
+   "n": 30,
+   "unit": "OWL components",
+   "title": "Lists and keys"
+  },
+  {
+   "id": "js31",
+   "track": "js",
+   "n": 31,
+   "unit": "OWL components",
+   "title": "Practice: a shipment tracker widget"
+  },
+  {
+   "id": "js32",
+   "track": "js",
+   "n": 32,
+   "unit": "Advanced OWL",
+   "title": "The environment and plugins"
+  },
+  {
+   "id": "js33",
+   "track": "js",
+   "n": 33,
+   "unit": "Advanced OWL",
+   "title": "Writing your own hooks"
+  },
+  {
+   "id": "js34",
+   "track": "js",
+   "n": 34,
+   "unit": "Advanced OWL",
+   "title": "Async loading"
+  },
+  {
+   "id": "js35",
+   "track": "js",
+   "n": 35,
+   "unit": "Advanced OWL",
+   "title": "Performance"
+  },
+  {
+   "id": "js36",
+   "track": "js",
+   "n": 36,
+   "unit": "Advanced OWL",
+   "title": "OWL 2 to OWL 3: what changed"
+  },
+  {
+   "id": "js37",
+   "track": "js",
+   "n": 37,
+   "unit": "OWL in Odoo 20",
+   "title": "JS assets in an Odoo module"
+  },
+  {
+   "id": "js38",
+   "track": "js",
+   "n": 38,
+   "unit": "OWL in Odoo 20",
+   "title": "Services: orm, notification, action"
+  },
+  {
+   "id": "js39",
+   "track": "js",
+   "n": 39,
+   "unit": "OWL in Odoo 20",
+   "title": "Registries"
+  },
+  {
+   "id": "js40",
+   "track": "js",
+   "n": 40,
+   "unit": "OWL in Odoo 20",
+   "title": "Patching existing components"
+  },
+  {
+   "id": "js41",
+   "track": "js",
+   "n": 41,
+   "unit": "OWL in Odoo 20",
+   "title": "Field widgets"
+  },
+  {
+   "id": "js42",
+   "track": "js",
+   "n": 42,
+   "unit": "OWL in Odoo 20",
+   "title": "Systray items and client actions"
+  },
+  {
+   "id": "js43",
+   "track": "js",
+   "n": 43,
+   "unit": "OWL in Odoo 20",
+   "title": "Views: the basics"
+  },
+  {
+   "id": "js44",
+   "track": "js",
+   "n": 44,
+   "unit": "OWL in Odoo 20",
+   "title": "Testing your components"
+  },
+  {
+   "id": "js45",
+   "track": "js",
+   "n": 45,
+   "unit": "OWL in Odoo 20",
+   "title": "Capstone project"
+  }
+ ]
+}
